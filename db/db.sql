@@ -1,0 +1,12 @@
+CREATE DATABASE IF NOT EXISTS moviedb;
+
+USE moviedb;
+
+CREATE TABLE tUser (
+  id INTEGER PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL,
+  surname VARCHAR(100) NOT NULL,
+  email VARCHAR(200) NOT NULL UNIQUE,
+  encrypted_password VARCHAR(100) NOT NULL,
+  active_session_token CHAR(20)
+);
