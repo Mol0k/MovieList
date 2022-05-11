@@ -9,7 +9,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
   <link rel="stylesheet" href="./assets/css/styles.css">
-
+  <link rel="shortcut icon" href="#">
   <title>MovieList</title>
 </head>
 
@@ -31,17 +31,18 @@
             <a class="nav-link active" href="main.php">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Peliculas</a>
+            <a class="nav-link" href="#">Películas</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">WatchList</a>
+            <a class="nav-link" href="#">Películas Vistas</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="add_movie.php">Añadir Peliculas</a>
+            <a class="nav-link" href="#">Películas deseadas</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Peliculas deseadas</a>
+            <a class="nav-link" href="add_movie.php">Añadir Películas</a>
           </li>
+          
         </ul>
         <form class="d-flex justify-content-end ms-2">
           <input class="form-control me-2 my-input"  type="search" placeholder="Buscar peliculas" aria-label="Search">

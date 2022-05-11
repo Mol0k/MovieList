@@ -11,9 +11,7 @@ $user_id = $_SESSION['user_id'];
 if (empty($user_id)) {
     header('Location: login.php');
 }
-// if($_GET['failed'] == True){
-//    die("La creación de la obra ha fallado");
-// }
+
 
 ?>
 <!DOCTYPE html>
@@ -23,6 +21,7 @@ if (empty($user_id)) {
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="#">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
     <link rel="stylesheet" href="./assets/css/styles.css" />
@@ -75,38 +74,49 @@ if (empty($user_id)) {
         </div>
     </nav>
     <hr class="bg-danger border-2 border-top border-danger" />
-    <form action="do_add_movie.php" id="m_form_pelicula" class="row p-3 text-light" method="post">
+    <form action="do_add_movie.php" role="form" class="row p-3 text-light" method="POST" enctype="multipart/form-data">
         <h2>DATOS DE LA PELÍCULA:</h2>
         <div class="form-group row">
             <div class="col-md-6">
-                <label for="f_titulo_pelicula" class="form-label">Título Película</label>
-                <input type="text" class="form-control" name="f_titulo_pelicula" id="titulo_pelicula" />
+                <label for="f_titulo_peliculas" class="form-label">Título Película</label>
+                <input type="text" class="form-control" name="f_titulo_pelicula" id="f_titulo_pelicula" />
             </div>
             <div class="col-md-6">
-                <label for="f_descripcion_pelicula" class="form-label">Descripción película:</label>
-                <textarea class="form-control" name="f_descripcion_pelicula" id="descripcion_pelicula" maxlength="500"
+                <label for="f_descripcion_peliculas" class="form-label">Descripción película:</label>
+                <textarea class="form-control" name="f_descripcion_pelicula" id="f_descripcion_pelicula" maxlength="500"
                     rows="4" cols="3" style="resize: none; width: 100%; height: 17px" required></textarea>
             </div>
             <div class="col-md-6">
-                <label for="f_imagen_pelicula" class="form-label">Imagen película:</label>
-                <input class="form-control" type="file" name="f_imagen_pelicula" id="f_imagen_pelicula" />
+                <label for="imagenPeliculas" class="form-label">Imagen película:</label>
+                <input type="file" class="form-control"  name="imagenPelicula" id="imagenPelicula"/>
             </div>
             <div class="col-md-6">
-                <label for="f_created_pelicula" class="form-label">Año de emisión de la película:</label>
-                <input type="date" class="form-control" name="f_created_pelicula" id="created_pelicula" />
+                <label for="f_created_peliculas" class="form-label">Año de emisión de la película:</label>
+                <input type="date" class="form-control" name="f_created_pelicula" id="f_created_pelicula" />
             </div>
             <div class="col-md-6">
-                <label for="f_gender_pelicula" class="form-label">Género de la película:</label>
-                <input type="text" class="form-control" name="f_gender_pelicula" id="gender_pelicula" />
+                <label for="f_gender_peliculas" class="form-label">Género de la película:</label>
+                <input type="text" class="form-control" name="f_gender_pelicula" id="f_gender_pelicula" />
             </div>
             <div class="col-md-6">
-                <label for="f_duration_pelicula" class="form-label">Duración de la película:</label>
-                <input type="text" class="form-control" name="f_duration_pelicula" id="duration_pelicula" />
+                <label for="f_duration_peliculas" class="form-label">Duración de la película:</label>
+                <input type="text" class="form-control" name="f_duration_pelicula" id="f_duration_pelicula" />
             </div>
         </div>
         <div class="col-md-12 text-center">
             <button type="submit" class="btn btn-primary btn-full" name="upload">Enviar</button>
         </div>
+        <?php
+        // recoger la variable $_GET['failed'] para mostrar el error
+        if (isset($_GET['failed'])) {
+            if($_GET['failed'] == 'True'){ ?>
+            <p class="lead" style="color:red">
+                Solo se pueden subir imágenes con la extensión jpg, jpeg y png.
+            </p>
+             <?php   
+            }
+        }?>
+       
     </form>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
