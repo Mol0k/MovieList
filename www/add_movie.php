@@ -26,6 +26,46 @@ if (empty($user_id)) {
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
     <link rel="stylesheet" href="./assets/css/styles.css" />
     <title>Añadir películas:</title>
+    <style>
+       
+  
+        .multipleSelection {
+            width: 300px;
+            background-color: #BCC2C1;
+        }
+  
+        .selectBox {
+            position: relative;
+        }
+  
+        .selectBox select {
+            width: 100%;
+            
+        }
+  
+        .overSelect {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+  
+        #checkBoxes {
+            display: none;
+            border: 1px #8DF5E4 solid;
+        }
+  
+        #checkBoxes label {
+            display: block;
+        }
+  
+        #checkBoxes label:hover {
+            background-color: #4F615E;
+        }
+    </style>
+   
+</script>
 </head>
 
 <body class="bg-dark">
@@ -95,33 +135,77 @@ if (empty($user_id)) {
                 <input type="date" class="form-control" name="f_created_pelicula" id="f_created_pelicula" />
             </div>
             <div class="col-md-6">
-                <label for="f_gender_peliculas" class="form-label">Género de la película:</label>
-                <input type="text" class="form-control" name="f_gender_pelicula" id="f_gender_pelicula" />
+                <div class="mt-4 multipleSelection">
+                    <div class="selectBox" onclick="showCheckboxes()">
+                        <select class="form-select">
+                            <option>Menu de géneros</option>
+                        </select>
+                        <div class="overSelect"></div>
+                    </div>
+                    <div id="checkBoxes">
+                        <label for="first">
+                            <input type="checkbox" value="Suspense"  name="value[] id="first" />
+                            Suspense
+                        </label>
+                        <label for="second">
+                            <input type="checkbox" value="Accion"  name="value[] id="second" />
+                            Acción
+                        </label>
+                        <label for="third">
+                            <input type="checkbox" value="Drama"  name="value[] id="third" />
+                            Drama
+                        </label>
+                        <label for="fourth">
+                            <input type="checkbox" value="Comedia"  name="value[] id="fourth" />
+                            Comedia
+                        </label>
+                    </div>
+                </div>
+                
             </div>
             <div class="col-md-6">
                 <label for="f_duration_peliculas" class="form-label">Duración de la película:</label>
                 <input type="text" class="form-control" name="f_duration_pelicula" id="f_duration_pelicula" />
             </div>
+            <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-primary mt-5 btn-full" name="upload">Enviar</button>
         </div>
-        <div class="col-md-12 text-center">
-            <button type="submit" class="btn btn-primary btn-full" name="upload">Enviar</button>
         </div>
+       
         <?php
         // recoger la variable $_GET['failed'] para mostrar el error
         if (isset($_GET['failed'])) {
-            if($_GET['failed'] == 'True'){ ?>
+            if($_GET['failed'] == TRUE){ ?>
             <p class="lead" style="color:red">
                 Solo se pueden subir imágenes con la extensión jpg, jpeg y png.
             </p>
-             <?php   
-            }
-        }?>
-       
+            <?php } ?>
+        <?php } ?>
+
     </form>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
         crossorigin="anonymous"></script>
+        
+    </script>
+    <script>
+        var show = true;
+  
+        function showCheckboxes() {
+            var checkboxes = 
+                document.getElementById("checkBoxes");
+  
+            if (show) {
+                checkboxes.style.display = "block";
+                show = false;
+            } else {
+                checkboxes.style.display = "none";
+                show = true;
+            }
+        }
+    </script>
+     
 </body>
 
 </html>

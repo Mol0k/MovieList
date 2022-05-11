@@ -18,6 +18,6 @@ CREATE TABLE tMovie (
   description VARCHAR(500) NOT NULL,
   image VARCHAR(200) NOT NULL,
   created DATE NOT NULL,
-  gender VARCHAR(50) NOT NULL,
+  gender VARCHAR(500) NOT NULL,
   duration VARCHAR(50) NOT NULL
 );
