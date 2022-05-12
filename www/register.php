@@ -27,7 +27,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     else{
         // Prepare select statement
-        $sql = "SELECT id FROM tuser WHERE username  = ? AND email = ?";
+        $sql = "SELECT id FROM tuser WHERE username  = ? or email = ?";
         
         if($stmt = mysqli_prepare($mysqli, $sql)){
             // Bind variables to the prepared statement as parameters
@@ -42,11 +42,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 /* store result */
                 mysqli_stmt_store_result($stmt);
                 
-                if(mysqli_stmt_num_rows($stmt) == 1 ){
+                if(mysqli_stmt_num_rows($stmt) == 1){
                     $username_err = "Este nombre de usuario ya está ocupado.";
-                    $email_err ="Este email ya ha sido registrado.";
                 } else{
                     $username = trim($_POST["username"]);
+                }if(mysqli_stmt_num_rows($stmt) == 2){
+                    $email_err ="Este email ya ha sido registrado.";
+                }else{
                     $email = trim($_POST["email"]);
                 }
             } else{
