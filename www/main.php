@@ -48,7 +48,7 @@
           <input class="form-control me-2 my-input"  type="search" placeholder="Buscar peliculas" aria-label="Search">
           <button class="btn btn-primary btn-search" type="submit">Buscar</button>
           <button class="btn btn-success btn-signin ms-2" type="submit"  formaction="login.php">Iniciar</button>
-          <button class="btn btn-danger btn-signout ms-2" type="submit">Registrarse</button>
+          <a class="btn btn-danger btn-signout ms-2" href="register.php" role="button">Registrate</a>
         </form>
       </div>
     </div>
