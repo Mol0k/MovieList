@@ -27,14 +27,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     else{
         // Prepare select statement
-        $sql = "SELECT id FROM tuser WHERE email = ?";
+        $sql = "SELECT id FROM tuser WHERE username  = ? or email = ? LIMIT 2";
         
         if($stmt = $mysqli->prepare($sql)){
             // Bind variables to the prepared statement as parameters
-            $stmt->bind_param("s",$param_email);
+            $stmt->bind_param("ss", $param_username, $param_email);
             
             // setear los paramatros
-            // $param_username = trim($_POST["username"]);
+            $param_username = trim($_POST["username"]);
             $param_email = trim($_POST["email"]);
             // Attempt to execute the prepared statement
             // Ejecutar el prepared statement
@@ -43,10 +43,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $stmt->store_result();
                 
                 if($stmt->num_rows == 1){
+                    $username_err = "Este nombre de usuario ya está ocupado.";
+                }else{
+                    $username = trim($_POST['username']);
+                }
+                if($stmt->num_rows == 2){
                     $email_err ="Este email ya ha sido registrado.";
                 }else{
                     $email = trim($_POST['email']);
-                    $username = trim($_POST['username']);
                 }
                
                 
@@ -87,10 +91,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
          
         if($stmt = $mysqli->prepare($sql)){
             // Bind variables to the prepared statement as parameters
-            $stmt->bind_param("sss", $username, $param_email,$param_password);
+            $stmt->bind_param("sss", $param_username, $param_email,$param_password);
             
             // Setear parametros
-           
+            $param_username = $username;
             $param_email = $email;
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
             
