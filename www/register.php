@@ -11,7 +11,11 @@ $username_err = $password_err = $confirm_password_err = "";
 $email = $password = $confirm_password = "";
 $email_err= $password_err = $confirm_password_err = "";
 
-
+if(isset($_POST['username'])) {
+    $name = $_POST['username'];
+    
+    //Process further
+ }
 // Procesamiento de los datos del formulario al enviarlo
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){ 
@@ -146,7 +150,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                             <div class="form-outline flex-fill mb-0">
                                                 <label class="form-label" for="form3Example1c">Nombre</label>
                                                 <input type="text" id="form3Example1c" name="username"
-                                                class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+                                                class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES) : ''; ?>">
                                                 <span class="invalid-feedback"><?php echo $username_err; ?></span>
                                             </div>
                                         </div>
@@ -155,7 +159,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                             <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
                                                 <label class="form-label" for="form3Example3c">Correo</label>
-                                                <input type="email" id="form3Example3c" name="email" class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $email; ?>">
+                                                <input type="text" id="form3Example3c" name="email" class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $email; ?>">
                                                 <span class="invalid-feedback"><?php echo $email_err; ?></span>
                                             </div>
                                         </div>
