@@ -11,11 +11,7 @@ $username_err = $password_err = $confirm_password_err = "";
 $email = $password = $confirm_password = "";
 $email_err= $password_err = $confirm_password_err = "";
 
-if(isset($_POST['username'])) {
-    $name = $_POST['username'];
-    
-    //Process further
- }
+
 // Procesamiento de los datos del formulario al enviarlo
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){ 
@@ -29,39 +25,47 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }if(empty(trim($_POST["email"]))){
         $email_err = "Introduce un email.";
     }
-    else{
-        // Prepare select statement
-        $sql = "SELECT id FROM tuser WHERE email = ?";
+    //SIN PREPARED STATEMENT
+    // else{
+    //     $username = $_POST['username'];
+    //     $email = $_POST['email'];   
         
-        if($stmt = $mysqli->prepare($sql)){
-            // Bind variables to the prepared statement as parameters
-            $stmt->bind_param("s",$param_email);
-            
-            // setear los paramatros
-            // $param_username = trim($_POST["username"]);
-            $param_email = trim($_POST["email"]);
-            // Attempt to execute the prepared statement
-            // Ejecutar el prepared statement
-            if($stmt->execute()){
-                /* store result */
-                $stmt->store_result();
-                
-                if($stmt->num_rows == 1){
-                    $email_err ="Este email ya ha sido registrado.";
-                }else{
-                    $email = trim($_POST['email']);
-                    $username = trim($_POST['username']);
-                }
-               
-                
-    
-            } else{
-                echo "¡Uy! Algo ha ido mal. Por favor, inténtelo de nuevo más tarde.";
-            }
-
-            // Close statement
-            $stmt->close();
+    //     $user_check_query = "SELECT * FROM tuser WHERE username='$username' OR email='$email' LIMIT 1";
+    //     $result = mysqli_query($mysqli, $user_check_query);
+    //     $user = mysqli_fetch_assoc($result);
+        
+    //     if ($user) { // if user exists
+    //       if ($user['username'] === $username) {
+    //         $username_err = "Este nombre de usuario ya está ocupado.";
+    //       }
+      
+    //       if ($user['email'] === $email) {
+    //         $email_err ="Este email ya ha sido registrado.";
+    //       }
+    //     }
+    // }
+    //CON PREPARED STATEMENT
+    else{
+        $username = $_POST['username'];
+        $email = $_POST['email'];   
+        
+        $user_check_query = "SELECT * FROM tuser WHERE username= ? OR email= ? LIMIT 1";
+        $stmt = $mysqli -> prepare($user_check_query);
+        $stmt->bind_param("ss", $username, $email);
+        $stmt->execute();
+        $result = $stmt->get_result(); // get the mysqli result
+        $user = $result->fetch_assoc();
+        
+        if ($user) { // if user exists
+          if ($user['username'] === $username) {
+            $username_err = "Este nombre de usuario ya está ocupado.";
+          }
+      
+          if ($user['email'] === $email) {
+            $email_err ="Este email ya ha sido registrado.";
+          }
         }
+        $stmt->close();
     }
     
     // Validar password
