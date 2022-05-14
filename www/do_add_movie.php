@@ -7,7 +7,7 @@ $mysqli = get_db_connection_or_die();
 
 
 $titulo_pelicula = $_POST['f_titulo_pelicula'];
-$descripcion_pelicula = $_POST['f_descripcion_pelicula'];
+$sinopsis_pelicula = $_POST['f_sinopsis_pelicula'];
 $created_pelicula = $_POST['f_created_pelicula'];
 $duration_pelicula = $_POST['f_duration_pelicula'];
 // $gender_array = $_POST['f_gender_pelicula'];
@@ -74,9 +74,9 @@ if(in_array($fileActualExt, $allowed)){
 
 
     try {
-        $stmt = $mysqli->prepare("INSERT INTO tmovie (title, description , image , created, gender, duration) 
+        $stmt = $mysqli->prepare("INSERT INTO tmovie (title, sinopsis , image , created, gender, duration) 
             VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssss", $titulo_pelicula, $descripcion_pelicula, $imagen_pelicula, $created_pelicula, $values ,$duration_pelicula);
+        $stmt->bind_param("ssssss", $titulo_pelicula, $sinopsis_pelicula, $imagen_pelicula, $created_pelicula, $values ,$duration_pelicula);
         $stmt->execute();
         // echo $stmt -> error;
      

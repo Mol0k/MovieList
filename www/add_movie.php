@@ -124,8 +124,8 @@ $mysqli = get_db_connection_or_die();
                 <input type="text" class="form-control" name="f_titulo_pelicula" id="f_titulo_pelicula" />
             </div>
             <div class="col-md-6">
-                <label for="f_descripcion_peliculas" class="form-label">Descripción película:</label>
-                <textarea class="form-control" name="f_descripcion_pelicula" id="f_descripcion_pelicula" maxlength="500"
+                <label for="f_sinopsiss_peliculas" class="form-label">Sinopsis película:</label>
+                <textarea class="form-control" name="f_sinopsis_pelicula" id="f_sinopsis_pelicula" maxlength="1225"
                     rows="4" cols="3" style="resize: none; width: 100%; height: 17px" required></textarea>
             </div>
             <div class="col-md-6">
@@ -160,6 +160,46 @@ $mysqli = get_db_connection_or_die();
                         <label for="fourth">
                             <input type="checkbox" value="Comedia"  name="value[] id="fourth" />
                             Comedia
+                        </label>
+                        <label for="five">
+                            <input type="checkbox" value="Aventuras"  name="value[] id="five" />
+                            Aventuras
+                        </label>
+                        <label for="six">
+                            <input type="checkbox" value="Ciencia ficcion"  name="value[] id="six" />
+                            Ciencia ficción
+                        </label>
+                        <label for="seven">
+                            <input type="checkbox" value="Terror"  name="value[] id="seven" />
+                            Terror
+                        </label>
+                        <label for="eigth">
+                            <input type="checkbox" value="Monstruos"  name="value[] id="eigth" />
+                            Monstruos
+                        </label>
+                        <label for="nine">
+                            <input type="checkbox" value="Superheroes"  name="value[] id="nine" />
+                            Superhéroes
+                        </label>
+                        <label for="ten">
+                            <input type="checkbox" value="Fantasia oscura"  name="value[] id="ten" />
+                            Fantasía oscura
+                        </label>
+                        <label for="eleven">
+                            <input type="checkbox" value="Crimen"  name="value[] id="eleven" />
+                            Crimen
+                        </label>
+                        <label for="twelve">
+                            <input type="checkbox" value="Fantasia"  name="value[] id="twelve" />
+                            Fantasía
+                        </label>
+                        <label for="thirteen">
+                            <input type="checkbox" value="Misterio"  name="value[] id="thirteen" />
+                            Misterio
+                        </label>
+                        <label for="fourteen">
+                            <input type="checkbox" value="Espionaje"  name="value[] id="fourteen" />
+                            Espionaje
                         </label>
                     </div>
                 </div>

@@ -1,3 +1,19 @@
+<?php
+ini_set('display_errors', 'On');
+require __DIR__ . '/../php_util/db_connection.php';
+
+// session_start();
+$mysqli = get_db_connection_or_die();
+
+// $_SESSION['user_id'] = 3;
+// $user_id = $_SESSION['user_id'];
+
+// if (empty($user_id)) {
+//     header('Location: login.php');
+// }
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -86,9 +102,25 @@
     <h2 class="text-center text-light mb-4">PELICULAS POPULARES</h2>
     <div class="container-fluid">
       <div class="row new-row mt-1 mb-1">
-         
+        
       </div>
-      <div class="row default-row mt-1 mb-1" id="row-1"> <h3 class=" text-light">WANDA VISION</h3></div>
+      <div class="text-light row default-row mt-1 mb-1" id="row-1"> 
+        <?php 
+        $consulta = 'SELECT * FROM tmovie';
+            $resultado = mysqli_query($mysqli, $consulta) or die('Query Error');
+            while($fila = mysqli_fetch_array($resultado)){
+              $variable= unserialize($fila['gender']);  
+                echo '<h1>'.$fila['title'].'</h1>';
+                echo '<p>'.$fila['sinopsis'].'</p>';
+                echo "<img style='width:15%;' src='assets/imagenesPortada/".$fila['image']."' >";   
+                echo '<p>'.$fila['created'].'</p>';
+                foreach($variable as $value){
+                  echo '<p>'.$value.' </p>';
+                }
+                echo '<p>'.$fila['duration'].' </p>'; 
+            }
+        ?>
+      </div>
       <div class="row default-row mt-1 mb-1" id="row-2"></div>
     </div>
   </div>

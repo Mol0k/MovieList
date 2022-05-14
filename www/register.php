@@ -150,8 +150,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                         <div class="form-group d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
-                                                <label class="form-label" for="form3Example1c">Nombre</label>
-                                                <input type="text" id="form3Example1c" name="username"
+                                                <label class="form-label" for="f_nomb_user">Nombre</label>
+                                                <input type="text" id="f_nomb_user" name="username"
                                                 class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES) : ''; ?>">
                                                 <span class="invalid-feedback"><?php echo $username_err; ?></span>
                                             </div>
@@ -160,8 +160,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                         <div class="form-group d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
-                                                <label class="form-label" for="form3Example3c">Correo</label>
-                                                <input type="text" id="form3Example3c" name="email" class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $email; ?>">
+                                                <label class="form-label" for="f_correo">Correo</label>
+                                                <input type="text" id="f_correo" name="email" class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $email; ?>">
                                                 <span class="invalid-feedback"><?php echo $email_err; ?></span>
                                             </div>
                                         </div>
@@ -169,8 +169,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                         <div class="form-group d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
-                                                <label class="form-label" for="form3Example4c">Contraseña</label>
-                                                <input type="password" id="form3Example4c" name="password"
+                                                <label class="form-label" for="f_contra">Contraseña</label>
+                                                <input type="password" id="f_contra" name="password"
                                                 class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
                                                 <span class="invalid-feedback"><?php echo $password_err; ?></span>
                                             </div>
@@ -179,9 +179,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                         <div class=" form-group d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
-                                                <label class="form-label" for="form3Example4cd">Repite la
+                                                <label class="form-label" for="f_contra_rep">Repite la
                                                     contraseña</label>
-                                                <input type="password" id="form3Example4cd" name="confirm_password"
+                                                <input type="password" id="f_contra_rep" name="confirm_password"
                                                 class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
                                                 <span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
             
@@ -190,8 +190,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                                         <div class="form-group form-check d-flex justify-content-center mb-4"><!--mb-5 -->
                                             <input class="form-check-input me-2" type="checkbox" required value=""
-                                                id="form2Example3c" />
-                                            <label class="form-check-label" for="form2Example3"> 
+                                                id="term_cond" />
+                                            <label class="form-check-label" for="term_cond"> 
                                                 Acepto que he leído los <a href="#!">términos y condiciones</a>.
                                             </label>
                                         </div>
@@ -209,7 +209,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                 </div>
                                 <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
 
-                                    <img src="./assets/images/hero-bg.jpg" class="img-fluid" alt="Sample image">
+                                    <img src="./assets/images/2-2-iron-man-png-clipart.png" class="img-fluid" style="width: 100%; height: 100%;"alt="Sample image">
 
                                 </div>
                             </div>
