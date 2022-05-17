@@ -181,7 +181,7 @@ hr {
 
 .movie_card {
   padding: 0 !important;
-  width: 22rem;
+  width: 18.9rem;
   margin: 14px;
   position: relative;
   background: #fff;
@@ -229,3 +229,12 @@ hr {
   transform: scale(1.6) rotate(20deg);
   filter: blur(3px);
 }
+
+/*Poner si quiero tenerlo en el medio*/
+/* .wrapperino {
+  padding: 15px;
+  overflow: hidden;
+  width: 75%;
+  display: flex;
+  margin: 0 auto;
+} */

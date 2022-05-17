@@ -10,7 +10,7 @@ session_start();
       $_SESSION['records-limit'] = $_POST['records-limit'];
   }
   
-  $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 6;
+  $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 5;
   $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
   $paginationStart = ($page - 1) * $limit;
   $authors = $mysqli->query("SELECT * FROM tmovie ORDER BY id ASC LIMIT $paginationStart, $limit")->fetch_all(MYSQLI_ASSOC);
@@ -140,14 +140,16 @@ session_start();
 
     <div class="cards-container card-resp">
         <h2 class="text-center text-light ">PELICULAS POPULARES</h2>
+        <!-- Quitar el fluid  -->
         <div class="container-fluid">
+            <!-- Quitar el row default-row -->
             <div class="row default-row mt-1 mb-1" id="row-1">
                 <div class="container mt-5">
                     <!-- DIV -->
                     <div class="row justify-content-center wrapperino ">
                         <?php foreach($authors as $author): ?>
                         <div class="movie_card">
-                            <?php echo "<img  style='width:100%;' src='assets/imagenesPortada/".$author['image']."' >" ?>
+                            <?php echo "<img   src='assets/imagenesPortada/".$author['image']."' >" ?>
                             <div class="descriptions">
                                 <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
                                     <?php echo $author['title']; ?>
@@ -155,6 +157,10 @@ session_start();
                                     <p style="line-height: 20px;height: 70%;">
                                         <?php echo $author['sinopsis']; ?>
                                     </p>
+                                    <!-- <button>
+                                        <i class="fab fa-youtube"></i>
+                                        Añadir a la watchlist
+                                    </button> -->
                             </div>
                         </div>
                         <?php endforeach; ?>
