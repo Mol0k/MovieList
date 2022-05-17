@@ -10,7 +10,7 @@ session_start();
       $_SESSION['records-limit'] = $_POST['records-limit'];
   }
   
-  $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 4;
+  $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 6;
   $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
   $paginationStart = ($page - 1) * $limit;
   $authors = $mysqli->query("SELECT * FROM tmovie ORDER BY id ASC LIMIT $paginationStart, $limit")->fetch_all(MYSQLI_ASSOC);
@@ -38,11 +38,6 @@ session_start();
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/css/styles.css">
     <link rel="shortcut icon" href="#">
-    <style>
-        .container {
-            max-width: 1800px;
-        }
-    </style>
     <title>MovieList</title>
 </head>
 
@@ -99,7 +94,7 @@ session_start();
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="assets/images/popcorn.jpg" class="img-fluid d-block w-100" alt="popcorn">
+                <img src="assets/images/popcorn.jpg" class="bd-placeholder-img" alt="popcorn" width="100%" height="100%" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
 
                 <div class="container">
                     <div class="carousel-caption text-start">
@@ -110,7 +105,7 @@ session_start();
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="assets/images/imagencarousel.jpg" class="bd-placeholder-img" width="100%" height="100%"
+                <img src="assets/images/imagencarousel.jpg" class="bd-placeholder-img" width="100%" height="100%" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"
                     alt="popcorn">
 
                 <div class="container">
@@ -122,7 +117,7 @@ session_start();
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="assets/images/popcorn.jpg" class="img-fluid d-block w-100" alt="popcorn">
+                <img src="assets/images/popcorn.jpg" class="bd-placeholder-img" alt="popcorn" width="100%" height="100%" >
 
                 <div class="container">
                     <div class="carousel-caption text-end">
@@ -146,14 +141,13 @@ session_start();
     <div class="cards-container card-resp">
         <h2 class="text-center text-light ">PELICULAS POPULARES</h2>
         <div class="container-fluid">
-            <div class=" row default-row mt-1 mb-1" id="row-1">
-                <div class=" container">
-
+            <div class="row default-row mt-1 mb-1" id="row-1">
+                <div class="container mt-5">
                     <!-- DIV -->
-                    <div class="row wrapperino ">
+                    <div class="row justify-content-center wrapperino ">
                         <?php foreach($authors as $author): ?>
-                        <div class="col-sm px-0 cardino">
-                            <?php echo "<img style='width:100%;' src='assets/imagenesPortada/".$author['image']."' >" ?>
+                        <div class="movie_card">
+                            <?php echo "<img  style='width:100%;' src='assets/imagenesPortada/".$author['image']."' >" ?>
                             <div class="descriptions">
                                 <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
                                     <?php echo $author['title']; ?>
@@ -161,7 +155,6 @@ session_start();
                                     <p style="line-height: 20px;height: 70%;">
                                         <?php echo $author['sinopsis']; ?>
                                     </p>
-
                             </div>
                         </div>
                         <?php endforeach; ?>
@@ -188,12 +181,9 @@ session_start();
                     </nav>
                 </div>
             </div>
-
             <div class="row default-row mt-1 mb-1" id="row-2">
-
             </div>
         </div>
-
 
         <footer class="bg-dark text-center text-white ">
             <!-- Grid container -->
@@ -237,7 +227,7 @@ session_start();
             </div>
             <!-- Copyright -->
         </footer>
-
+        
 
 
     </div>
@@ -254,6 +244,14 @@ session_start();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
         crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
     <script src="/assets/js/index.js" type="module"></script>
 </body>
 

@@ -226,3 +226,59 @@ session_start();
 </body>
 
 </html>
+<!-- EXPORT DATABASE -->
+<!-- mysqldump -u root -p database_name_inPMA > anyDbName.sql -->
+
+
+<div class="cards-container card-resp">
+        <h2 class="text-center text-light ">PELICULAS POPULARES</h2>
+        <div class="container-fluid">
+            <div class="row default-row mt-1 mb-1" id="row-1">
+                <div class=" container">
+                    <!-- DIV -->
+                    <div class="row wrapperino ">
+                        <?php foreach($authors as $author): ?>
+                        <div class="col-sm px-0 cardino">
+                            <?php echo "<img style='width:100%;' src='assets/imagenesPortada/".$author['image']."' >" ?>
+                            <div class="descriptions">
+                                <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
+                                    <?php echo $author['title']; ?>
+                                    </h1>
+                                    <p style="line-height: 20px;height: 70%;">
+                                        <?php echo $author['sinopsis']; ?>
+                                    </p>
+
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <!-- Pagination -->
+                    <nav aria-label="Page navigation example mt-5">
+                        <ul class="pagination justify-content-center" style="scroll-behavior: smooth;">
+                            <li class="page-item <?php if($page <= 1){ echo 'disabled'; } ?>">
+                                <a class="page-link" href="<?php if($page <= 1){ echo '#'; } else { echo "
+                                    ?page=" . $prev; } ?>">Previous</a>
+                            </li>
+                            <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
+                            <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
+                                <a class="page-link" href="main.php?page=<?= $i; ?>">
+                                    <?= $i; ?>
+                                </a>
+                            </li>
+                            <?php endfor; ?>
+                            <li class="page-item <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
+                                <a class="page-link" href="<?php if($page >= $totoalPages){ echo '#'; } else {echo "
+                                    ?page=". $next; } ?>">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="row default-row mt-1 mb-1" id="row-2">
+
+            </div>
+
+            
+
+        </div>
