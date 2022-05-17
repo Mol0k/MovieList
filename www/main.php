@@ -44,9 +44,6 @@ session_start();
 <body class="bg-dark" style="background-image: url('./assets/images/movie-detail-bg.png');background-repeat: no-repeat;
     background-size: cover;">
 
-    <div class="error-container"></div>
-
-    <div class="error"></div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">MovieList</a>
@@ -94,7 +91,8 @@ session_start();
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="assets/images/popcorn.jpg" class="bd-placeholder-img" alt="popcorn" width="100%" height="100%" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                <img src="assets/images/popcorn.jpg" class="bd-placeholder-img" alt="popcorn" width="100%" height="100%"
+                    aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
 
                 <div class="container">
                     <div class="carousel-caption text-start">
@@ -105,8 +103,8 @@ session_start();
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="assets/images/imagencarousel.jpg" class="bd-placeholder-img" width="100%" height="100%" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"
-                    alt="popcorn">
+                <img src="assets/images/imagencarousel.jpg" class="bd-placeholder-img" width="100%" height="100%"
+                    aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false" alt="popcorn">
 
                 <div class="container">
                     <div class="carousel-caption">
@@ -117,7 +115,8 @@ session_start();
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="assets/images/popcorn.jpg" class="bd-placeholder-img" alt="popcorn" width="100%" height="100%" >
+                <img src="assets/images/popcorn.jpg" class="bd-placeholder-img" alt="popcorn" width="100%"
+                    height="100%">
 
                 <div class="container">
                     <div class="carousel-caption text-end">
@@ -146,7 +145,7 @@ session_start();
             <div class="row default-row mt-1 mb-1" id="row-1">
                 <div class="container mt-5">
                     <!-- DIV -->
-                    <div class="row justify-content-center wrapperino ">
+                    <div class="row justify-content-center wrapperino" id="foco">
                         <?php foreach($authors as $author): ?>
                         <div class="movie_card">
                             <?php echo "<img   src='assets/imagenesPortada/".$author['image']."' >" ?>
@@ -233,7 +232,7 @@ session_start();
             </div>
             <!-- Copyright -->
         </footer>
-        
+
 
 
     </div>
@@ -250,14 +249,22 @@ session_start();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
         crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 
-        <script>
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
-        </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    <script>
+        const foco = document.getElementById('foco');
+
+        // foco.scrollIntoView(true);
+        foco.scrollIntoView({
+            block: 'center',
+        });
+    </script>
     <script src="/assets/js/index.js" type="module"></script>
 </body>
 
