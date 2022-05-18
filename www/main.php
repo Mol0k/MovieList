@@ -44,8 +44,11 @@ session_start();
 <body class="bg-dark" style="background-image: url('./assets/images/movie-detail-bg.png');background-repeat: no-repeat;
     background-size: cover;">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
+            <!-- <a class="navbar-brand" href="main.php">
+                    <img src="./assets/images/icon.png" width="24px" height="24px" alt="logo">MovieList
+                </a> -->
             <a class="navbar-brand" href="#">MovieList</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
                 aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,6 +56,7 @@ session_start();
             </button>
             <div class="collapse navbar-collapse" id="navbarScroll">
                 <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+
                     <li class="nav-item">
                         <a class="nav-link active" href="main.php">Inicio</a>
                     </li>
@@ -74,9 +78,26 @@ session_start();
                     <input class="form-control me-2 my-input" type="search" placeholder="Buscar peliculas"
                         aria-label="Search">
                     <button class="btn btn-primary btn-search" type="submit">Buscar</button>
-                    <button class="btn btn-success btn-signin ms-2" type="submit"
-                        formaction="login.php">Iniciar</button>
-                    <a class="btn btn-danger btn-signout ms-2" href="register.php" role="button">Registrate</a>
+                    <?php if (empty($_SESSION['loggedin'])) {
+                    ?>
+                     <button class="btn btn-success btn-signin ms-2" type="submit"
+                          formaction="login.php">Iniciar</button> 
+                      <a class="btn btn-danger btn-signout ms-2" href="register.php" role="button">Registrate</a> 
+                     
+                    <?php } else { ?>
+                        <ul class="navbar-nav bg-dark"">
+                            <li class="nav-item dropdown ms-2" >
+                                    <a  href="#" class="nav-link dropdown-toggle bg-dark" data-bs-toggle="dropdown" id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <img src="assets/images/default-user.png" width="30" height="30" class="rounded-circle">
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                                        <a class="dropdown-item" href="profile.php">Panel</a>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Editar perfil</a>
+                                        <a class="dropdown-item" href="logout.php">Log Out</a>
+                                    </div>
+                            </li>   
+                        </ul>
+                    <?php } ?>
                 </form>
             </div>
         </div>
@@ -189,7 +210,72 @@ session_start();
             <div class="row default-row mt-1 mb-1" id="row-2">
             </div>
         </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header ">
+                        <h5 class="modal-title" id="exampleModalLabel">Editar perfil</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="update_profile.php" method="POST" id="edit-form" enctype="multipart/form-data" class="mx-1 mx-md-4">
 
+                            <div class="form-group d-flex flex-row align-items-center mb-4">
+                                <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <label class="form-label" for="f_nomb_user">Nombre</label>
+                                    <input type="text" id="f_nomb_user" name="username" class="form-control ">
+                                    <span class="invalid-feedback"></span>
+                                </div>
+                            </div>
+                            <div class="form-group d-flex flex-row align-items-center mb-4">
+                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <label class="form-label" for="f_contra_actual">Contraseña actual</label>
+                                    <input type="password" id="f_contra_actual" name="password_actual" class="form-control ">
+                                    <span class="invalid-feedback"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group d-flex flex-row align-items-center mb-4">
+                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <label class="form-label" for="f_contra">Nueva Contraseña</label>
+                                    <input type="password" id="f_contra" name="password" class="form-control ">
+                                    <span class="invalid-feedback"></span>
+                                </div>
+                            </div>
+
+                            <div class=" form-group d-flex flex-row align-items-center mb-4">
+                                <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <label class="form-label" for="f_contra_rep">Repite la
+                                        contraseña</label>
+                                    <input type="password" id="f_contra_rep" name="confirm_password"
+                                        class="form-control ">
+                                    <span class="invalid-feedback"></span>
+
+                                </div>
+                            </div>
+                            <div class=" form-group d-flex flex-row align-items-center mb-4">
+                                <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <label for="imagenPerfils" class="form-label">Imagen perfil:</label>
+                                    <input type="file" class="form-control"  name="imagenPerfil" id="imagenPerfil"/>
+                                </div>
+                            </div>
+                            
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" id="btnUpdateSubmit" class="btn btn-primary">Guardar cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>                    
         <footer class="bg-dark text-center text-white ">
             <!-- Grid container -->
             <div class="container p-4 pb-0">
