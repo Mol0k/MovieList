@@ -116,11 +116,16 @@ $mysqli = get_db_connection_or_die();
                         <ul class="navbar-nav bg-dark"">
                             <li class="nav-item dropdown ms-2" >
                                     <a  href="#" class="nav-link dropdown-toggle bg-dark" data-bs-toggle="dropdown" id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <img src="assets/images/default-user.png" width="30" height="30" class="rounded-circle">
+                                    <?php
+                                        $result1 = mysqli_query($mysqli,"SELECT * FROM tuser WHERE id = " . $_SESSION['loggedin'] );
+                                        while ($row = mysqli_fetch_array($result1)) {
+                                            echo "<img width='30' height='30' class='rounded-circle' src='assets/imagenesUsuario/".$row['profile_image']."' >" ;
+                                        }
+                                    ?>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                                         <a class="dropdown-item" href="profile.php">Panel</a>
-                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Editar perfil</a>
+                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal_usuario">Editar perfil</a>
                                         <a class="dropdown-item" href="logout.php">Log Out</a>
                                     </div>
                             </li>   
@@ -131,7 +136,7 @@ $mysqli = get_db_connection_or_die();
         </div>
     </nav>
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modal_usuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header ">
@@ -139,7 +144,7 @@ $mysqli = get_db_connection_or_die();
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="update_profile.php" method="POST" id="edit-form" enctype="multipart/form-data" class="mx-1 mx-md-4">
+                        <form action="update_profile.php" method="POST" id="edit-form" role="form" enctype="multipart/form-data" class="mx-1 mx-md-4">
 
                             <div class="form-group d-flex flex-row align-items-center mb-4">
                                 <i class="fas fa-user fa-lg me-3 fa-fw"></i>
@@ -181,8 +186,8 @@ $mysqli = get_db_connection_or_die();
                             <div class=" form-group d-flex flex-row align-items-center mb-4">
                                 <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                                 <div class="form-outline flex-fill mb-0">
-                                    <label for="imagenPerfils" class="form-label">Imagen perfil:</label>
-                                    <input type="file" class="form-control"  name="imagenPerfil" id="imagenPerfil"/>
+                                    <label for="imagenPerfiles" class="form-label">Imagen perfil:</label>
+                                    <input type="file" class="form-control"  name="image_perfil" id="image_perfil"/>
                                 </div>
                             </div>
                             

@@ -8,12 +8,13 @@
     $mysqli = get_db_connection_or_die();
 	$id = $_SESSION['loggedin']; //
 	$username = $_POST['username']; 
-	$imagen_usuario=$_FILES['imagenUsuario']['name'];
-	$guardado=$_FILES['imagenUsuario']['tmp_name'];
+	
+	$imagen_usuario=$_FILES['image_perfil']['name'];
+	$guardado=$_FILES['image_perfil']['tmp_name'];
 
-	$fileType=$_FILES['imagenUsuario']['type'];
-	$fileError = $_FILES['imagenUsuario']['error'];
-	$fileExt = explode('.', $imagen_pelicula);
+	$fileType=$_FILES['image_perfil']['type'];
+	$fileError = $_FILES['image_perfil']['error'];
+	$fileExt = explode('.', $imagen_usuario);
 	$fileActualExt = strtolower(end($fileExt));
 	$allowed = array('jpg','jpeg','png');
 
@@ -22,14 +23,14 @@
 			if(!file_exists('assets/imagenesUsuario')){
 				mkdir('assets/imagenesUsuario',0777,true);
 					if(file_exists('assets/imagenesUsuario')){
-						if(move_uploaded_file($guardado, 'assets/imagenesUsuario/'.$imagen_pelicula)){
+						if(move_uploaded_file($guardado, 'assets/imagenesUsuario/'.$imagen_usuario)){
 							echo "Archivo guardado con exito";
 						}else{
 							echo "Archivo no se pudo guardar";
 						}
 					}     
 			}else{
-				if(move_uploaded_file($guardado, 'assets/imagenesUsuario/'.$imagen_pelicula)){
+				if(move_uploaded_file($guardado, 'assets/imagenesUsuario/'.$imagen_usuario)){
 					echo "Archivo guardado con exito";
 				}else{
 						echo "Archivo no se pudo guardar";
@@ -41,20 +42,47 @@
 			
 		}
 	} else{
-		header('Location: add_movie.php?failed=True');
+		header('Location: profile.php?failed=True');
 		die();
 	}
 	
-	// Set the INSERT SQL data
-	$sql = "UPDATE tuser SET username='".$username."' WHERE id='".$id."'";
+	// if(!file_exists('assets/imagenesUsuario')){
+	//     mkdir('assets/imagenesUsuario',0777,true);
+	//         if(file_exists('assets/imagenesUsuario')){
+	//             if(move_uploaded_file($guardado, 'assets/imagenesUsuario/'.$imagen_usuario)){
+	//                 echo "Archivo guardado con exito";
+	//             }else{
+	//                 echo "Archivo no se pudo guardar";
+	//             }
+	//         }     
+	// }else{
+	//     if(move_uploaded_file($guardado, 'assets/imagenesUsuario/'.$imagen_usuario)){
+	//         echo "Archivo guardado con exito";
+	//     }else{
+	//             echo "Archivo no se pudo guardar";
+	//     }
+	// }
+		
+	
+	
+	// // Set the INSERT SQL data
+	// $sql = "UPDATE tuser SET username=".$username.", profile_image=".$imagen_usuario.' WHERE id='".$id."";
 
 	
-	if ($mysqli->query($sql)) {
-	  echo "Se ha actualizado el usuario.";
-	} else {
-	  return "Error: " . $sql . "<br>" . $mysqli->error;
-	}
+	// if ($mysqli->query($sql)) {
+	//   echo "Se ha actualizado el usuario.";
+	// } else {
+	//   return "Error: " . $sql . "<br>" . $mysqli->error;
+	// }
 
 	
-	$mysqli->close();
+	// $mysqli->close();
+	
+
+
+	$sql = "UPDATE tuser SET username=?, profile_image = ? WHERE id=?";
+	$stmt= $mysqli->prepare($sql);
+	$stmt->bind_param("ssi", $username, $imagen_usuario, $id);
+	$stmt->execute();
+	echo "Se ha actualizado el usuario.";
 ?>
