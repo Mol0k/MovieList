@@ -24,14 +24,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
  
     // Check if username is empty
     if(empty(trim($_POST["username"]))){
-        $username_err = "Please enter username.";
+        $username_err = "Introduce un nombre de usuario.";
     } else{
         $username = trim($_POST["username"]);
     }
     
     // Check if password is empty
     if(empty(trim($_POST["password"]))){
-        $password_err = "Please enter your password.";
+        $password_err = "Introduce tu contraseña.";
     } else{
         $password = trim($_POST["password"]);
     }
@@ -71,15 +71,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             header("location: main.php");
                         } else{
                             // Password is not valid, display a generic error message
-                            $login_err = "Invalid username or password.";
+                            $login_err = "Usuario o contraseña incorrectos.";
                         }
                     }
                 } else{
                     // Username doesn't exist, display a generic error message
-                    $login_err = "Invalid username or password.";
+                    $login_err = "Usuario o contraseña incorrectos.";
                 }
             } else{
-                echo "Oops! Something went wrong. Please try again later.";
+                echo "¡Uy! Algo ha ido mal. Por favor, inténtelo de nuevo más tarde.";
             }
 
             // Close statement
@@ -119,7 +119,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         <div class="card-body p-md-5">
                             <div class="row justify-content-center">
                                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-
+                                 
                                     <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Iniciar sesión</p>
                                    
 
@@ -144,7 +144,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                                 <span class="invalid-feedback"><?php echo $password_err; ?></span>
                                             </div>
                                         </div>
-
+                                        
+                                        <?php 
+                                            if(!empty($login_err)){
+                                                echo '<p class="text-center">' . $login_err . '</p>';
+                                            }        
+                                        ?>      
                                         <div class="form-group form-check d-flex justify-content-center mb-1">
                                             <p>No tienes cuenta? <a href="register.php">Registrate aquí</a>.</p>
                                         </div>

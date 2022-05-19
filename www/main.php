@@ -2,10 +2,10 @@
 ini_set('display_errors', 'On');
 require __DIR__ . '/../php_util/db_connection.php';
 
-// session_start();
+session_start();
 $mysqli = get_db_connection_or_die();
 
-session_start();
+
   if(isset($_POST['records-limit'])){
       $_SESSION['records-limit'] = $_POST['records-limit'];
   }
@@ -89,9 +89,16 @@ session_start();
                             <li class="nav-item dropdown ms-2" >
                                     <a  href="#" class="nav-link dropdown-toggle bg-dark" data-bs-toggle="dropdown" id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
                                     <?php
-                                        $result1 = mysqli_query($mysqli,"SELECT * FROM tuser WHERE id = " . $_SESSION['loggedin'] );
-                                        while ($row = mysqli_fetch_array($result1)) {
-                                            echo "<img width='35' height='35' class='rounded-circle' src='assets/imagenesUsuario/".$row['profile_image']."' >" ;
+                                        $query = "SELECT * FROM tuser WHERE id = " . $_SESSION['loggedin'] ;
+                                        $result = mysqli_query($mysqli, $query) or die(mysqli_error($mysqli));
+                                        $row = mysqli_fetch_array($result);
+                                        $profile_image = $row['profile_image'];
+
+                                        if(empty($profile_image)){
+                                            $profile_image = "default-user.png";
+                                            echo "<img width='35' height='35' class='rounded-circle' src='assets/images/".$profile_image."' >" ;
+                                        }else{ 
+                                            echo "<img width='35' height='35' class='rounded-circle' src='assets/imagenesUsuario/".$row['profile_image']."' >" ; 
                                         }
                                     ?>
                                     </a>
