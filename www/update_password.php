@@ -27,19 +27,16 @@
             $password = password_hash($_POST['password_nueva'], PASSWORD_BCRYPT);
             $stmt->bind_param("si", $password, $user_id);
             $stmt->execute();
-            echo "Password updated successfully";
-            
-
-            exit();
+            echo "La contraseña ha sido actualizada.";
+            die();
         }
         else{
-            echo  "New and retype password did not match";
-            
+            echo  "Las contraseñas no coinciden.";
+            die();
         } 
     } else {
-        echo  "Incorrect Old Password";
-        
-        exit();
+        echo  "La contraseña actual es incorrecta.";
+        die();
       
     }
 
