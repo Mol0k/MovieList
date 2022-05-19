@@ -10,6 +10,9 @@ $user_id = $_SESSION['user_id'];
 if (empty($_SESSION['user_id'])) {
     header('Location: login.php');
 }
+$sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
+	$query = $mysqli->query($sql);
+	$row = $query->fetch_assoc();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -21,9 +24,10 @@ if (empty($_SESSION['user_id'])) {
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+        
     <link rel="stylesheet" href="./assets/css/styles.css">
     <link rel="shortcut icon" href="#">
-    <title>MovieList</title>
+    <title>Perfil de usuario</title>
 </head>
 
 <body class="bg-dark" style="background-image: url('./assets/images/movie-detail-bg.png');background-repeat: no-repeat;
@@ -172,9 +176,9 @@ if (empty($_SESSION['user_id'])) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="update_password.php" method="POST" id="edit-form" enctype="multipart/form-data"
+                    <form action="update_password.php" method="POST" id="edit-form-contra" enctype="multipart/form-data"
                         class="mx-1 mx-md-4">
-
+                       
                         <div class="form-group d-flex flex-row align-items-center mb-4">
                             <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                             <div class="form-outline flex-fill mb-0">
@@ -197,18 +201,42 @@ if (empty($_SESSION['user_id'])) {
                             <div class="form-outline flex-fill mb-0">
                                 <label class="form-label" for="f_contra_rep">Repite la
                                     contraseña</label>
-                                <input type="password" id="f_contra_rep" name="password_confirm" class="form-control ">
+                                <input type="password" id="f_contra_rep" name="password_confirm" class="form-control">
                                 <span class="invalid-feedback"></span>
 
                             </div>
                         </div>
-
-
+                        <?php
+                            //Mensaje de éxito cuando el usuario ha sido creado correctamente.
+                            // if(isset($_GET['success'])) {
+                            //     //Este mensaje se mostrará si todo ha ido correctamente, es decir, success=True en el header.
+                            //     if($_GET['success'] == TRUE) {
+                            //         echo '<p class="text-center">Contraseña cambiada</p>';
+                            //     }
+                            // }
+                            // if(isset($_GET['passworddidnotmatch'])) {
+                            //     //Este mensaje se mostrará si todo ha ido correctamente, es decir, success=True en el header.
+                            //     if($_GET['passworddidnotmatch'] == TRUE) {
+                            //         echo '<p class="text-center">Asegurate de escribir bien</p>';
+                            //     }
+                            // }
+                            // if(isset($_GET['passwordoldpassword'])) {
+                            //     //Este mensaje se mostrará si todo ha ido correctamente, es decir, success=True en el header.
+                            //     if($_GET['passwordoldpassword'] == TRUE) {
+                            //         echo '<p class="text-center">La contraseña actual no coincide</p>';
+                            //     }
+                            // }
+                            ?>
+                       
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" id="btnUpdateSubmitContra" name="update" class="btn btn-primary">Guardar cambios</button>
+                        </div>
+                        </form>
+                              
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" id="btnUpdateSubmit" class="btn btn-primary">Guardar cambios</button>
-                </div>
+                
+              
             </div>
         </div>
     </div>
@@ -282,6 +310,8 @@ if (empty($_SESSION['user_id'])) {
         })
     </script>
     <script src="assets/js/scripts.js"></script>
+    <script src="assets/js/script_contra.js"></script>
+   
 
 </body>
 
