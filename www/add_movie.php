@@ -6,12 +6,9 @@ session_start();
 $mysqli = get_db_connection_or_die();
 
 // $_SESSION['user_id'] = 3;
-// $user_id = $_SESSION['user_id'];
-
-// if (empty($user_id)) {
-//     header('Location: login.php');
-// }
-
+if (empty($_SESSION['user_id'])) {
+    header('Location: login.php');
+}
 
 ?>
 <!DOCTYPE html>
@@ -106,7 +103,7 @@ $mysqli = get_db_connection_or_die();
                     <input class="form-control me-2 my-input" type="search" placeholder="Buscar peliculas"
                         aria-label="Search">
                     <button class="btn btn-primary btn-search" type="submit">Buscar</button>
-                    <?php if (empty($_SESSION['id'])) {
+                    <?php if (empty($_SESSION['user_id'])) {
                     ?>
                      <button class="btn btn-success btn-signin ms-2" type="submit"
                           formaction="login.php">Iniciar</button> 
@@ -117,7 +114,7 @@ $mysqli = get_db_connection_or_die();
                             <li class="nav-item dropdown ms-2" >
                                     <a  href="#" class="nav-link dropdown-toggle bg-dark" data-bs-toggle="dropdown" id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
                                     <?php
-                                        $query = "SELECT * FROM tuser WHERE id = " . $_SESSION['loggedin'] ;
+                                        $query = "SELECT * FROM tuser WHERE id = " . $_SESSION['user_id'] ;
                                         $result = mysqli_query($mysqli, $query) or die(mysqli_error($mysqli));
                                         $row = mysqli_fetch_array($result);
                                         $profile_image = $row['profile_image'];

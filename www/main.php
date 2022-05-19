@@ -3,8 +3,11 @@ ini_set('display_errors', 'On');
 require __DIR__ . '/../php_util/db_connection.php';
 
 session_start();
-$mysqli = get_db_connection_or_die();
-
+	$mysqli = get_db_connection_or_die();
+   
+    if(isset($_POST['user_id'])){
+        $user_id = $_SESSION['user_id'];
+    }
 
   if(isset($_POST['records-limit'])){
       $_SESSION['records-limit'] = $_POST['records-limit'];
@@ -24,6 +27,7 @@ $mysqli = get_db_connection_or_die();
   $prev = $page - 1;
   $next = $page + 1;
 
+  
 
 ?>
 <!DOCTYPE html>
@@ -78,7 +82,7 @@ $mysqli = get_db_connection_or_die();
                     <input class="form-control me-2 my-input" type="search" placeholder="Buscar peliculas"
                         aria-label="Search">
                     <button class="btn btn-primary btn-search" type="submit">Buscar</button>
-                    <?php if (empty($_SESSION['loggedin'])) {
+                    <?php if (empty($_SESSION['user_id'])) {
                     ?>
                      <button class="btn btn-success btn-signin ms-2" type="submit"
                           formaction="login.php">Iniciar</button> 
@@ -89,7 +93,7 @@ $mysqli = get_db_connection_or_die();
                             <li class="nav-item dropdown ms-2" >
                                     <a  href="#" class="nav-link dropdown-toggle bg-dark" data-bs-toggle="dropdown" id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
                                     <?php
-                                        $query = "SELECT * FROM tuser WHERE id = " . $_SESSION['loggedin'] ;
+                                        $query = "SELECT profile_image FROM tuser WHERE id = " . $_SESSION['user_id'] ;
                                         $result = mysqli_query($mysqli, $query) or die(mysqli_error($mysqli));
                                         $row = mysqli_fetch_array($result);
                                         $profile_image = $row['profile_image'];
@@ -114,7 +118,7 @@ $mysqli = get_db_connection_or_die();
             </div>
         </div>
     </nav>
-
+      
     <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true"

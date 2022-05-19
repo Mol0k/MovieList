@@ -35,6 +35,7 @@ function update() {
 
 				// Close modal
 				$('#modal_usuario').modal('toggle');
+				$('#modal_contra').modal('toggle');
 			},
 			error: function (XMLHttpRequest, textStatus, errorThrown) {
 				// You can put something here if there is an error from submitted request

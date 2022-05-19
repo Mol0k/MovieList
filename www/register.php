@@ -49,7 +49,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $username = $_POST['username'];
         $email = $_POST['email'];   
         
-        $user_check_query = "SELECT * FROM tuser WHERE username= ? OR email= ? LIMIT 1";
+        // $user_check_query = "SELECT * FROM tuser WHERE username= ? OR email= ? LIMIT 1";
+        $user_check_query = "SELECT * FROM tuser WHERE username= ? OR email= ?";
         $stmt = $mysqli -> prepare($user_check_query);
         $stmt->bind_param("ss", $username, $email);
         $stmt->execute();
@@ -187,7 +188,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             
                                             </div>
                                         </div>
-
+                                        <!-- FECHA DE NACIMIENTO POR PONER -->
+                                        <!-- <div class="form-group d-flex flex-row align-items-center mb-4">
+                                            <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                                            <div class="form-outline flex-fill mb-0">
+                                                <label for="f_created_peliculas" class="form-label">Fecha de nacimiento</label>
+                                                <input type="date" class="form-control" name="f_created_pelicula" id="f_created_pelicula" />
+            
+                                            </div>
+                                        </div> -->
+                                       
                                         <div class="form-group form-check d-flex justify-content-center mb-4"><!--mb-5 -->
                                             <input class="form-check-input me-2" type="checkbox" required value=""
                                                 id="term_cond" />

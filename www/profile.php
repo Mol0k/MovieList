@@ -5,10 +5,11 @@ require __DIR__ . '/../php_util/db_connection.php';
 session_start();
 $mysqli = get_db_connection_or_die();
 
-if (empty($_SESSION['loggedin'])) {
-    header("location: main.php");
-}
 
+$user_id = $_SESSION['user_id'];
+if (empty($_SESSION['user_id'])) {
+    header('Location: login.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -62,7 +63,7 @@ if (empty($_SESSION['loggedin'])) {
                     <input class="form-control me-2 my-input" type="search" placeholder="Buscar peliculas"
                         aria-label="Search">
                     <button class="btn btn-primary btn-search" type="submit">Buscar</button>
-                    <?php if (empty($_SESSION['loggedin'])) {
+                    <?php if (empty($_SESSION['user_id'])) {
                     ?>
                     <button class="btn btn-success btn-signin ms-2" type="submit"
                         formaction="login.php">Iniciar</button>
@@ -73,9 +74,9 @@ if (empty($_SESSION['loggedin'])) {
                             <li class=" nav-item dropdown ms-2">
                         <a href="#" class="nav-link dropdown-toggle bg-dark" data-bs-toggle="dropdown"
                             id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
-                            
+
                             <?php
-                                $query = "SELECT * FROM tuser WHERE id = " . $_SESSION['loggedin'] ;
+                                $query = "SELECT * FROM tuser WHERE id = " . $_SESSION['user_id'] ;
                                 $result = mysqli_query($mysqli, $query) or die(mysqli_error($mysqli));
                                 $row = mysqli_fetch_array($result);
                                 $profile_image = $row['profile_image'];
@@ -92,6 +93,8 @@ if (empty($_SESSION['loggedin'])) {
                             <a class="dropdown-item" href="profile.php">Panel</a>
                             <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal_usuario">Editar
                                 perfil</a>
+                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal_contra">Cambiar
+                                Contraseña</a>
                             <a class="dropdown-item" href="logout.php">Log Out</a>
                         </div>
                         </li>
@@ -106,79 +109,109 @@ if (empty($_SESSION['loggedin'])) {
 
     <div class="cards-container card-resp">
         <?php 
-        $result = mysqli_query($mysqli,"SELECT * FROM tuser WHERE id = " . $_SESSION['loggedin'] );
-        while ($row = mysqli_fetch_array($result)) {
+         $name = "SELECT username, profile_image FROM tuser WHERE id = " . $user_id ;
+         $result2 = mysqli_query($mysqli, $name) or die(mysqli_error($mysqli));
+         $row2 = mysqli_fetch_array($result2);
             echo '<p class="text-light">Hola que tal estas ' . $row['username'] . ' </p>';
+            $profile_image2 = $row2['profile_image'];
+
+            if(empty($profile_image2)){
+                $profile_image2 = "default-user.png";
+                    echo "<img width='100' height='100'  src='assets/images/".$profile_image2."' >" ;
+            }else{ 
+                echo "<img width='100' height='100'  src='assets/imagenesUsuario/".$row2['profile_image']."' >" ; 
+            }
            
-        }
+        
         ?>
     </div>
-    <!-- Modal -->
+    <!-- Modal editar perfil -->
     <div class="modal fade" id="modal_usuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header ">
-                        <h5 class="modal-title" id="exampleModalLabel">Editar perfil</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="update_profile.php" method="POST" id="edit-form" enctype="multipart/form-data" class="mx-1 mx-md-4">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header ">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar perfil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="update_profile.php" method="POST" id="edit-form" enctype="multipart/form-data"
+                        class="mx-1 mx-md-4">
 
-                            <div class="form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label class="form-label" for="f_nomb_user">Nombre</label>
-                                    <input type="text" id="f_nomb_user" name="username" class="form-control ">
-                                    <span class="invalid-feedback"></span>
-                                </div>
-                            </div>
-                            <div class="form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label class="form-label" for="f_contra_actual">Contraseña actual</label>
-                                    <input type="password" id="f_contra_actual" name="password_actual" class="form-control ">
-                                    <span class="invalid-feedback"></span>
-                                </div>
-                            </div>
+                        <div class="form-group d-flex flex-row align-items-center mb-4">
+                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                            <div class="form-outline flex-fill mb-0">
+                                <label class="form-label" for="f_nomb_user">Nombre</label>
+                                <input type="text" id="f_nomb_user" name="username" class="form-control ">
 
-                            <div class="form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label class="form-label" for="f_contra">Nueva Contraseña</label>
-                                    <input type="password" id="f_contra" name="password" class="form-control ">
-                                    <span class="invalid-feedback"></span>
-                                </div>
                             </div>
-
-                            <div class=" form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label class="form-label" for="f_contra_rep">Repite la
-                                        contraseña</label>
-                                    <input type="password" id="f_contra_rep" name="confirm_password"
-                                        class="form-control ">
-                                    <span class="invalid-feedback"></span>
-
-                                </div>
+                        </div>
+                        <div class=" form-group d-flex flex-row align-items-center mb-4">
+                            <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                            <div class="form-outline flex-fill mb-0">
+                                <label for="imagenPerfiles" class="form-label">Imagen perfil:</label>
+                                <input type="file" class="form-control" name="image_perfil" id="image_perfil" />
                             </div>
-                            <div class=" form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label for="imagenPerfiles" class="form-label">Imagen perfil:</label>
-                                    <input type="file" class="form-control"  name="image_perfil" id="image_perfil"/>
-                                </div>
-                            </div>
-                            
-                        </form>
+                        </div>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="button" id="btnUpdateSubmit" class="btn btn-primary">Guardar cambios</button>
-                    </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" id="btnUpdateSubmit" class="btn btn-primary">Guardar cambios</button>
                 </div>
             </div>
         </div>
+    </div>
+    <!-- Modal cambiar contraseña -->
+    <div class="modal fade" id="modal_contra" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header ">
+                    <h5 class="modal-title" id="exampleModalLabel">Cambiar contraseña</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="update_password.php" method="POST" id="edit-form" enctype="multipart/form-data"
+                        class="mx-1 mx-md-4">
+
+                        <div class="form-group d-flex flex-row align-items-center mb-4">
+                            <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                            <div class="form-outline flex-fill mb-0">
+                                <label class="form-label" for="f_contra_actual">Contraseña actual</label>
+                                <input type="password" id="f_contra_actual" name="password_actual" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group d-flex flex-row align-items-center mb-4">
+                            <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                            <div class="form-outline flex-fill mb-0">
+                                <label class="form-label" for="f_contra">Nueva Contraseña</label>
+                                <input type="password" id="f_contra" name="password_nueva" class="form-control ">
+                                <span class="invalid-feedback"></span>
+                            </div>
+                        </div>
+
+                        <div class=" form-group d-flex flex-row align-items-center mb-4">
+                            <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                            <div class="form-outline flex-fill mb-0">
+                                <label class="form-label" for="f_contra_rep">Repite la
+                                    contraseña</label>
+                                <input type="password" id="f_contra_rep" name="password_confirm" class="form-control ">
+                                <span class="invalid-feedback"></span>
+
+                            </div>
+                        </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" id="btnUpdateSubmit" class="btn btn-primary">Guardar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <footer class="bg-dark text-center text-white fixed-bottom">
         <!-- Grid container -->
         <div class="container p-4 pb-0">
@@ -238,17 +271,17 @@ if (empty($_SESSION['loggedin'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
         crossorigin="anonymous"></script>
-   <!-- jQuery library -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<!-- Popper JS -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
     <script>
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
     </script>
-<script src="assets/js/scripts.js"></script>
+    <script src="assets/js/scripts.js"></script>
 
 </body>
 

@@ -1,14 +1,13 @@
-
-
 <?php
     ini_set('display_errors', 'On');
     require __DIR__ . '/../php_util/db_connection.php';
     session_start();
 
     $mysqli = get_db_connection_or_die();
-	$id = $_SESSION['loggedin']; //
+	$id = $_SESSION['user_id']; 
 	$username = $_POST['username']; 
 	
+
 	$imagen_usuario=$_FILES['image_perfil']['name'];
 	$guardado=$_FILES['image_perfil']['tmp_name'];
 
@@ -78,7 +77,7 @@
 	
 	// $mysqli->close();
 	
-
+	
 
 	$sql = "UPDATE tuser SET username=?, profile_image = ? WHERE id=?";
 	$stmt= $mysqli->prepare($sql);

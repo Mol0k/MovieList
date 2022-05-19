@@ -2,12 +2,12 @@
 ini_set('display_errors', 'On');
 require __DIR__ . '/../php_util/db_connection.php';
 
+session_start();
 $mysqli = get_db_connection_or_die();
 // Initialize the session
-session_start();
- 
+
 // Check if the user is already logged in, if yes then redirect him to welcome page
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+if(isset($_SESSION["user_id"]) && $_SESSION["user_id"] === true){
     header("location: main.php");
     exit;
 }
@@ -38,57 +38,23 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     // Validate credentials
     if(empty($username_err) && empty($password_err)){
+        $username = $_POST['username'];
         // Prepare a select statement
-        $sql = "SELECT id, username, encrypted_password FROM tuser WHERE username = ?";
-        
-        if($stmt = $mysqli->prepare($sql)){
-            // Bind variables to the prepared statement as parameters
-            $stmt->bind_param("s", $param_username);
-            
-            // Set parameters
-            $param_username = $username;
-            
-            // Attempt to execute the prepared statement
-            if($stmt->execute()){
-                // Store result
-                $stmt->store_result();
-                
-                // Check if username exists, if yes then verify password
-                if($stmt->num_rows == 1){                    
-                    // Bind result variables
-                    $stmt->bind_result($id, $username, $hashed_password);
-                    if($stmt->fetch()){
-                        if(password_verify($password, $hashed_password)){
-                            // Password is correct, so start a new session
-                            session_start();
-                            
-                            // Store data in session variables
-                            $_SESSION["loggedin"] = true;
-                            $_SESSION["id"] = $id;
-                            $_SESSION["username"] = $username;                            
-                            
-                            // Redirect user to main page
-                            header("location: main.php");
-                        } else{
-                            // Password is not valid, display a generic error message
-                            $login_err = "Usuario o contraseña incorrectos.";
-                        }
-                    }
-                } else{
-                    // Username doesn't exist, display a generic error message
-                    $login_err = "Usuario o contraseña incorrectos.";
-                }
-            } else{
-                echo "¡Uy! Algo ha ido mal. Por favor, inténtelo de nuevo más tarde.";
-            }
-
-            // Close statement
-            $stmt->close();
-        }
+        $query = "SELECT id, encrypted_password FROM tuser WHERE username = '".$username."'";
+        $result = mysqli_query($mysqli, $query) or die(header('login.php?login_failed_unknown=True'));
+        if (mysqli_num_rows($result) > 0) {
+            $only_row = mysqli_fetch_array($result);
+            if (password_verify($password, $only_row[1])) {
+                session_start();
+                $_SESSION['user_id'] = $only_row[0];
+                header('Location: main.php');
+            } else {
+                $login_err = "Usuario o contraseña incorrectos.";}
+        } else{
+            $login_err = "Usuario o contraseña incorrectos.";}
     }
     
-    // Close connection
-    $mysqli->close();
+    $mysqli -> close();
 }
 ?>
  
@@ -104,7 +70,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
     <link rel="stylesheet" href="./assets/css/styles.css" />
-    <title>Registro de sesión:</title>
+    <title>Inicio de sesión:</title>
 
 </head>
 
@@ -147,7 +113,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                         
                                         <?php 
                                             if(!empty($login_err)){
-                                                echo '<p class="text-center">' . $login_err . '</p>';
+                                                echo '<p class="text-center" style="color:#dc3545">' . $login_err . '</p>';
                                             }        
                                         ?>      
                                         <div class="form-group form-check d-flex justify-content-center mb-1">
