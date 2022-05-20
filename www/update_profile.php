@@ -76,12 +76,23 @@
 
 	
 	// $mysqli->close();
+	$query = "SELECT * FROM tuser WHERE username = ?";
+    $stmt = $mysqli -> prepare($query);
+    $stmt->bind_param("s", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result(); // get the mysqli result
+    $user = $result->fetch_assoc();
 	
-	
+		if ($user['username'] != $username) {
+			$sql = "UPDATE tuser SET username=?, profile_image = ? WHERE id=?";
+			$stmt= $mysqli->prepare($sql);
+			$stmt->bind_param("ssi", $username, $imagen_usuario, $id);
+			$stmt->execute();
+			echo "Se ha actualizado el usuario.";
+			
+		}else {
+			echo "El usuario ya existe";
+		}
+		$stmt->close();
 
-	$sql = "UPDATE tuser SET username=?, profile_image = ? WHERE id=?";
-	$stmt= $mysqli->prepare($sql);
-	$stmt->bind_param("ssi", $username, $imagen_usuario, $id);
-	$stmt->execute();
-	echo "Se ha actualizado el usuario.";
 ?>

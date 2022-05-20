@@ -19,26 +19,25 @@
     $result = $stmt->get_result(); // get the mysqli result
     $user = $result->fetch_assoc();
     
-
-    if(password_verify($password_actual, $user['encrypted_password'])){
-        if($password_nueva == $password_confirm){
-            $update = "UPDATE tuser SET encrypted_password = ? WHERE id = ?"; 
-            $stmt = $mysqli->prepare($update);
-            $password = password_hash($_POST['password_nueva'], PASSWORD_BCRYPT);
-            $stmt->bind_param("si", $password, $user_id);
-            $stmt->execute();
-            echo "La contraseña ha sido actualizada.";
-            die();
+  
+    if( !empty($_POST["password_actual"]) && !empty($_POST["password_nueva"]) && !empty($_POST["password_confirm"])){
+        if(password_verify($password_actual, $user['encrypted_password'])){
+            if($password_nueva == $password_confirm){
+                $update = "UPDATE tuser SET encrypted_password = ? WHERE id = ?"; 
+                $stmt = $mysqli->prepare($update);
+                $password = password_hash($_POST['password_nueva'], PASSWORD_BCRYPT);
+                $stmt->bind_param("si", $password, $user_id);
+                $stmt->execute();
+                echo "La contraseña ha sido actualizada.";   
+            }
+            else{
+                echo  "Las contraseñas no coinciden.";
+            } 
+        } else {
+            echo  "La contraseña actual es incorrecta.";
         }
-        else{
-            echo  "Las contraseñas no coinciden.";
-            die();
-        } 
-    } else {
-        echo  "La contraseña actual es incorrecta.";
-        die();
-      
-    }
-
-   
+    }else{
+        echo "Rellena todos los campos.";
+        
+    }  
 ?>

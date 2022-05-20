@@ -24,10 +24,14 @@ $sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-        
+
     <link rel="stylesheet" href="./assets/css/styles.css">
+   
     <link rel="shortcut icon" href="#">
+    
+
     <title>Perfil de usuario</title>
+    
 </head>
 
 <body class="bg-dark" style="background-image: url('./assets/images/movie-detail-bg.png');background-repeat: no-repeat;
@@ -130,7 +134,8 @@ $sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
         ?>
     </div>
     <!-- Modal editar perfil -->
-    <div class="modal fade" id="modal_usuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modal_usuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header ">
@@ -138,7 +143,7 @@ $sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="update_profile.php" method="POST" id="edit-form" enctype="multipart/form-data"
+                    <form action="update_profile.php" method="POST" id="edit-form" name ="contact"enctype="multipart/form-data"
                         class="mx-1 mx-md-4">
 
                         <div class="form-group d-flex flex-row align-items-center mb-4">
@@ -153,22 +158,22 @@ $sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
                             <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                             <div class="form-outline flex-fill mb-0">
                                 <label for="imagenPerfiles" class="form-label">Imagen perfil:</label>
-                                <input type="file" class="form-control" name="image_perfil" id="image_perfil" />
+                                <input type="file" class="form-control" name="image_perfil" id="imagenPerfiles" />
                             </div>
                         </div>
-
+                        <div id="div-id" class="text-center"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" id="submit" class="btn btn-primary">Guardar cambios</button>
+                        </div>
                     </form>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" id="btnUpdateSubmit" class="btn btn-primary">Guardar cambios</button>
                 </div>
             </div>
         </div>
     </div>
     <!-- Modal cambiar contraseña -->
-    <div class="modal fade" id="modal_contra" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modal_contra" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header ">
@@ -178,7 +183,7 @@ $sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
                 <div class="modal-body">
                     <form action="update_password.php" method="POST" id="edit-form-contra" enctype="multipart/form-data"
                         class="mx-1 mx-md-4">
-                       
+
                         <div class="form-group d-flex flex-row align-items-center mb-4">
                             <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                             <div class="form-outline flex-fill mb-0">
@@ -203,9 +208,9 @@ $sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
                                     contraseña</label>
                                 <input type="password" id="f_contra_rep" name="password_confirm" class="form-control">
                                 <span class="invalid-feedback"></span>
-
                             </div>
                         </div>
+                        <div id="grupo-id" class="text-center"></div>
                         <?php
                             //Mensaje de éxito cuando el usuario ha sido creado correctamente.
                             // if(isset($_GET['success'])) {
@@ -227,16 +232,14 @@ $sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
                             //     }
                             // }
                             ?>
-                       
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="button" id="btnUpdateSubmitContra" name="update" class="btn btn-primary">Guardar cambios</button>
+                            <button type="button" id="btnUpdateSubmitContra" name="update"
+                                class="btn btn-primary">Guardar cambios</button>
                         </div>
-                        </form>
-                              
+                    </form>
                 </div>
-                
-              
             </div>
         </div>
     </div>
@@ -288,14 +291,6 @@ $sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
     </div>
 
     <!-- jQuery + Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#records-limit').change(function () {
-                $('form').submit();
-            })
-        });
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
         crossorigin="anonymous"></script>
@@ -303,16 +298,14 @@ $sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Popper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
     <script>
         $(function () {
             $('[data-toggle="tooltip"]').tooltip()
         })
     </script>
-    <script src="assets/js/scripts.js"></script>
+    <script src="scripts.js"></script>
     <script src="assets/js/script_contra.js"></script>
-   
-
+        
 </body>
 
 </html>

@@ -110,8 +110,7 @@ if (empty($_SESSION['user_id'])) {
 
 
 
-    <div class="cards-container card-resp">
-        <?php 
+    <?php 
         //  $name = "SELECT username, profile_image FROM tuser WHERE id = " . $user_id ;
         //  $result2 = mysqli_query($mysqli, $name) or die(mysqli_error($mysqli));
         //  $row2 = mysqli_fetch_array($result2);
@@ -126,67 +125,89 @@ if (empty($_SESSION['user_id'])) {
         //     }
 
         ?>
-
-        <div class="row d-flex align-items-start">
-            <div class="col-lg-12 col-xl-11 text-light">
-                <div class="row align-items-start">
-                    <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                        <p class=" h1 fw-bold mb-3 mx-1 mx-md-4 mt-4">Editar contraseña</p>
-                        <form action=" " method=" POST" role="form" enctype="multipart/form-data" class="mx-1 mx-md-4">
-                            <div class="form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label class="form-label" for="f_correo">Contraseña actual</label>
-                                    <input type="text" id="f_correo" name="email" class="form-control " value="">
-                                    <span class="invalid-feedback"></span>
+    <div class="row ">
+        <div class="col-lg-3 md-4 text-light">
+            <p class=" h1 fw-bold mb-3 mx-1 ms-4 mt-4">Editar contraseña</p>
+            <form action=" " method=" POST" role="form" enctype="multipart/form-data" class="mx-1 mx-md-4">
+                <div class="form-group d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                        <label class="form-label" for="f_correo">Contraseña actual</label>
+                        <input type="text" id="f_correo" name="email" class="form-control " value="">
+                        <span class="invalid-feedback"></span>
 
 
-                                </div>
-                            </div>
-
-                            <div class="form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label class="form-label" for="f_contra">Contraseña nueva</label>
-                                    <input type="password" id="f_contra" name="password" class="form-control " value="">
-                                    <span class="invalid-feedback">
-
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class=" form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label class="form-label" for="f_contra_rep">Confirmar contraseña</label>
-                                    <input type="password" id="f_contra_rep" name="confirm_password"
-                                        class="form-control " value="">
-                                    <span class="invalid-feedback">
-
-                                    </span>
-
-                                </div>
-                            </div>
-
-
-
-                            <div class="form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <button type="submit" value="Submit"
-                                        class="btn btn-primary btn-lg">Actualizar</button>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
-            </div>
+
+                <div class="form-group d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                        <label class="form-label" for="f_contra">Contraseña nueva</label>
+                        <input type="password" id="f_contra" name="password" class="form-control " value="">
+                        <span class="invalid-feedback">
+
+                        </span>
+                    </div>
+                </div>
+
+                <div class=" form-group d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                        <label class="form-label" for="f_contra_rep">Confirmar contraseña</label>
+                        <input type="password" id="f_contra_rep" name="confirm_password" class="form-control " value="">
+                        <span class="invalid-feedback">
+
+                        </span>
+
+                    </div>
+                </div>
+
+
+
+                <div class="form-group d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                        <button type="submit" value="Submit" class="btn btn-primary btn-lg">Actualizar contraseña</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-3 md-4 text-light">
+            <form action=" " method=" POST" role="form" enctype="multipart/form-data" class="mx-1 mx-md-4">
+                <p class=" h1 fw-bold mb-3 mx-1 mx-md-3 mt-4">Editar usuario</p>
+                <div class="form-group d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                        <label class="form-label" for="f_nomb_user">Nombre</label>
+                        <input type="text" id="f_nomb_user" name="username" class="form-control ">
+
+                    </div>
+                </div>
+                <div class=" form-group d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0">
+                        <label for="imagenPerfiles" class="form-label">Imagen perfil:</label>
+                        <input type="file" class="form-control" name="image_perfil" id="imagenPerfiles" />
+                    </div>
+                </div>
+
+
+                <div class="form-group d-flex flex-row align-items-center mb-4">
+                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                    <div class="form-outline flex-fill mb-0 ">
+                        <button type="submit" value="Submit" class="btn btn-primary btn-lg">Actualizar usuario</button>
+                    </div>
+                </div>
+            </form>
         </div>
 
     </div>
+
+
     <!-- Modal editar perfil -->
 
-    <footer class="bg-dark text-center text-white fixed-bottom">
+    <footer class="bg-dark text-center text-white fixed-bottom" >
         <!-- Grid container -->
         <div class="container p-4 pb-0">
             <!-- Section: Social media -->

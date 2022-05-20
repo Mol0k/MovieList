@@ -16,23 +16,20 @@ function update() {
 			type: "POST", //we are using POST method to submit the data to the server side
 			url: route, // get the route value
 			data: formData,
-			cache: false,
 			contentType: false,
 			processData: false, // our serialized array data for server side
-			
 			success: function (response) {//once the request successfully process to the server side it will return result here
-				$this.attr('disabled', false).html($caption);
-
 
 				// We will display the result using alert
-				alert(response);
-
+				// alert(response);
+				$('#grupo-id').html(response);
 				// Reset form
 				resetForm(form);
 
 				// Close modal
+
+				// remove previously appended ones if needed
 				
-				$('#modal_contra').modal('toggle');
 			},
 			error: function (XMLHttpRequest, textStatus, errorThrown) {
 				// You can put something here if there is an error from submitted request
