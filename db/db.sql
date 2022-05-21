@@ -20,3 +20,12 @@ CREATE TABLE tMovie (
   gender VARCHAR(500) NOT NULL,
   duration VARCHAR(50) NOT NULL
 );
+
+CREATE TABLE tComentarios (
+id INTEGER PRIMARY KEY AUTO_INCREMENT,
+comentario VARCHAR(2000),
+movie_id INTEGER NOT NULL,
+usuario_id INTEGER,
+FOREIGN KEY (movie_id) REFERENCES tMovie(id),
+FOREIGN KEY (usuario_id) REFERENCES tUser(id)
+);
