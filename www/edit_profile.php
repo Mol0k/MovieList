@@ -97,7 +97,7 @@ if (empty($_SESSION['user_id'])) {
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="profile.php">Panel</a>
-                            <a class="dropdown-item" href="profile.php">Editar perfil</a>
+                            <a class="dropdown-item" href="edit_profile.php">Editar perfil</a>
                             <a class="dropdown-item" href="logout.php">Log Out</a>
                         </div>
                         </li>
@@ -108,106 +108,101 @@ if (empty($_SESSION['user_id'])) {
         </div>
     </nav>
 
+    <div class="container text-light">
+        <h1 class="text-center mt-3">Cambiar la contraseña</h1>
+        <div class="row d-flex justify-content-center align-items-center">
 
+            <div class="">
+                <h3 class="mt-2">Hola, <?php echo $row['username']; ?>
 
-    <?php 
-        //  $name = "SELECT username, profile_image FROM tuser WHERE id = " . $user_id ;
-        //  $result2 = mysqli_query($mysqli, $name) or die(mysqli_error($mysqli));
-        //  $row2 = mysqli_fetch_array($result2);
-        //     echo '<p class="text-light">EDITAR TU PERFIL ' . $row['username'] . ' </p>';
-        //     $profile_image2 = $row2['profile_image'];
-
-        //     if(empty($profile_image2)){
-        //         $profile_image2 = "default-user.png";
-        //             echo "<img width='100' height='100'  src='assets/images/".$profile_image2."' >" ;
-        //     }else{ 
-        //         echo "<img width='100' height='100'  src='assets/imagenesUsuario/".$row2['profile_image']."' >" ; 
-        //     }
-
-        ?>
-    <div class="row ">
-        <div class="col-lg-3 md-4 text-light">
-            <p class=" h1 fw-bold mb-3 mx-1 ms-4 mt-4">Editar contraseña</p>
-            <form action=" " method=" POST" role="form" enctype="multipart/form-data" class="mx-1 mx-md-4">
-                <div class="form-group d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                        <label class="form-label" for="f_correo">Contraseña actual</label>
-                        <input type="text" id="f_correo" name="email" class="form-control " value="">
-                        <span class="invalid-feedback"></span>
-
-
+                </h3>
+                <hr>
+                <form method="POST" action="update_password.php">
+                    <div class="form-group mt-3">
+                        <label for="password_old">Contraseña antigua:</label>
+                        <input type="password" name="password_old" id="password_old" class="form-control"
+                            value="<?php echo (isset($_SESSION['password_old'])) ? $_SESSION['password_old'] : ''; ?>">
                     </div>
-                </div>
-
-                <div class="form-group d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                        <label class="form-label" for="f_contra">Contraseña nueva</label>
-                        <input type="password" id="f_contra" name="password" class="form-control " value="">
-                        <span class="invalid-feedback">
-
-                        </span>
+                    <div class="form-group mt-3">
+                        <label for="password_nueva">Nueva contraseña:</label>
+                        <input type="password" name="password_nueva" id="password_nueva" class="form-control"
+                            value="<?php echo (isset($_SESSION['password_nueva'])) ? $_SESSION['password_nueva'] : ''; ?>">
                     </div>
-                </div>
-
-                <div class=" form-group d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                        <label class="form-label" for="f_contra_rep">Confirmar contraseña</label>
-                        <input type="password" id="f_contra_rep" name="confirm_password" class="form-control " value="">
-                        <span class="invalid-feedback">
-
-                        </span>
-
+                    <div class="form-group mt-3">
+                        <label for="password_confirmar">Confirmar la nueva contraseña:</label>
+                        <input type="password" name="password_confirmar" id="password_confirmar" class="form-control "
+                            value="<?php echo (isset($_SESSION['password_confirmar'])) ? $_SESSION['password_confirmar'] : ''; ?>">
                     </div>
+                    <button type="submit" name="update" class="btn btn-success mt-3"><span
+                            class="glyphicon glyphicon-check"></span> Actualizar contraseña</button>
+                </form>
+                <?php
+				if(isset($_SESSION['error'])){
+					?>
+                <div class="alert alert-danger text-center" style="margin-top:20px;">
+                    <?php echo $_SESSION['error']; ?>
                 </div>
-
-
-
-                <div class="form-group d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                        <button type="submit" value="Submit" class="btn btn-primary btn-lg">Actualizar contraseña</button>
-                    </div>
+                <?php
+					unset($_SESSION['error']);
+				}
+				if(isset($_SESSION['success'])){
+					?>
+                <div class="alert alert-success text-center" style="margin-top:20px;">
+                    <?php echo $_SESSION['success']; ?>
                 </div>
-            </form>
+                <?php
+					unset($_SESSION['success']);
+				}
+			?>
+            </div>
         </div>
-        <div class="col-lg-3 md-4 text-light">
-            <form action=" " method=" POST" role="form" enctype="multipart/form-data" class="mx-1 mx-md-4">
-                <p class=" h1 fw-bold mb-3 mx-1 mx-md-3 mt-4">Editar usuario</p>
-                <div class="form-group d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                        <label class="form-label" for="f_nomb_user">Nombre</label>
-                        <input type="text" id="f_nomb_user" name="username" class="form-control ">
+    </div>
+    <div class="container text-light">
+        <h1 class="text-center mt-3">Editar usuario y avatar</h1>
+        <div class="row d-flex justify-content-center align-items-center">
 
-                    </div>
-                </div>
-                <div class=" form-group d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                        <label for="imagenPerfiles" class="form-label">Imagen perfil:</label>
-                        <input type="file" class="form-control" name="image_perfil" id="imagenPerfiles" />
-                    </div>
-                </div>
+            <div class="">
+                <h3 class="mt-2">Hola, <?php echo $row['username']; ?>
 
-
-                <div class="form-group d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0 ">
-                        <button type="submit" value="Submit" class="btn btn-primary btn-lg">Actualizar usuario</button>
+                </h3>
+                <hr>
+                <form method="POST" action="update_profile.php" role="form" enctype="multipart/form-data">
+                    <div class="form-group mt-3">
+                        <label for="username">Nuevo username:</label>
+                        <input type="text" name="username" id="username" class="form-control"
+                            value="<?php echo (isset($_SESSION['username'])) ? $_SESSION['username'] : ''; ?>">
                     </div>
+                    <div class="form-group mt-3">
+                        <label for="imagenUsuario">Sube tu avatar:</label>
+                        <input type="file" name="imagenUsuario" id="imagenUsuario" class="form-control"">
+                    </div>
+                    <button type=" submit" name="update_user" class="btn btn-success mt-3"><span
+                            class="glyphicon glyphicon-check"></span> Actualizar usuario</button>
+                </form>
+                <?php
+				if(isset($_SESSION['errorUser'])){
+					?>
+                <div class="alert alert-danger text-center" style="margin-top:20px;">
+                    <?php echo $_SESSION['errorUser']; ?>
                 </div>
-            </form>
+                <?php
+					unset($_SESSION['errorUser']);
+				}
+				if(isset($_SESSION['errorUser'])){
+					?>
+                <div class="alert alert-success text-center" style="margin-top:20px;">
+                    <?php echo $_SESSION['successUser']; ?>
+                </div>
+                <?php
+					unset($_SESSION['successUser']);
+				}
+			?>
+            </div>
         </div>
-
     </div>
 
 
-    <!-- Modal editar perfil -->
-
-    <footer class="bg-dark text-center text-white fixed-bottom" >
+    <footer class="bg-dark text-center text-white ">
         <!-- Grid container -->
         <div class="container p-4 pb-0">
             <!-- Section: Social media -->
@@ -250,22 +245,18 @@ if (empty($_SESSION['user_id'])) {
         <!-- Copyright -->
     </footer>
 
-
-
-    </div>
-
     <!-- jQuery + Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
-        crossorigin="anonymous"></script>
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
+    </script>
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Popper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
     </script>
 
 

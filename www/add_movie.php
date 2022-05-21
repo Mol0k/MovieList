@@ -21,49 +21,47 @@ if (empty($_SESSION['user_id'])) {
     <link rel="shortcut icon" href="#">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
-    
- 
+
+
     <link rel="stylesheet" href="./assets/css/styles.css" />
     <title>Añadir películas:</title>
     <style>
-       
-  
-        .multipleSelection {
-            width: 300px;
-            background-color: #BCC2C1;
-        }
-  
-        .selectBox {
-            position: relative;
-        }
-  
-        .selectBox select {
-            width: 100%;
-            
-        }
-  
-        .overSelect {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-        }
-  
-        #checkBoxes {
-            display: none;
-            border: 1px #8DF5E4 solid;
-        }
-  
-        #checkBoxes label {
-            display: block;
-        }
-  
-        #checkBoxes label:hover {
-            background-color: #4F615E;
-        }
+    .multipleSelection {
+        width: 300px;
+        background-color: #BCC2C1;
+    }
+
+    .selectBox {
+        position: relative;
+    }
+
+    .selectBox select {
+        width: 100%;
+
+    }
+
+    .overSelect {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+
+    #checkBoxes {
+        display: none;
+        border: 1px #8DF5E4 solid;
+    }
+
+    #checkBoxes label {
+        display: block;
+    }
+
+    #checkBoxes label:hover {
+        background-color: #4F615E;
+    }
     </style>
-   
+
 
 </head>
 
@@ -105,15 +103,16 @@ if (empty($_SESSION['user_id'])) {
                     <button class="btn btn-primary btn-search" type="submit">Buscar</button>
                     <?php if (empty($_SESSION['user_id'])) {
                     ?>
-                     <button class="btn btn-success btn-signin ms-2" type="submit"
-                          formaction="login.php">Iniciar</button> 
-                      <a class="btn btn-danger btn-signout ms-2" href="register.php" role="button">Registrate</a> 
-                     
+                    <button class="btn btn-success btn-signin ms-2" type="submit"
+                        formaction="login.php">Iniciar</button>
+                    <a class="btn btn-danger btn-signout ms-2" href="register.php" role="button">Registrate</a>
+
                     <?php } else { ?>
-                        <ul class="navbar-nav bg-dark"">
-                            <li class="nav-item dropdown ms-2" >
-                                    <a  href="#" class="nav-link dropdown-toggle bg-dark" data-bs-toggle="dropdown" id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <?php
+                    <ul class="navbar-nav bg-dark"">
+                            <li class=" nav-item dropdown ms-2">
+                        <a href="#" class="nav-link dropdown-toggle bg-dark" data-bs-toggle="dropdown"
+                            id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
+                            <?php
                                         $query = "SELECT * FROM tuser WHERE id = " . $_SESSION['user_id'] ;
                                         $result = mysqli_query($mysqli, $query) or die(mysqli_error($mysqli));
                                         $row = mysqli_fetch_array($result);
@@ -126,85 +125,20 @@ if (empty($_SESSION['user_id'])) {
                                             echo "<img width='35' height='35' class='rounded-circle' src='assets/imagenesUsuario/".$row['profile_image']."' >" ; 
                                         }
                                     ?>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                                        <a class="dropdown-item" href="profile.php">Panel</a>
-                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal_usuario">Editar perfil</a>
-                                        <a class="dropdown-item" href="logout.php">Log Out</a>
-                                    </div>
-                            </li>   
-                        </ul>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="profile.php">Panel</a>
+                            <a class="dropdown-item" href="edit_profile.php">Editar
+                                perfil</a>
+                            <a class="dropdown-item" href="logout.php">Log Out</a>
+                        </div>
+                        </li>
+                    </ul>
                     <?php } ?>
                 </form>
             </div>
         </div>
     </nav>
-    <!-- Modal -->
-    <div class="modal fade" id="modal_usuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header ">
-                        <h5 class="modal-title" id="exampleModalLabel">Editar perfil</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="update_profile.php" method="POST" id="edit-form" role="form" enctype="multipart/form-data" class="mx-1 mx-md-4">
-
-                            <div class="form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label class="form-label" for="f_nomb_user">Nombre</label>
-                                    <input type="text" id="f_nomb_user" name="username" class="form-control ">
-                                    <span class="invalid-feedback"></span>
-                                </div>
-                            </div>
-                            <div class="form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label class="form-label" for="f_contra_actual">Contraseña actual</label>
-                                    <input type="password" id="f_contra_actual" name="password_actual" class="form-control ">
-                                    <span class="invalid-feedback"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label class="form-label" for="f_contra">Nueva Contraseña</label>
-                                    <input type="password" id="f_contra" name="password" class="form-control ">
-                                    <span class="invalid-feedback"></span>
-                                </div>
-                            </div>
-
-                            <div class=" form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label class="form-label" for="f_contra_rep">Repite la
-                                        contraseña</label>
-                                    <input type="password" id="f_contra_rep" name="confirm_password"
-                                        class="form-control ">
-                                    <span class="invalid-feedback"></span>
-
-                                </div>
-                            </div>
-                            <div class=" form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label for="imagenPerfiles" class="form-label">Imagen perfil:</label>
-                                    <input type="file" class="form-control"  name="image_perfil" id="image_perfil"/>
-                                </div>
-                            </div>
-                            
-                        </form>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="button" id="btnUpdateSubmit" class="btn btn-primary">Guardar cambios</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     <hr class="bg-danger border-2 border-top border-danger" />
     <form action="do_add_movie.php" role="form" class="row p-3 text-light" method="POST" enctype="multipart/form-data">
         <h2>DATOS DE LA PELÍCULA:</h2>
@@ -220,7 +154,7 @@ if (empty($_SESSION['user_id'])) {
             </div>
             <div class="col-md-6">
                 <label for="imagenPeliculas" class="form-label">Imagen película:</label>
-                <input type="file" class="form-control"  name="imagenPelicula" id="imagenPelicula"/>
+                <input type="file" class="form-control" name="imagenPelicula" id="imagenPelicula" />
             </div>
             <div class="col-md-6">
                 <label for="f_created_peliculas" class="form-label">Año de emisión de la película:</label>
@@ -236,120 +170,108 @@ if (empty($_SESSION['user_id'])) {
                     </div>
                     <div id="checkBoxes">
                         <label for="first">
-                            <input type="checkbox" value="Suspense"  name="value[] id="first" />
+                            <input type="checkbox" value="Suspense" name="value[] id=" first" />
                             Suspense
                         </label>
                         <label for="second">
-                            <input type="checkbox" value="Accion"  name="value[] id="second" />
+                            <input type="checkbox" value="Accion" name="value[] id=" second" />
                             Acción
                         </label>
                         <label for="third">
-                            <input type="checkbox" value="Drama"  name="value[] id="third" />
+                            <input type="checkbox" value="Drama" name="value[] id=" third" />
                             Drama
                         </label>
                         <label for="fourth">
-                            <input type="checkbox" value="Comedia"  name="value[] id="fourth" />
+                            <input type="checkbox" value="Comedia" name="value[] id=" fourth" />
                             Comedia
                         </label>
                         <label for="five">
-                            <input type="checkbox" value="Aventuras"  name="value[] id="five" />
+                            <input type="checkbox" value="Aventuras" name="value[] id=" five" />
                             Aventuras
                         </label>
                         <label for="six">
-                            <input type="checkbox" value="Ciencia ficcion"  name="value[] id="six" />
+                            <input type="checkbox" value="Ciencia ficcion" name="value[] id=" six" />
                             Ciencia ficción
                         </label>
                         <label for="seven">
-                            <input type="checkbox" value="Terror"  name="value[] id="seven" />
+                            <input type="checkbox" value="Terror" name="value[] id=" seven" />
                             Terror
                         </label>
                         <label for="eigth">
-                            <input type="checkbox" value="Monstruos"  name="value[] id="eigth" />
+                            <input type="checkbox" value="Monstruos" name="value[] id=" eigth" />
                             Monstruos
                         </label>
                         <label for="nine">
-                            <input type="checkbox" value="Superheroes"  name="value[] id="nine" />
+                            <input type="checkbox" value="Superheroes" name="value[] id=" nine" />
                             Superhéroes
                         </label>
                         <label for="ten">
-                            <input type="checkbox" value="Fantasia oscura"  name="value[] id="ten" />
+                            <input type="checkbox" value="Fantasia oscura" name="value[] id=" ten" />
                             Fantasía oscura
                         </label>
                         <label for="eleven">
-                            <input type="checkbox" value="Crimen"  name="value[] id="eleven" />
+                            <input type="checkbox" value="Crimen" name="value[] id=" eleven" />
                             Crimen
                         </label>
                         <label for="twelve">
-                            <input type="checkbox" value="Fantasia"  name="value[] id="twelve" />
+                            <input type="checkbox" value="Fantasia" name="value[] id=" twelve" />
                             Fantasía
                         </label>
                         <label for="thirteen">
-                            <input type="checkbox" value="Misterio"  name="value[] id="thirteen" />
+                            <input type="checkbox" value="Misterio" name="value[] id=" thirteen" />
                             Misterio
                         </label>
                         <label for="fourteen">
-                            <input type="checkbox" value="Espionaje"  name="value[] id="fourteen" />
+                            <input type="checkbox" value="Espionaje" name="value[] id=" fourteen" />
                             Espionaje
                         </label>
                     </div>
                 </div>
-                
+
             </div>
             <div class="col-md-6">
                 <label for="f_duration_peliculas" class="form-label">Duración de la película:</label>
                 <input type="text" class="form-control" name="f_duration_pelicula" id="f_duration_pelicula" />
             </div>
             <div class="col-md-12 text-center">
-            <button type="submit" class="btn btn-primary mt-5 btn-full" name="upload">Enviar</button>
+                <button type="submit" class="btn btn-primary mt-5 btn-full" name="upload">Enviar</button>
+            </div>
         </div>
-        </div>
-       
+
         <?php
         // recoger la variable $_GET['failed'] para mostrar el error
         if (isset($_GET['failed'])) {
             if($_GET['failed'] == TRUE){ ?>
-            <p class="lead" style="color:red">
-                Solo se pueden subir imágenes con la extensión jpg, jpeg y png.
-            </p>
-            <?php } ?>
+        <p class="lead" style="color:red">
+            Solo se pueden subir imágenes con la extensión jpg, jpeg y png.
+        </p>
+        <?php } ?>
         <?php } ?>
 
     </form>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
-        crossorigin="anonymous"></script>
-        
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
+    </script>
+
     </script>
     <script>
-        var show = true;
-  
-        function showCheckboxes() {
-            var checkboxes = 
-                document.getElementById("checkBoxes");
-  
-            if (show) {
-                checkboxes.style.display = "block";
-                show = false;
-            } else {
-                checkboxes.style.display = "none";
-                show = true;
-            }
+    var show = true;
+
+    function showCheckboxes() {
+        var checkboxes =
+            document.getElementById("checkBoxes");
+
+        if (show) {
+            checkboxes.style.display = "block";
+            show = false;
+        } else {
+            checkboxes.style.display = "none";
+            show = true;
         }
+    }
     </script>
-     
+
 </body>
 
 </html>
-
-
-
-
-
-
-
-   
-
-
- 
-

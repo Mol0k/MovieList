@@ -1,4 +1,3 @@
-
 <?php
 ini_set('display_errors', 'On');
 require __DIR__ . '/../php_util/db_connection.php';
@@ -40,9 +39,9 @@ session_start();
     <link rel="stylesheet" href="./assets/css/styles.css">
     <link rel="shortcut icon" href="#">
     <style>
-        .container {
-            max-width: 1800px;
-        }
+    .container {
+        max-width: 1800px;
+    }
     </style>
     <title>MovieList</title>
 </head>
@@ -50,9 +49,7 @@ session_start();
 <body class="bg-dark" style="background-image: url('./assets/images/movie-detail-bg.png');background-repeat: no-repeat;
     background-size: cover;">
 
-    <div class="error-container"></div>
 
-    <div class="error"></div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">MovieList</a>
@@ -91,60 +88,79 @@ session_start();
         </div>
     </nav>
 
-    
 
-    
-            <div class="row default-row mt-1 mb-1" id="row-2">
 
-            </div>
+    <div class="container text-light">
+        <div class="row default-row mt-1 mb-1" id="row-2">
+        <?php
+        if (!isset($_GET['id'])) {
+            die('No se ha especificado un juego');
+        }
+            $movie_id = $_GET['id'];
+            $query2 = 'SELECT * FROM tmovie WHERE id='.$movie_id;
+            $result2 = mysqli_query($mysqli, $query2) or die('Query error');
+            while($fila = mysqli_fetch_array($result2)){
+                $variable= unserialize($fila['gender']);  
+                echo '<h1>'.$fila['title'].'</h1>';
+                echo "<img style='width:15%;' src='assets/imagenesPortada/".$fila['image']."' >";   
+                echo '<p>'.$fila['sinopsis'].'</p>';
+                echo '<p>'.$fila['created'].'</p>';
+                foreach($variable as $value){
+                    echo '<p>'.$value.' </p>';
+                }
+                echo '<p>'.$fila['duration'].' </p>'; 
+            }
 
-            
+        ?>
+        </div>
+    </div>
 
+
+
+
+    <footer class="bg-dark text-center text-white ">
+        <!-- Grid container -->
+        <div class="container p-4 pb-0">
+            <!-- Section: Social media -->
+            <section class="mb-4">
+                <!-- Facebook -->
+                <a class="btn  btn-floating m-1 " href="#!" ">
+                      <img alt=" facebook" src="./assets/images/facebook.png">
+                </a>
+
+                <!-- Twitter -->
+                <a class="btn  btn-floating m-1 " href="#!" ">
+                      <img alt=" twitter" src="./assets/images/gorjeo.png">
+                </a>
+
+                <!-- Tik Tok -->
+                <a class="btn  btn-floating m-1 " href="#!" ">
+                      <img alt=" twitter" src="./assets/images/tik-tok.png">
+                </a>
+
+                <!-- Instagram -->
+                <a class="btn  btn-floating m-1 " href="#!" ">
+                      <img alt=" instagram" src="./assets/images/instagram.png">
+                </a>
+
+
+                <!-- Github -->
+                <a class="btn  btn-floating m-1 " href="#!" ">
+                      <img alt=" github" src="./assets/images/github.png">
+                </a>
+            </section>
+            <!-- Section: Social media -->
         </div>
 
-        <footer class="bg-dark text-center text-white ">
-            <!-- Grid container -->
-            <div class="container p-4 pb-0">
-                <!-- Section: Social media -->
-                <section class="mb-4">
-                    <!-- Facebook -->
-                    <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" facebook" src="./assets/images/facebook.png">
-                    </a>
 
-                    <!-- Twitter -->
-                    <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" twitter" src="./assets/images/gorjeo.png">
-                    </a>
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2022 Copyright:
+            <a class="text-white" href="#">MovieList</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
 
-                    <!-- Tik Tok -->
-                    <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" twitter" src="./assets/images/tik-tok.png">
-                    </a>
-
-                    <!-- Instagram -->
-                    <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" instagram" src="./assets/images/instagram.png">
-                    </a>
-
-
-                    <!-- Github -->
-                    <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" github" src="./assets/images/github.png">
-                    </a>
-                </section>
-                <!-- Section: Social media -->
-            </div>
-
-
-            <!-- Copyright -->
-            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-                © 2022 Copyright:
-                <a class="text-white" href="#">MovieList</a>
-            </div>
-            <!-- Copyright -->
-        </footer>
-        
 
 
     </div>
@@ -152,15 +168,15 @@ session_start();
     <!-- jQuery + Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('#records-limit').change(function () {
-                $('form').submit();
-            })
-        });
+    $(document).ready(function() {
+        $('#records-limit').change(function() {
+            $('form').submit();
+        })
+    });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
-        crossorigin="anonymous"></script>
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
+    </script>
     <script src="/assets/js/index.js" type="module"></script>
 </body>
 

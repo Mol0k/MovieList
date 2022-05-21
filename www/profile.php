@@ -26,12 +26,12 @@ $sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 
     <link rel="stylesheet" href="./assets/css/styles.css">
-   
+
     <link rel="shortcut icon" href="#">
-    
+
 
     <title>Perfil de usuario</title>
-    
+
 </head>
 
 <body class="bg-dark" style="background-image: url('./assets/images/movie-detail-bg.png');background-repeat: no-repeat;
@@ -99,10 +99,8 @@ $sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="profile.php">Panel</a>
-                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal_usuario">Editar
+                            <a class="dropdown-item" href="edit_profile.php">Editar
                                 perfil</a>
-                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal_contra">Cambiar
-                                Contraseña</a>
                             <a class="dropdown-item" href="logout.php">Log Out</a>
                         </div>
                         </li>
@@ -133,116 +131,7 @@ $sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
         
         ?>
     </div>
-    <!-- Modal editar perfil -->
-    <div class="modal fade" id="modal_usuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header ">
-                    <h5 class="modal-title" id="exampleModalLabel">Editar perfil</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="update_profile.php" method="POST" id="edit-form" name ="contact"enctype="multipart/form-data"
-                        class="mx-1 mx-md-4">
-
-                        <div class="form-group d-flex flex-row align-items-center mb-4">
-                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                            <div class="form-outline flex-fill mb-0">
-                                <label class="form-label" for="f_nomb_user">Nombre</label>
-                                <input type="text" id="f_nomb_user" name="username" class="form-control ">
-
-                            </div>
-                        </div>
-                        <div class=" form-group d-flex flex-row align-items-center mb-4">
-                            <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                            <div class="form-outline flex-fill mb-0">
-                                <label for="imagenPerfiles" class="form-label">Imagen perfil:</label>
-                                <input type="file" class="form-control" name="image_perfil" id="imagenPerfiles" />
-                            </div>
-                        </div>
-                        <div id="div-id" class="text-center"></div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="button" id="submit" class="btn btn-primary">Guardar cambios</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal cambiar contraseña -->
-    <div class="modal fade" id="modal_contra" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header ">
-                    <h5 class="modal-title" id="exampleModalLabel">Cambiar contraseña</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="update_password.php" method="POST" id="edit-form-contra" enctype="multipart/form-data"
-                        class="mx-1 mx-md-4">
-
-                        <div class="form-group d-flex flex-row align-items-center mb-4">
-                            <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                            <div class="form-outline flex-fill mb-0">
-                                <label class="form-label" for="f_contra_actual">Contraseña actual</label>
-                                <input type="password" id="f_contra_actual" name="password_actual" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="form-group d-flex flex-row align-items-center mb-4">
-                            <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                            <div class="form-outline flex-fill mb-0">
-                                <label class="form-label" for="f_contra">Nueva Contraseña</label>
-                                <input type="password" id="f_contra" name="password_nueva" class="form-control ">
-                                <span class="invalid-feedback"></span>
-                            </div>
-                        </div>
-
-                        <div class=" form-group d-flex flex-row align-items-center mb-4">
-                            <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                            <div class="form-outline flex-fill mb-0">
-                                <label class="form-label" for="f_contra_rep">Repite la
-                                    contraseña</label>
-                                <input type="password" id="f_contra_rep" name="password_confirm" class="form-control">
-                                <span class="invalid-feedback"></span>
-                            </div>
-                        </div>
-                        <div id="grupo-id" class="text-center"></div>
-                        <?php
-                            //Mensaje de éxito cuando el usuario ha sido creado correctamente.
-                            // if(isset($_GET['success'])) {
-                            //     //Este mensaje se mostrará si todo ha ido correctamente, es decir, success=True en el header.
-                            //     if($_GET['success'] == TRUE) {
-                            //         echo '<p class="text-center">Contraseña cambiada</p>';
-                            //     }
-                            // }
-                            // if(isset($_GET['passworddidnotmatch'])) {
-                            //     //Este mensaje se mostrará si todo ha ido correctamente, es decir, success=True en el header.
-                            //     if($_GET['passworddidnotmatch'] == TRUE) {
-                            //         echo '<p class="text-center">Asegurate de escribir bien</p>';
-                            //     }
-                            // }
-                            // if(isset($_GET['passwordoldpassword'])) {
-                            //     //Este mensaje se mostrará si todo ha ido correctamente, es decir, success=True en el header.
-                            //     if($_GET['passwordoldpassword'] == TRUE) {
-                            //         echo '<p class="text-center">La contraseña actual no coincide</p>';
-                            //     }
-                            // }
-                            ?>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="button" id="btnUpdateSubmitContra" name="update"
-                                class="btn btn-primary">Guardar cambios</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <footer class="bg-dark text-center text-white fixed-bottom">
         <!-- Grid container -->
         <div class="container p-4 pb-0">
@@ -292,20 +181,20 @@ $sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
 
     <!-- jQuery + Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
-        crossorigin="anonymous"></script>
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
+    </script>
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Popper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
     </script>
     <script src="scripts.js"></script>
     <script src="assets/js/script_contra.js"></script>
-        
+
 </body>
 
 </html>

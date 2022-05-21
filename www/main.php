@@ -27,7 +27,9 @@ session_start();
   $prev = $page - 1;
   $next = $page + 1;
 
-  
+  $consult = "SELECT * FROM tmovie;"; 
+  $resultado = mysqli_query($mysqli, $consult) or die(mysqli_error($mysqli));
+  $consultid = mysqli_fetch_array($resultado);
 
 ?>
 <!DOCTYPE html>
@@ -43,12 +45,39 @@ session_start();
     <link rel="stylesheet" href="./assets/css/styles.css">
     <link rel="shortcut icon" href="#">
     <title>MovieList</title>
+    <style>
+        .quitar{
+            text-decoration:none;
+        }
+        .movie_card button {
+            cursor: pointer;
+            border-style: none;
+            background-color: #ff3838;
+            color: #fff;
+            outline: none;
+            box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
+            transition: all .5s ease-in-out;
+            line-height: 20px;
+            width: 70px;
+            font-size: 10pt;
+            margin-bottom: 5px;
+            margin-right: 2px;
+            position:absolute;
+            bottom:0;
+            right:0;
+        }
+        
+        .movie_card button:hover {
+            transform: scale(.95) translateX(-5px);
+            transition: all .5s ease-in-out;
+        }
+        </style>
 </head>
 
 <body class="bg-dark" style="background-image: url('./assets/images/movie-detail-bg.png');background-repeat: no-repeat;
     background-size: cover;">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
             <!-- <a class="navbar-brand" href="main.php">
                     <img src="./assets/images/icon.png" width="24px" height="24px" alt="logo">MovieList
@@ -84,15 +113,16 @@ session_start();
                     <button class="btn btn-primary btn-search" type="submit">Buscar</button>
                     <?php if (empty($_SESSION['user_id'])) {
                     ?>
-                     <button class="btn btn-success btn-signin ms-2" type="submit"
-                          formaction="login.php">Iniciar</button> 
-                      <a class="btn btn-danger btn-signout ms-2" href="register.php" role="button">Registrate</a> 
-                     
+                    <button class="btn btn-success btn-signin ms-2" type="submit"
+                        formaction="login.php">Iniciar</button>
+                    <a class="btn btn-danger btn-signout ms-2" href="register.php" role="button">Registrate</a>
+
                     <?php } else { ?>
-                        <ul class="navbar-nav bg-dark"">
-                            <li class="nav-item dropdown ms-2" >
-                                    <a  href="#" class="nav-link dropdown-toggle bg-dark" data-bs-toggle="dropdown" id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <?php
+                    <ul class="navbar-nav bg-dark"">
+                            <li class=" nav-item dropdown ms-2">
+                        <a href="#" class="nav-link dropdown-toggle bg-dark" data-bs-toggle="dropdown"
+                            id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
+                            <?php
                                         $query = "SELECT profile_image FROM tuser WHERE id = " . $_SESSION['user_id'] ;
                                         $result = mysqli_query($mysqli, $query) or die(mysqli_error($mysqli));
                                         $row = mysqli_fetch_array($result);
@@ -105,20 +135,21 @@ session_start();
                                             echo "<img width='35' height='35' class='rounded-circle' src='assets/imagenesUsuario/".$row['profile_image']."' >" ; 
                                         }
                                     ?>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                                        <a class="dropdown-item" href="profile.php">Panel</a>
-                                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal_usuario">Editar perfil</a>
-                                        <a class="dropdown-item" href="logout.php">Log Out</a>
-                                    </div>
-                            </li>   
-                        </ul>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="profile.php">Panel</a>
+                            <a class="dropdown-item" href="edit_profile.php">Editar
+                                perfil</a>
+                            <a class="dropdown-item" href="logout.php">Log Out</a>
+                        </div>
+                        </li>
+                    </ul>
                     <?php } ?>
                 </form>
             </div>
         </div>
     </nav>
-      
+
     <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true"
@@ -182,8 +213,13 @@ session_start();
             <div class="row default-row mt-1 mb-1" id="row-1">
                 <div class="container mt-5">
                     <!-- DIV -->
+                    <!-- Esto es para cuando le doy click en la imagen que me vaya para otra pag -->
+                    <?php
+                     echo "<a  style='text-decoration: none;color:black' href='movies.php?id=".$consultid['id']."'/>" 
+                    ;?>
                     <div class="row justify-content-center wrapperino" id="foco">
                         <?php foreach($authors as $author): ?>
+                        
                         <div class="movie_card">
                             <?php echo "<img   src='assets/imagenesPortada/".$author['image']."' >" ?>
                             <div class="descriptions">
@@ -193,11 +229,14 @@ session_start();
                                     <p style="line-height: 20px;height: 70%;">
                                         <?php echo $author['sinopsis']; ?>
                                     </p>
-                                    <!-- <button>
-                                        <i class="fab fa-youtube"></i>
-                                        Añadir a la watchlist
-                                    </button> -->
+                                    <?php
+                                    echo "<form method='post' action='movies.php?id=".$author['id']."' >
+                                    <button>Mas info</button>
+                                    </form>"
+                                    ?>
+                                    
                             </div>
+                            
                         </div>
                         <?php endforeach; ?>
                     </div>
@@ -226,72 +265,8 @@ session_start();
             <div class="row default-row mt-1 mb-1" id="row-2">
             </div>
         </div>
-    <!-- Modal -->
-    <div class="modal fade" id="modal_usuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header ">
-                        <h5 class="modal-title" id="exampleModalLabel">Editar perfil</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="update_profile.php" method="POST" id="edit-form" enctype="multipart/form-data" class="mx-1 mx-md-4">
-
-                            <div class="form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label class="form-label" for="f_nomb_user">Nombre</label>
-                                    <input type="text" id="f_nomb_user" name="username" class="form-control ">
-                                    <span class="invalid-feedback"></span>
-                                </div>
-                            </div>
-                            <div class="form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label class="form-label" for="f_contra_actual">Contraseña actual</label>
-                                    <input type="password" id="f_contra_actual" name="password_actual" class="form-control ">
-                                    <span class="invalid-feedback"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label class="form-label" for="f_contra">Nueva Contraseña</label>
-                                    <input type="password" id="f_contra" name="password" class="form-control ">
-                                    <span class="invalid-feedback"></span>
-                                </div>
-                            </div>
-
-                            <div class=" form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label class="form-label" for="f_contra_rep">Repite la
-                                        contraseña</label>
-                                    <input type="password" id="f_contra_rep" name="confirm_password"
-                                        class="form-control ">
-                                    <span class="invalid-feedback"></span>
-
-                                </div>
-                            </div>
-                            <div class=" form-group d-flex flex-row align-items-center mb-4">
-                                <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                                <div class="form-outline flex-fill mb-0">
-                                    <label for="imagenPerfiles" class="form-label">Imagen perfil:</label>
-                                    <input type="file" class="form-control"  name="image_perfil" id="image_perfil"/>
-                                </div>
-                            </div>
-                            
-                        </form>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="button" id="btnUpdateSubmit" class="btn btn-primary">Guardar cambios</button>
-                    </div>
-                </div>
-            </div>
-        </div>                    
+        
+       
         <footer class="bg-dark text-center text-white ">
             <!-- Grid container -->
             <div class="container p-4 pb-0">
@@ -342,30 +317,30 @@ session_start();
     <!-- jQuery + Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('#records-limit').change(function () {
-                $('form').submit();
-            })
-        });
+    $(document).ready(function() {
+        $('#records-limit').change(function() {
+            $('form').submit();
+        })
+    });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
-        crossorigin="anonymous"></script>
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
+    </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 
     <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
     </script>
     <script>
-        const foco = document.getElementById('foco');
+    const foco = document.getElementById('foco');
 
-        // foco.scrollIntoView(true);
-        foco.scrollIntoView({
-            block: 'center',
-        });
+    // foco.scrollIntoView(true);
+    foco.scrollIntoView({
+        block: 'center',
+    });
     </script>
     <script src="/assets/js/index.js" type="module"></script>
 </body>
