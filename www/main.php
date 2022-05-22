@@ -107,10 +107,10 @@ session_start();
                     </li>
 
                 </ul>
-                <form class="d-flex justify-content-end ms-2">
-                    <input class="form-control me-2 my-input" type="search" placeholder="Buscar peliculas"
-                        aria-label="Search">
-                    <button class="btn btn-primary btn-search" type="submit">Buscar</button>
+                <form class="d-flex justify-content-end ms-2" action="backend-search.php" method="GET">
+                    
+                    <input class="form-control me-2 my-input"type="text" placeholder="Enter your search term" name="query" required>
+		            <button class="btn btn-primary btn-search" type="submit" value="Search">Buscar</button>
                     <?php if (empty($_SESSION['user_id'])) {
                     ?>
                     <button class="btn btn-success btn-signin ms-2" type="submit"
@@ -214,9 +214,7 @@ session_start();
                 <div class="container mt-5">
                     <!-- DIV -->
                     <!-- Esto es para cuando le doy click en la imagen que me vaya para otra pag -->
-                    <?php
-                     echo "<a  style='text-decoration: none;color:black' href='movies.php?id=".$consultid['id']."'/>" 
-                    ;?>
+                    
                     <div class="row justify-content-center wrapperino" id="foco">
                         <?php foreach($authors as $author): ?>
                         
