@@ -2,27 +2,15 @@
 ini_set('display_errors', 'On');
 require __DIR__ . '/../php_util/db_connection.php';
 
-// session_start();
-$mysqli = get_db_connection_or_die();
+    session_start();
+    
+    $mysqli = get_db_connection_or_die();
+    //LO COMENTE PORQUE SALE ERROR DE QUE NO ESTA DEFINIDO
+    // $user_id = $_SESSION['user_id'];
 
-session_start();
-  if(isset($_POST['records-limit'])){
-      $_SESSION['records-limit'] = $_POST['records-limit'];
-  }
-  
-  $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 4;
-  $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
-  $paginationStart = ($page - 1) * $limit;
-  $authors = $mysqli->query("SELECT * FROM tmovie ORDER BY id ASC LIMIT $paginationStart, $limit")->fetch_all(MYSQLI_ASSOC);
-  // Get total records
-  $sql = $mysqli->query("SELECT count(id) AS id FROM tmovie")->fetch_all(MYSQLI_ASSOC);
-  $allRecrods = $sql[0]['id'];
-  
-  // Calculate total pages
-  $totoalPages = ceil($allRecrods / $limit);
-  // Prev + Next
-  $prev = $page - 1;
-  $next = $page + 1;
+    if(isset($_POST['user_id'])){
+        $user_id = $_SESSION['user_id'];
+    }
 
 
 ?>
@@ -39,9 +27,147 @@ session_start();
     <link rel="stylesheet" href="./assets/css/styles.css">
     <link rel="shortcut icon" href="#">
     <style>
-    .container {
-        max-width: 1800px;
-    }
+        /* .container {
+            max-width: 1800px;
+        } */
+
+        /* @media(min-width:568px) {
+            .end {
+                margin-left: auto;
+            }
+        }
+
+        @media(max-width:768px) {
+            #post {
+                width: 100%;
+            }
+        }
+
+        #clicked {
+            padding-top: 1px;
+            padding-bottom: 1px;
+            text-align: center;
+            width: 100%;
+            background-color: #ecb21f;
+            border-color: #a88734 #9c7e31 #846a29;
+            color: black;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 13px;
+        }
+
+        #profile {
+            background-color: unset;
+
+        }
+
+        #post {
+            margin: 10px;
+            padding: 6px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            text-align: center;
+            background-color: #ecb21f;
+            border-color: #a88734 #9c7e31 #846a29;
+            color: black;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 13px;
+            width: 50%;
+        }
+
+        body {
+            background-color: black;
+        }
+
+        #nav-items li a,
+        #profile {
+            text-decoration: none;
+            color: rgb(224, 219, 219);
+            background-color: black;
+        }
+
+
+        .comments {
+            margin-top: 5%;
+            margin-left: 20px;
+        }
+
+        .darker {
+            border: 1px solid #ecb21f;
+            background-color: black;
+            float: right;
+            border-radius: 5px;
+            padding-left: 40px;
+            padding-right: 30px;
+            padding-top: 10px;
+        }
+
+        .comment {
+            border: 1px solid rgba(16, 46, 46, 1);
+            background-color: rgba(16, 46, 46, 0.973);
+            float: left;
+            border-radius: 5px;
+            padding-left: 40px;
+            padding-right: 30px;
+            padding-top: 10px;
+
+        }
+
+        .comment h4,
+        .comment span,
+        .darker h4,
+        .darker span {
+            display: inline;
+        }
+
+        .comment p,
+        .comment span,
+        .darker p,
+        .darker span {
+            color: rgb(184, 183, 183);
+        }
+
+        h1,
+        h4 {
+            color: white;
+            font-weight: bold;
+        }
+
+        label {
+            color: rgb(212, 208, 208);
+        }
+
+        #align-form {
+            margin-top: 20px;
+        }
+
+        .form-group p a {
+            color: white;
+        }
+
+        #checkbx {
+            background-color: black;
+        }
+
+        #darker img {
+            margin-right: 15px;
+            position: static;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            background-color: black;
+            border: 1px solid rgba(16, 46, 46, 1);
+            border-radius: 12px;
+        }
+
+        form {
+            border: 1px solid rgba(16, 46, 46, 1);
+            background-color: rgba(16, 46, 46, 0.973);
+            border-radius: 5px;
+            padding: 20px;
+        } */
     </style>
     <title>MovieList</title>
 </head>
@@ -52,6 +178,9 @@ session_start();
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
+            <!-- <a class="navbar-brand" href="main.php">
+                    <img src="./assets/images/icon.png" width="24px" height="24px" alt="logo">MovieList
+                </a> -->
             <a class="navbar-brand" href="#">MovieList</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
                 aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,11 +188,12 @@ session_start();
             </button>
             <div class="collapse navbar-collapse" id="navbarScroll">
                 <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+
                     <li class="nav-item">
                         <a class="nav-link active" href="main.php">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Películas</a>
+                        <a class="nav-link" href="all_movies.php">Películas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Películas Vistas</a>
@@ -80,39 +210,127 @@ session_start();
                     <input class="form-control me-2 my-input" type="search" placeholder="Buscar peliculas"
                         aria-label="Search">
                     <button class="btn btn-primary btn-search" type="submit">Buscar</button>
+                    <?php if (empty($_SESSION['user_id'])) {
+                    ?>
                     <button class="btn btn-success btn-signin ms-2" type="submit"
                         formaction="login.php">Iniciar</button>
                     <a class="btn btn-danger btn-signout ms-2" href="register.php" role="button">Registrate</a>
+
+                    <?php } else { ?>
+                    <ul class="navbar-nav bg-dark"">
+                            <li class=" nav-item dropdown ms-2">
+                        <a href="#" class="nav-link dropdown-toggle bg-dark" data-bs-toggle="dropdown"
+                            id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
+                            <?php
+                                        $query = "SELECT profile_image FROM tuser WHERE id = " . $_SESSION['user_id'] ;
+                                        $result = mysqli_query($mysqli, $query) or die(mysqli_error($mysqli));
+                                        $row = mysqli_fetch_array($result);
+                                        $profile_image = $row['profile_image'];
+
+                                        if(empty($profile_image)){
+                                            $profile_image = "default-user.png";
+                                            echo "<img width='35' height='35' class='rounded-circle' src='assets/images/".$profile_image."' >" ;
+                                        }else{ 
+                                            echo "<img width='35' height='35' class='rounded-circle' src='assets/imagenesUsuario/".$row['profile_image']."' >" ; 
+                                        }
+                                    ?>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="profile.php">Panel</a>
+                            <a class="dropdown-item" href="edit_profile.php">Editar
+                                perfil</a>
+                            <a class="dropdown-item" href="logout.php">Log Out</a>
+                        </div>
+                        </li>
+                    </ul>
+                    <?php } ?>
                 </form>
             </div>
         </div>
     </nav>
 
 
-
     <div class="container text-light">
         <div class="row default-row mt-1 mb-1" id="row-2">
-        <?php
-        if (!isset($_GET['id'])) {
-            die('No se ha especificado un juego');
-        }
-            $movie_id = $_GET['id'];
-            $query2 = 'SELECT * FROM tmovie WHERE id='.$movie_id;
-            $result2 = mysqli_query($mysqli, $query2) or die('Query error');
-            while($fila = mysqli_fetch_array($result2)){
-                $variable= unserialize($fila['gender']);  
-                echo '<h1>'.$fila['title'].'</h1>';
-                echo "<img style='width:15%;' src='assets/imagenesPortada/".$fila['image']."' >";   
-                echo '<p>'.$fila['sinopsis'].'</p>';
-                echo '<p>'.$fila['created'].'</p>';
-                foreach($variable as $value){
-                    echo '<p>'.$value.' </p>';
-                }
-                echo '<p>'.$fila['duration'].' </p>'; 
+            <?php
+            if (!isset($_GET['id'])) {
+                die('No se ha especificado un juego');
             }
-
-        ?>
+                $movie_id = $_GET['id'];
+                $query2 = 'SELECT * FROM tmovie WHERE id='.$movie_id;
+                $result2 = mysqli_query($mysqli, $query2) or die('Query error');
+                while($fila = mysqli_fetch_array($result2)){
+                    $variable= unserialize($fila['gender']);  
+                    echo '<h1>'.$fila['title'].'</h1>';
+                    echo "<img style='width:15%;' src='assets/imagenesPortada/".$fila['image']."' >";   
+                    echo '<p>'.$fila['sinopsis'].'</p>';
+                    echo '<p>'.$fila['created'].'</p>';
+                    foreach($variable as $value){
+                        echo '<p class="mb-1">'.$value.' </p>';
+                    }
+                    echo '<p>'.$fila['duration'].' </p>'; 
+                }
+            ?>
         </div>
+
+        <div class="row default-row mt-1 mb-1" id="row-2">
+            <h3 >Comentarios:</h3>
+            <ul>
+                <?php
+                   $query3 = 'SELECT * FROM tComentarios WHERE movie_id='.$movie_id; 
+                // $query3 = 'SELECT tcomentarios.comentario, tuser.username FROM tcomentarios INNER JOIN tuser ON tcomentarios.id=tuser.id where tuser.id = '.$user_id.' and movie_id= '.$movie_id. '';
+                //   $sql = "SELECT especie.Nombre, animales.Animales FROM especie INNER JOIN animales ON especie.id=animales.IdEspecie where animales.IdEspecie=1";
+
+                    $result3 = mysqli_query($mysqli, $query3) or die('Query error');
+                    while ($row = mysqli_fetch_array($result3)) {
+                    echo 
+                    '<li> Comentario: '.$row['comentario']. ' || Fecha del comentario:  '.$row['fecha_comentario'].' || Nombre de usuario: </li>';
+                    }
+                mysqli_close($mysqli);
+                ?>
+            </ul>
+            <br>
+            <p>Deja un nuevo comentario:</p>
+            <form action="/comment.php" method="post">
+                <textarea rows="4" cols="50" name="new_comment"></textarea><br>
+                <input type="hidden" name="movie_id" value="<?php echo $movie_id; ?>">
+                <input type="submit" value="Comentar">
+            </form>
+        </div>
+        <!-- <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-5 col-md-6 col-12 pb-4">
+                        <h1>Comentarios</h1>
+                        <div class="comment mt-4 text-justify float-left">
+                            <img src="https://i.imgur.com/yTFUilP.jpg" alt="" class="rounded-circle" width="40"
+                                height="40">
+                            <h4>Nombree</h4>
+                            <span>FECHA</span>
+                            <br>
+                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusamus numquam assumenda hic
+                                aliquam vero sequi velit molestias doloremque molestiae dicta?</p>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
+                        <form id="algin-form">
+                            <div class="form-group">
+                                <h4>Leave a comment</h4>
+                                <label for="message">Message</label>
+                                <textarea name="msg" id="" msg cols="30" rows="5" class="form-control"
+                                    style="background-color: black;"></textarea>
+                            </div>
+
+
+                            <div class="form-group">
+                                <button type="button" id="post" class="btn">Post Comment</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section> -->
     </div>
 
 
