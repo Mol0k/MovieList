@@ -54,8 +54,10 @@ if (empty($_SESSION['user_id'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="#">Películas</a>
                     </li>
+                    <?php if (empty($_SESSION['user_id'])) {
+                    ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Películas Vistas</a>
+                        <a class="nav-link" href="watchlist.php">Películas Vistas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Películas deseadas</a>
@@ -63,7 +65,7 @@ if (empty($_SESSION['user_id'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="add_movie.php">Añadir Películas</a>
                     </li>
-
+                    <?php } ?>
                 </ul>
                 <form class="d-flex justify-content-end ms-2" action="backend-search.php" method="GET">
                     <input class="form-control me-2 my-input" type="search" placeholder="Buscar peliculas"

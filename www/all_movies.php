@@ -64,8 +64,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="all_movies">Películas</a>
                     </li>
+                    <?php if (!empty($_SESSION['user_id'])) {
+                    ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Películas Vistas</a>
+                        <a class="nav-link" href="watchlist.php">Películas Vistas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Películas deseadas</a>
@@ -73,6 +75,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="add_movie.php">Añadir Películas</a>
                     </li>
+                    <?php } ?>
 
                 </ul>
                 <form class="d-flex justify-content-end ms-2">

@@ -26,7 +26,7 @@ CREATE TABLE tComentarios (
   comentario VARCHAR(2000),
   movie_id INTEGER NOT NULL,
   fecha_comentario DATE,
-  usuario_id INTEGER,
+  usuario_id INTEGER NOT NULL,
   FOREIGN KEY (movie_id) REFERENCES tMovie(id),
   FOREIGN KEY (usuario_id) REFERENCES tUser(id)
 );

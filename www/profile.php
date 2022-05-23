@@ -57,7 +57,7 @@ $sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
                         <a class="nav-link" href="#">Películas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Películas Vistas</a>
+                        <a class="nav-link" href="watchlist.php">Películas Vistas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Películas deseadas</a>

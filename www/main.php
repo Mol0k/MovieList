@@ -96,8 +96,10 @@ session_start();
                     <li class="nav-item">
                         <a class="nav-link" href="#">Películas</a>
                     </li>
+                    <?php if (!empty($_SESSION['user_id'])) {
+                    ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Películas Vistas</a>
+                        <a class="nav-link" href="watchlist.php">Películas Vistas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Películas deseadas</a>
@@ -105,6 +107,7 @@ session_start();
                     <li class="nav-item">
                         <a class="nav-link" href="add_movie.php">Añadir Películas</a>
                     </li>
+                    <?php } ?>
 
                 </ul>
                 <form class="d-flex justify-content-end ms-2" action="backend-search.php" method="GET">
@@ -166,7 +169,7 @@ session_start();
                     <div class="carousel-caption text-start">
                         <h1>My MovieList.</h1>
                         <p>Registrate para añadir tus peliculas favoritas.</p>
-                        <p><a class="btn btn-lg btn-primary" href="#">Registrate ahora</a></p>
+                        <p><a class="btn btn-lg btn-primary" href="register.php">Registrate ahora</a></p>
                     </div>
                 </div>
             </div>
@@ -178,7 +181,7 @@ session_start();
                     <div class="carousel-caption">
                         <h1>WatchList.</h1>
                         <p>Añade tus peliculas a la lista de WatchList.</p>
-                        <p><a class="btn btn-lg btn-primary" href="#">Leer más</a></p>
+                        <p><a class="btn btn-lg btn-primary" href="watchlist.php">Leer más</a></p>
                     </div>
                 </div>
             </div>

@@ -160,7 +160,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                         echo '<div class="container">';
                         echo '<div class="row">';
                         echo '<div class="col-md-12 mt-4">';
-                        echo '<h4>Para poder agregar la película a la watchlist debes iniciar sesión o registrarte.</h4>';
+                        echo '<h4 class="text-danger">Para poder agregar la película a la watchlist debes iniciar sesión o registrarte.</h4>';
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';
