@@ -14,7 +14,7 @@ $user_id = $_SESSION['user_id'];
 
 <?php
         
-		$query3 = 'SELECT * FROM tmovie INNER JOIN twatchlist ON tmovie.id = twatchlist.movie_id INNER JOIN tuser ON twatchlist.usuario_id = tuser.id; ';
+		$query3 = 'SELECT * FROM tmovie INNER JOIN twatchlist ON tmovie.id = twatchlist.movie_id INNER JOIN tuser ON twatchlist.usuario_id = tuser.id where twatchlist.usuario_id = ' . $user_id;
        
 		$res = mysqli_query($mysqli, $query3);
 		while($fila = mysqli_fetch_assoc($res)){
