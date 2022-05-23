@@ -65,7 +65,7 @@ if (empty($_SESSION['user_id'])) {
                     </li>
 
                 </ul>
-                <form class="d-flex justify-content-end ms-2">
+                <form class="d-flex justify-content-end ms-2" action="backend-search.php" method="GET">
                     <input class="form-control me-2 my-input" type="search" placeholder="Buscar peliculas"
                         aria-label="Search">
                     <button class="btn btn-primary btn-search" type="submit">Buscar</button>

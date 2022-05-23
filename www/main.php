@@ -109,7 +109,7 @@ session_start();
                 </ul>
                 <form class="d-flex justify-content-end ms-2" action="backend-search.php" method="GET">
                     
-                    <input class="form-control me-2 my-input"type="text" placeholder="Enter your search term" name="query" required>
+                    <input class="form-control me-2 my-input"type="text" placeholder="Ejemplo: Sonic" name="query">
 		            <button class="btn btn-primary btn-search" type="submit" value="Search">Buscar</button>
                     <?php if (empty($_SESSION['user_id'])) {
                     ?>
