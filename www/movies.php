@@ -28,22 +28,23 @@ require __DIR__ . '/../php_util/db_connection.php';
     <link rel="stylesheet" href="./assets/css/style_comment.css">
     <link rel="shortcut icon" href="#">
     <style>
-        .container {
-            max-width: 1800px;
-        }
-        .movie_style{
-            padding: 0 !important;
-            width: 18.9rem;
-            margin: 14px;
-            position: relative;
-            background: #fff;
-            border: 2px solid #fff;
-            box-shadow: 0px 4px 7px rgba(0, 0, 0, .5);
-          
-            transition: all .5s cubic-bezier(.8, .5, .2, 1.4);
-            overflow: hidden;
-            height: 440px;
-        }
+    .container {
+        max-width: 1800px;
+    }
+
+    .movie_style {
+        padding: 0 !important;
+        width: 18.9rem;
+        margin: 14px;
+        position: relative;
+        background: #fff;
+        border: 2px solid #fff;
+        box-shadow: 0px 4px 7px rgba(0, 0, 0, .5);
+
+        transition: all .5s cubic-bezier(.8, .5, .2, 1.4);
+        overflow: hidden;
+        height: 440px;
+    }
     </style>
     <title>MovieList</title>
 </head>
@@ -70,8 +71,10 @@ require __DIR__ . '/../php_util/db_connection.php';
                     <li class="nav-item">
                         <a class="nav-link" href="all_movies.php">Películas</a>
                     </li>
+                    <?php if (!empty($_SESSION['user_id'])) {
+                    ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Películas Vistas</a>
+                        <a class="nav-link" href="watchlist.php">Películas Vistas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Películas deseadas</a>
@@ -79,11 +82,11 @@ require __DIR__ . '/../php_util/db_connection.php';
                     <li class="nav-item">
                         <a class="nav-link" href="add_movie.php">Añadir Películas</a>
                     </li>
-
+                    <?php } ?>
                 </ul>
                 <form class="d-flex justify-content-end ms-2" action="backend-search.php" method="GET">
-                <input class="form-control me-2 my-input"type="text" placeholder="Ejemplo: Sonic" name="query">
-		            <button class="btn btn-primary btn-search" type="submit" value="Search">Buscar</button>
+                    <input class="form-control me-2 my-input" type="text" placeholder="Ejemplo: Sonic" name="query">
+                    <button class="btn btn-primary btn-search" type="submit" value="Search">Buscar</button>
                     <?php if (empty($_SESSION['user_id'])) {
                     ?>
                     <button class="btn btn-success btn-signin ms-2" type="submit"
@@ -123,7 +126,7 @@ require __DIR__ . '/../php_util/db_connection.php';
         </div>
     </nav>
 
-   
+
 
     <div class="container text-light">
         <div class="row default-row mt-1 mb-1" id="row-2">
@@ -150,23 +153,41 @@ require __DIR__ . '/../php_util/db_connection.php';
                     foreach($variable as $value){
                         echo '<p class="mb-1">'.$value.' </p>';
                     }
-                   
                     echo '</div>';
                     echo '</div>';
                     echo '</div>';
-                  echo '<a href="add_to_watchlist.php?id='.$fila['id'].'" class="button btn-small">AÑADIR A LA WATCHLIST</a>';
-                    
+                    if(empty($_SESSION['user_id'])){
+                        echo '<div class="container">';
+                        echo '<div class="row">';
+                        echo '<div class="col-md-12 mt-4">';
+                        echo '<h4>Para poder agregar la película a la watchlist debes iniciar sesión o registrarte.</h4>';
+                        echo '</div>';
+                        echo '</div>';
+                        echo '</div>';
+                    }else{
+                        echo '<div class="container">';
+                        echo '<div class="row row-cols-auto">';
+                        echo '<div class="col mt-2 ">';
+                        echo '<form  method="post" action="add_to_watchlist.php?id='.$fila['id'].'" >';
+                        echo '<button  type="submit" class="btn btn-primary me-2"> AÑADIR A LA WATCHLIST</button>';   
+                        echo '</form>';
+                        echo '</div>';
+                        echo '<div class="col mt-2">';
+                        echo '<form  method="post" action="" >';
+                        echo '<button  type="submit" class="btn btn-danger"> AÑADIR A DESEADOS</button>';   
+                        echo '</form>';
+                        echo '</div>';
+                        echo '</div>';
+                        
+                        
+                    }
                 }
             ?>
-             
-        </div>
-       
-       
-        <section>
-            
+
+            <section>
                 <div class="row">
                     <div class="col-sm-5 col-md-6 col-12 pb-4">
-                        <h1 >Comentarios</h1>
+                        <h1 class="mt-2">Comentarios</h1>
                         <?php
                              //  $query3 = 'SELECT * FROM tComentarios WHERE movie_id='.$movie_id; 
                             // $query3 = 'SELECT *, tuser.username, tuser.profile_image from tcomentarios INNER JOIN tuser ON tcomentarios.usuario_id = tuser.id';
@@ -194,7 +215,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                             <br>
                             <p><?php echo $row['comentario'] ?></p>
                         </div>
-                    <?php }
+                        <?php }
                      mysqli_close($mysqli);?>
                     </div>
                     <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
@@ -202,14 +223,15 @@ require __DIR__ . '/../php_util/db_connection.php';
                             <div class="form-group" id="form-comment">
                                 <h4>Deja tu comentario</h4>
                                 <label for="message">Mensaje</label>
-                                <textarea  name="new_comment" id="" msg cols="30" rows="5" class="form-control  text-light"
-                                    style="background-color: #212529 ;"></textarea>
+                                <textarea name="new_comment" id="" msg cols="30" rows="5"
+                                    class="form-control  text-light" style="background-color: #212529 ;"></textarea>
                             </div>
-                          
+
 
                             <div class="form-group" id="form-comment-div">
                                 <input type="hidden" name="movie_id" value="<?php echo $movie_id; ?>">
-                                <button type="submit" value="Comentar" class="btn btn-primary mt-2 p-2 mb-4">Comentar</button>
+                                <button type="submit" value="Comentar"
+                                    class="btn btn-primary mt-2 p-2 mb-4">Comentar</button>
                                 <?php if(isset($_SESSION['error'])){
                                 ?>
                                 <div class="alert alert-danger text-center" style="margin-top:20px;">
@@ -222,12 +244,14 @@ require __DIR__ . '/../php_util/db_connection.php';
                         </form>
                     </div>
                 </div>
-               
-        </section>
-       
+
+            </section>
+
+        </div>
+
     </div>
 
-   
+    </div>
 
 
     <footer class="bg-dark text-center text-white ">
@@ -236,29 +260,29 @@ require __DIR__ . '/../php_util/db_connection.php';
             <!-- Section: Social media -->
             <section class="mb-4">
                 <!-- Facebook -->
-                <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" facebook" src="./assets/images/facebook.png">
+                <a class="btn  btn-floating m-1 " href="https://facebook.com/">
+                    <img alt=" facebook" src="./assets/images/facebook.png">
                 </a>
 
                 <!-- Twitter -->
-                <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" twitter" src="./assets/images/gorjeo.png">
+                <a class="btn  btn-floating m-1 " href="https://twitter.com/Mol0k/">
+                    <img alt=" twitter" src="./assets/images/gorjeo.png">
                 </a>
 
                 <!-- Tik Tok -->
-                <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" twitter" src="./assets/images/tik-tok.png">
+                <a class="btn  btn-floating m-1 " href="https://tiktok.com/">
+                    <img alt=" twitter" src="./assets/images/tik-tok.png">
                 </a>
 
                 <!-- Instagram -->
-                <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" instagram" src="./assets/images/instagram.png">
+                <a class="btn  btn-floating m-1 " href="https://instagram.com">
+                    <img alt=" instagram" src="./assets/images/instagram.png">
                 </a>
 
 
                 <!-- Github -->
-                <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" github" src="./assets/images/github.png">
+                <a class="btn  btn-floating m-1 " href="https://github.com/Mol0k/MovieList/">
+                    <img alt=" github" src="./assets/images/github.png">
                 </a>
             </section>
             <!-- Section: Social media -->
@@ -275,8 +299,6 @@ require __DIR__ . '/../php_util/db_connection.php';
 
 
 
-    </div>
-
     <!-- jQuery + Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
@@ -289,7 +311,7 @@ require __DIR__ . '/../php_util/db_connection.php';
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
     </script>
-   
+
 </body>
 
 </html>

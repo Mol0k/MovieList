@@ -10,7 +10,7 @@ if(!isset($_SESSION['user_id']) & empty($_SESSION['user_id'])){
 	}
 if(isset($_GET['id']) & !empty($_GET['id'])){
 	$movie_id = $_GET['id'];
-	echo $sql = "INSERT INTO twatchlist (movie_id, usuario_id) VALUES ($movie_id, $user_id)";
+	$sql = "INSERT INTO twatchlist (movie_id, usuario_id) VALUES ($movie_id, $user_id)";
 	$res = mysqli_query($mysqli, $sql);
 	if($res){
 		header('location: watchlist.php');
