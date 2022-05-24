@@ -12,6 +12,15 @@ if(!isset($_SESSION['user_id']) & empty($_SESSION['user_id'])){
 		header('location: login.php');
 }
 if(isset($_GET['id']) & !empty($_GET['id'])){
+
+	
+		$movie_id = $_GET['id'];
+		$prueba = "SELECT * FROM `tmovie` WHERE id = ? ";
+		$stmt_prueba = $mysqli ->prepare($prueba);
+		$stmt_prueba -> bind_param("i", $movie_id);
+		$stmt_prueba -> execute();
+		$result_3= $stmt_prueba->get_result();
+		$row2 = $result_3->fetch_array();
 	
 		$query = "SELECT * FROM `twatchlist` WHERE usuario_id = ? AND movie_id = ?";
 		$stmt_select = $mysqli ->prepare($query);
@@ -36,8 +45,10 @@ if(isset($_GET['id']) & !empty($_GET['id'])){
 		$stmt_del_insert ->bind_param("ii", $movie_id, $user_id);
 		$stmt_del_insert ->execute();
 		$stmt_del_insert ->close();
-		header('location: watchlist.php');
-		
+		// header('location: watchlist.php');
+		// header('location: watchlist.php');
+		header("Location:movies.php?id=".$row2['id']);
+		$_SESSION['añadida_watchlist']  = "Película añadida a la watchlist.";
 		die();
 	
 }else{
