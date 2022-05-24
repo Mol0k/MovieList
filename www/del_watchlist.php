@@ -5,20 +5,29 @@ require __DIR__ . '/../php_util/db_connection.php';
 session_start();
 $mysqli = get_db_connection_or_die();
 $user_id = $_SESSION['user_id'];
+$movie_id = $_GET['id'];
 if(!isset($_SESSION['user_id']) & empty($_SESSION['user_id'])){
 		header('location: login.php');
 	}
 if(isset($_GET['id']) & !empty($_GET['id'])){
-	$movie_id = $_GET['id'];
-	$sql = "DELETE FROM twatchlist WHERE id=$movie_id";
-	$res = mysqli_query($mysqli, $sql);
-	if($res){
+
+		$select_w = "SELECT * FROM `twatchlist` WHERE usuario_id = ? AND movie_id = ?";
+		$stmt_select = $mysqli ->prepare($select_w);
+		$stmt_select -> bind_param("ii", $user_id, $movie_id);
+		$stmt_select -> execute();
+		$result_2 = $stmt_select->get_result();
+		$row = $result_2->fetch_array();
+	if($row){
+		$del_list = "DELETE FROM `twatchlist` WHERE `twatchlist`.`id` = ?";
+		$stmt_del = $mysqli->prepare($del_list);
+		$stmt_del ->bind_param("i", $row['id']);
+		$stmt_del ->execute();
+		$stmt_del ->close();
 		header('location: watchlist.php');
-		//echo "redirect to wish list page";
+		die();
 	}
 }else{
-	
-    echo "no se ha podido borrar";
+	header('location: main.php');
 }
 
 ?>

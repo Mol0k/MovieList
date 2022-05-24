@@ -11,8 +11,10 @@ require __DIR__ . '/../php_util/db_connection.php';
     if(isset($_POST['user_id'])){
         $user_id = $_SESSION['user_id'];
     }
-
-
+    //CONSULTA PARA COMPROBAR SI UN USUARIO ES ADMIN O UN USUARIO NORMAL
+    $consult_admin = "SELECT roles FROM tuser WHERE id = " .$_SESSION['user_id'];
+    $result_admin = mysqli_query($mysqli, $consult_admin) or die(mysqli_error($mysqli));
+    $admin = mysqli_fetch_array($result_admin);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -45,6 +47,7 @@ require __DIR__ . '/../php_util/db_connection.php';
         overflow: hidden;
         height: 440px;
     }
+    
     </style>
     <title>MovieList</title>
 </head>
@@ -79,9 +82,11 @@ require __DIR__ . '/../php_util/db_connection.php';
                     <li class="nav-item">
                         <a class="nav-link" href="#">Películas deseadas</a>
                     </li>
+                    <?php if ($admin['roles'] == "admin"){ ?> 
                     <li class="nav-item">
                         <a class="nav-link" href="add_movie.php">Añadir Películas</a>
                     </li>
+                    <?php } ?>
                     <?php } ?>
                 </ul>
                 <form class="d-flex justify-content-end ms-2" action="backend-search.php" method="GET">
@@ -183,7 +188,39 @@ require __DIR__ . '/../php_util/db_connection.php';
                     }
                 }
             ?>
-
+          
+            <?php
+            // COMPROBAR SI YA LA TIENE EN LA WHATCHLIST
+            // if(empty($_POST['user_id'])){
+            //     $user_id = $_SESSION['user_id'];
+            // }
+            // $movie_id = $_GET['id'];
+            // $exist = "SELECT * FROM `twatchlist` WHERE usuario_id = ? AND movie_id = ?";
+            // $stmt_2 = $mysqli ->prepare($exist);
+            // $stmt_2 -> bind_param("ii", $user_id, $movie_id);
+            // $stmt_2 -> execute();
+            // $result_2 = $stmt_2->get_result();
+            // $row = $result_2->fetch_array();
+            // if (!empty($_SESSION['user_id'])) {
+               
+            //     if(!empty($row)){
+            //         echo  '<p class="text-danger mt-2"> Ya la tienes en la watchlist</p>';
+            //     } else{
+            //         echo '<p> No la tienes en la watchlist</p>';
+            //     }
+            // }
+            ?>
+            <?php if(isset($_SESSION['error_delete_watchlist'])){
+            ?>
+            <div class="w-25 p-3 alert alert-danger text-center" style="margin-top:20px;">
+                <?php 
+                    echo $_SESSION['error_delete_watchlist']; 
+                ?>
+            </div>
+                <?php
+                    unset($_SESSION['error_delete_watchlist']);
+            }?>
+            
             <section>
                 <div class="row">
                     <div class="col-sm-5 col-md-6 col-12 pb-4">
@@ -216,7 +253,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                             <p><?php echo $row['comentario'] ?></p>
                         </div>
                         <?php }
-                     mysqli_close($mysqli);?>
+                    ;?>
                     </div>
                     <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
                         <form id="algin-form" action="comment.php" method="post">
@@ -248,11 +285,11 @@ require __DIR__ . '/../php_util/db_connection.php';
             </section>
 
         </div>
-
+        
     </div>
 
     </div>
-
+   
 
     <footer class="bg-dark text-center text-white ">
         <!-- Grid container -->

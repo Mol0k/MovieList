@@ -26,9 +26,6 @@ $totoalPages = ceil($allRecrods / $limit);
 // Prev + Next
 $prev = $page - 1;
 $next = $page + 1;
-$consult = "SELECT * FROM tmovie;"; 
-$resultado = mysqli_query($mysqli, $consult) or die(mysqli_error($mysqli));
-$consultid = mysqli_fetch_array($resultado);
 ?>
 
 <!DOCTYPE html
@@ -41,40 +38,34 @@ $consultid = mysqli_fetch_array($resultado);
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-    <!-- <link rel="stylesheet" href="./assets/css/styles.css"> -->
+    <link rel="stylesheet" href="./assets/css/styles.css">
     <style>
     .quitar {
         text-decoration: none;
     }
 
-    .movie_style #boton-cerrar {
+    .movie_card button {
         cursor: pointer;
         border-style: none;
+        background-color: #ff3838;
+        color: #fff;
+        outline: none;
+        box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
         transition: all .5s ease-in-out;
+        line-height: 20px;
+        width: 70px;
+        font-size: 10pt;
+        margin-bottom: 5px;
+        margin-right: 2px;
         position: absolute;
-		top: 0;
-		right: 0;
+        bottom: 0;
+        right: 0;
     }
-	
-    .movie_style #boton-cerrar:hover {
-        transform: scale(.95) translateX(1px);
+
+    .movie_card button:hover {
+        transform: scale(.95) translateX(-5px);
         transition: all .5s ease-in-out;
     }
-	
-	.movie_style {
-        padding: 0 !important;
-        width: 18.9rem;
-        margin: 14px;
-        position: relative;
-        background: #fff;
-        border: 2px solid #fff;
-        box-shadow: 0px 4px 7px rgba(0, 0, 0, .5);
-
-        transition: all .5s cubic-bezier(.8, .5, .2, 1.4);
-        overflow: hidden;
-        height: 440px;
-    }
-	
     </style>
 </head>
 
@@ -165,25 +156,21 @@ $consultid = mysqli_fetch_array($resultado);
         <div class='container-fluid'>
             <div class="row default-row mt-5 mb-1" id="row-1">
                 <div class='container mt-2'>
-				<?php
-                     echo ""; 
-                    ;?>
                     <div class='row justify-content-center wrapperino' id='foco'>
-					
                         <?php while($fila = mysqli_fetch_assoc($res)){?>
-                        <div class='movie_style'>
-						
-                            <?php
-							 echo "<a style='text-decoration: none;color:black' href='movies.php?id=".$fila['movie_id']."'><img  style='width:100%' src='assets/imagenesPortada/".$fila['image']."' ></a>";
-							 echo "
-							 <form method='post' action='del_watchlist.php?id=".$fila['movie_id']."' >
-							 <button id='boton-cerrar' ><img src='assets/images/x-button.png'></button>
-							 </form>";		
-                                   
-								
-                                    
-									
-                           ?>
+                        <div class='movie_card'>
+                            <?php echo "<img   src='assets/imagenesPortada/".$fila['image']."' >" ?>
+                            <div class='descriptions'>
+                                <h3 style='color: #ff3838;margin: 2px; margin-bottom:5px'> <?php echo $fila['title']; ?>
+                                </h3>
+                                <p style="line-height: 20px;height: 70%;"> <?php echo $fila['sinopsis']; ?></p>
+                                <?php
+                                    echo "<form method='post' action='movies.php?id=".$fila['movie_id']."' >
+                                    <button>Mas info</button>
+                                    </form>"
+                                    ?>
+                                <a href="del_watchlist.php?id=<?php echo $fila['movie_id']; ?>">Borrar</a>
+                            </div>
 							
                         </div>
                         <?php } 
@@ -193,7 +180,7 @@ $consultid = mysqli_fetch_array($resultado);
             </div>
         </div>
     </div>
-	
+
     <nav aria-label="Page navigation example mt-5">
         <ul class="pagination justify-content-center" style="scroll-behavior: smooth;">
             <li class="page-item <?php if($page <= 1){ echo 'disabled'; } ?>">
