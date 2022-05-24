@@ -39,7 +39,7 @@ if(isset($_GET['id']) & !empty($_GET['id'])){
 		$_SESSION['error_delete_watchlist']  = "Película borrada de la watchlist.";
 		die();
 	}
-	
+	if (!empty($_SESSION['user_id'])) {
 		$insert = "INSERT INTO `twatchlist`(movie_id, usuario_id) VALUES(?,?)";
 		$stmt_del_insert = $mysqli->prepare($insert);
 		$stmt_del_insert ->bind_param("ii", $movie_id, $user_id);
@@ -50,6 +50,11 @@ if(isset($_GET['id']) & !empty($_GET['id'])){
 		header("Location:movies.php?id=".$row2['id']);
 		$_SESSION['añadida_watchlist']  = "Película añadida a la watchlist.";
 		die();
+	}else{
+        $_SESSION['no_logueado_Watchlist']  = "Inicia sesión para poder agregar las pelis.";
+        header("Location: movies.php?id=".$movie_id);
+        exit();
+    }
 	
 }else{
 	header('location: main.php');

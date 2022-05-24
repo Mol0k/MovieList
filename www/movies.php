@@ -47,7 +47,6 @@ require __DIR__ . '/../php_util/db_connection.php';
         overflow: hidden;
         height: 440px;
     }
-    
     </style>
     <title>MovieList</title>
 </head>
@@ -82,11 +81,11 @@ require __DIR__ . '/../php_util/db_connection.php';
                     <li class="nav-item">
                         <a class="nav-link" href="#">Películas deseadas</a>
                     </li>
-              
+
                     <li class="nav-item">
                         <a class="nav-link" href="add_movie.php">Añadir Películas</a>
                     </li>
-           
+
                     <?php } ?>
                 </ul>
                 <form class="d-flex justify-content-end ms-2" action="backend-search.php" method="GET">
@@ -161,34 +160,26 @@ require __DIR__ . '/../php_util/db_connection.php';
                     echo '</div>';
                     echo '</div>';
                     echo '</div>';
-                    if(empty($_SESSION['user_id'])){
-                        echo '<div class="container">';
-                        echo '<div class="row">';
-                        echo '<div class="col-md-12 mt-4">';
-                        echo '<h4 class="text-danger">Para poder agregar la película a la watchlist debes iniciar sesión o registrarte.</h4>';
-                        echo '</div>';
-                        echo '</div>';
-                        echo '</div>';
-                    }else{
-                        echo '<div class="container">';
-                        echo '<div class="row row-cols-auto">';
-                        echo '<div class="col mt-2 ">';
-                        echo '<form  method="post" action="add_to_watchlist.php?id='.$fila['id'].'" >';
-                        echo '<button  type="submit" class="btn btn-primary me-2"> AÑADIR A LA WATCHLIST</button>';   
-                        echo '</form>';
-                        echo '</div>';
-                        echo '<div class="col mt-2">';
-                        echo '<form  method="post" action="" >';
-                        echo '<button  type="submit" class="btn btn-danger"> AÑADIR A DESEADOS</button>';   
-                        echo '</form>';
-                        echo '</div>';
-                        echo '</div>';
+                    
+                    echo '<div class="container">';
+                    echo '<div class="row row-cols-auto">';
+                    echo '<div class="col mt-2 ">';
+                    echo '<form  method="post" action="add_to_watchlist.php?id='.$fila['id'].'" >';
+                    echo '<button  type="submit" class="btn btn-primary me-2"> AÑADIR A LA WATCHLIST</button>';   
+                    echo '</form>';
+                    echo '</div>';
+                    echo '<div class="col mt-2">';
+                    echo '<form  method="post" action="" >';
+                    echo '<button  type="submit" class="btn btn-danger"> AÑADIR A DESEADOS</button>';   
+                    echo '</form>';
+                    echo '</div>';
+                    echo '</div>';         
                         
                         
-                    }
+                    
                 }
             ?>
-          
+
             <?php
             // COMPROBAR SI YA LA TIENE EN LA WHATCHLIST
             // if(empty($_POST['user_id'])){
@@ -210,17 +201,17 @@ require __DIR__ . '/../php_util/db_connection.php';
             //     }
             // }
             ?>
-             <?php if(isset($_SESSION['añadida_watchlist'])){
+            <?php if(isset($_SESSION['añadida_watchlist'])){
             ?>
             <div class="w-25 p-3 alert alert-danger text-center" style="margin-top:20px;">
                 <?php 
                     echo $_SESSION['añadida_watchlist']; 
                 ?>
             </div>
-                <?php
+            <?php
                     unset($_SESSION['añadida_watchlist']);
             }?>
-            
+
             <?php if(isset($_SESSION['error_delete_watchlist'])){
             ?>
             <div class="w-25 p-3 alert alert-danger text-center" style="margin-top:20px;">
@@ -228,10 +219,17 @@ require __DIR__ . '/../php_util/db_connection.php';
                     echo $_SESSION['error_delete_watchlist']; 
                 ?>
             </div>
-                <?php
+            <?php
                     unset($_SESSION['error_delete_watchlist']);
             }?>
-            
+            <?php if(isset($_SESSION['no_logueado_Watchlist'])){
+             ?>
+            <div class="w-25 p-3 alert alert-danger text-center" style="margin-top:20px;">
+                <?php echo $_SESSION['no_logueado_Watchlist']; ?>
+            </div>
+            <?php
+                 unset($_SESSION['no_logueado_Watchlist']);
+                     }?>
             <section>
                 <div class="row">
                     <div class="col-sm-5 col-md-6 col-12 pb-4">
@@ -282,11 +280,19 @@ require __DIR__ . '/../php_util/db_connection.php';
                                     class="btn btn-primary mt-2 p-2 mb-4">Comentar</button>
                                 <?php if(isset($_SESSION['error'])){
                                 ?>
-                                <div class="alert alert-danger text-center" style="margin-top:20px;">
+                                <div class="alert alert-danger text-center mt-0" style="margin-top:20px;">
                                     <?php echo $_SESSION['error']; ?>
                                 </div>
                                 <?php
                                     unset($_SESSION['error']);
+                                }?>
+                                <?php if(isset($_SESSION['error_usuario'])){
+                                ?>
+                                <div class="alert alert-danger text-center mt-0" style="margin-top:20px;">
+                                    <?php echo $_SESSION['error_usuario']; ?>
+                                </div>
+                                <?php
+                                    unset($_SESSION['error_usuario']);
                                 }?>
                             </div>
                         </form>
@@ -296,11 +302,11 @@ require __DIR__ . '/../php_util/db_connection.php';
             </section>
 
         </div>
-        
+
     </div>
 
     </div>
-   
+
 
     <footer class="bg-dark text-center text-white ">
         <!-- Grid container -->
