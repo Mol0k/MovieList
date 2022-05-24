@@ -49,7 +49,7 @@ session_start();
         .quitar{
             text-decoration:none;
         }
-        .movie_card button {
+        .movie_card #boton-mas {
             cursor: pointer;
             border-style: none;
             background-color: #ff3838;
@@ -67,7 +67,29 @@ session_start();
             right:0;
         }
         
-        .movie_card button:hover {
+        .movie_card #boton-mas:hover {
+            transform: scale(.95) translateX(-5px);
+            transition: all .5s ease-in-out;
+        }
+        .movie_card #boton-watchlist {
+            cursor: pointer;
+            border-style: none;
+            background-color: #ff3838;
+            color: #fff;
+            outline: none;
+            box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
+            transition: all .5s ease-in-out;
+            line-height: 20px;
+            width: 100px;
+            font-size: 10pt;
+            margin-bottom: 5px;
+            margin-left: 2px;
+            position:absolute;
+            bottom:0;
+            left:0;
+        }
+        
+        .movie_card #boton-watchlist:hover {
             transform: scale(.95) translateX(-5px);
             transition: all .5s ease-in-out;
         }
@@ -231,9 +253,15 @@ session_start();
                                         <?php echo $author['sinopsis']; ?>
                                     </p>
                                     <?php
+                                    
                                     echo "<form method='post' action='movies.php?id=".$author['id']."' >
-                                    <button>Mas info</button>
-                                    </form>"
+                                    <button id='boton-mas'>Mas info</button>
+                                    </form>";
+                                    if(!empty($_SESSION['user_id'])){
+                                    echo '<form  method="post" action="add_to_watchlist.php?id='.$consultid['id'].'" >
+                                    <button id="boton-watchlist">Añadir watchlist</button>
+                                    </form>';
+                                    }
                                     ?>
                                     
                             </div>

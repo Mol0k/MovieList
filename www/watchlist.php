@@ -134,9 +134,9 @@ $consultid = mysqli_fetch_array($resultado);
 
                                         if(empty($profile_image)){
                                             $profile_image = "default-user.png";
-                                            echo "<img width='35' height='35' class='rounded-circle' src='assets/images/".$profile_image."' >" ;
+                                            echo "<img width='35' height='35' alt='profile_image' class='rounded-circle' src='assets/images/".$profile_image."' >" ;
                                         }else{ 
-                                            echo "<img width='35' height='35' class='rounded-circle' src='assets/imagenesUsuario/".$row['profile_image']."' >" ; 
+                                            echo "<img width='35' height='35'alt ='default_image' class='rounded-circle' src='assets/imagenesUsuario/".$row['profile_image']."' >" ; 
                                         }
                                     ?>
                         </a>
@@ -165,24 +165,16 @@ $consultid = mysqli_fetch_array($resultado);
         <div class='container-fluid'>
             <div class="row default-row mt-5 mb-1" id="row-1">
                 <div class='container mt-2'>
-				<?php
-                     echo ""; 
-                    ;?>
                     <div class='row justify-content-center wrapperino' id='foco'>
-					
                         <?php while($fila = mysqli_fetch_assoc($res)){?>
                         <div class='movie_style'>
 						
                             <?php
-							 echo "<a style='text-decoration: none;color:black' href='movies.php?id=".$fila['movie_id']."'><img  style='width:100%' src='assets/imagenesPortada/".$fila['image']."' ></a>";
+							 echo "<a style='text-decoration: none;color:black' href='movies.php?id=".$fila['movie_id']."'><img  alt= 'borrar'style='width:100%' src='assets/imagenesPortada/".$fila['image']."' ></a>";
 							 echo "
 							 <form method='post' action='del_watchlist.php?id=".$fila['movie_id']."' >
 							 <button id='boton-cerrar' ><img src='assets/images/x-button.png'></button>
 							 </form>";		
-                                   
-								
-                                    
-									
                            ?>
 							
                         </div>
@@ -195,7 +187,7 @@ $consultid = mysqli_fetch_array($resultado);
     </div>
 	
     <nav aria-label="Page navigation example mt-5">
-        <ul class="pagination justify-content-center" style="scroll-behavior: smooth;">
+        <ul class="pagination justify-content-center mt-4 my-5" style="scroll-behavior: smooth;">
             <li class="page-item <?php if($page <= 1){ echo 'disabled'; } ?>">
                 <a class="page-link" href="<?php if($page <= 1){ echo '#'; } else { echo "
                                     ?page=" . $prev; } ?>">Previous</a>
@@ -209,7 +201,7 @@ $consultid = mysqli_fetch_array($resultado);
             <?php endfor; ?>
             <li class="page-item <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
                 <a class="page-link" href="<?php if($page >= $totoalPages){ echo '#'; } else {echo "
-                                    ?page=". $next; } ?>">Next</a>
+                ?page=". $next; } ?>">Next</a>
             </li>
         </ul>
     </nav>

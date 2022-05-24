@@ -54,7 +54,7 @@ if (empty($_SESSION['user_id'])) {
                     <li class="nav-item">
                         <a class="nav-link" href="#">Películas</a>
                     </li>
-                    <?php if (empty($_SESSION['user_id'])) {
+                    <?php if (!empty($_SESSION['user_id'])) {
                     ?>
                     <li class="nav-item">
                         <a class="nav-link" href="watchlist.php">Películas Vistas</a>

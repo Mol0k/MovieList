@@ -12,9 +12,9 @@ require __DIR__ . '/../php_util/db_connection.php';
         $user_id = $_SESSION['user_id'];
     }
     //CONSULTA PARA COMPROBAR SI UN USUARIO ES ADMIN O UN USUARIO NORMAL
-    $consult_admin = "SELECT roles FROM tuser WHERE id = " .$_SESSION['user_id'];
-    $result_admin = mysqli_query($mysqli, $consult_admin) or die(mysqli_error($mysqli));
-    $admin = mysqli_fetch_array($result_admin);
+    // $consult_admin = "SELECT roles FROM tuser WHERE id = " .$_SESSION['user_id'];
+    // $result_admin = mysqli_query($mysqli, $consult_admin) or die(mysqli_error($mysqli));
+    // $admin = mysqli_fetch_array($result_admin);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -82,11 +82,11 @@ require __DIR__ . '/../php_util/db_connection.php';
                     <li class="nav-item">
                         <a class="nav-link" href="#">Películas deseadas</a>
                     </li>
-                    <?php if ($admin['roles'] == "admin"){ ?> 
+              
                     <li class="nav-item">
                         <a class="nav-link" href="add_movie.php">Añadir Películas</a>
                     </li>
-                    <?php } ?>
+           
                     <?php } ?>
                 </ul>
                 <form class="d-flex justify-content-end ms-2" action="backend-search.php" method="GET">
@@ -210,6 +210,17 @@ require __DIR__ . '/../php_util/db_connection.php';
             //     }
             // }
             ?>
+             <?php if(isset($_SESSION['añadida_watchlist'])){
+            ?>
+            <div class="w-25 p-3 alert alert-danger text-center" style="margin-top:20px;">
+                <?php 
+                    echo $_SESSION['añadida_watchlist']; 
+                ?>
+            </div>
+                <?php
+                    unset($_SESSION['añadida_watchlist']);
+            }?>
+            
             <?php if(isset($_SESSION['error_delete_watchlist'])){
             ?>
             <div class="w-25 p-3 alert alert-danger text-center" style="margin-top:20px;">
