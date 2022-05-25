@@ -30,7 +30,7 @@ session_start();
   $consult = "SELECT * FROM tmovie;"; 
   $resultado = mysqli_query($mysqli, $consult) or die(mysqli_error($mysqli));
   $consultid = mysqli_fetch_array($resultado);
-
+  $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -43,6 +43,7 @@ session_start();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/css/styles.css">
+    <script src="https://kit.fontawesome.com/b18aa99892.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="#">
     <title>MovieList</title>
     <style>
@@ -80,19 +81,40 @@ session_start();
             box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
             transition: all .5s ease-in-out;
             line-height: 20px;
-            width: 100px;
-            font-size: 10pt;
-            margin-bottom: 5px;
-            margin-left: 2px;
-            position:absolute;
-            bottom:0;
-            left:0;
+            width: 30px;
+            margin-right: 35px;
+            position: absolute;
+            top: 0;
+            right: 0;
         }
         
         .movie_card #boton-watchlist:hover {
             transform: scale(.95) translateX(-5px);
             transition: all .5s ease-in-out;
         }
+
+        .movie_card #boton-favorites {
+            cursor: pointer;
+            border-style: none;
+          
+            background-color: #ff3838;
+            color: #fff;
+            outline: none;
+            box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
+            transition: all .5s ease-in-out;
+            line-height: 20px;
+            width: 30px;
+          
+           
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .movie_card #boton-favorites:hover {
+            transform: scale(.95) translateX(-5px);
+            transition: all .5s ease-in-out;
+        }
+       
         </style>
 </head>
 
@@ -104,7 +126,7 @@ session_start();
             <!-- <a class="navbar-brand" href="main.php">
                     <img src="./assets/images/icon.png" width="24px" height="24px" alt="logo">MovieList
                 </a> -->
-            <a class="navbar-brand" href="#">MovieList</a>
+            <a class="navbar-brand" href="main.php">MovieList</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
                 aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -124,7 +146,7 @@ session_start();
                         <a class="nav-link" href="watchlist.php">Películas Vistas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Películas deseadas</a>
+                        <a class="nav-link" href="favorites.php">Películas favoritas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="add_movie.php">Añadir Películas</a>
@@ -134,12 +156,11 @@ session_start();
                 </ul>
                 <form class="d-flex justify-content-end ms-2" action="backend-search.php" method="GET">
                     
-                    <input class="form-control me-2 my-input"type="text" placeholder="Ejemplo: Sonic" name="query">
-		            <button class="btn btn-primary btn-search" type="submit" value="Search">Buscar</button>
+                    <input class="form-control me-2 my-input" label="boton-search" type="text" placeholder="Ejemplo: Sonic" name="query" required />
+		            <button class="btn btn-primary btn-search" id="boton-search" type="submit" value="Search">Buscar</button>
                     <?php if (empty($_SESSION['user_id'])) {
                     ?>
-                    <button class="btn btn-success btn-signin ms-2" type="submit"
-                        formaction="login.php">Iniciar</button>
+                    <a class="btn btn-success btn-signin ms-2" href="login.php" role="button">Iniciar</a>    
                     <a class="btn btn-danger btn-signout ms-2" href="register.php" role="button">Registrate</a>
 
                     <?php } else { ?>
@@ -148,18 +169,18 @@ session_start();
                         <a href="#" class="nav-link dropdown-toggle bg-dark" data-bs-toggle="dropdown"
                             id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
                             <?php
-                                        $query = "SELECT profile_image FROM tuser WHERE id = " . $_SESSION['user_id'] ;
-                                        $result = mysqli_query($mysqli, $query) or die(mysqli_error($mysqli));
-                                        $row = mysqli_fetch_array($result);
-                                        $profile_image = $row['profile_image'];
+                                $query = "SELECT profile_image FROM tuser WHERE id = " . $_SESSION['user_id'] ;
+                                $result = mysqli_query($mysqli, $query) or die(mysqli_error($mysqli));
+                                $row = mysqli_fetch_array($result);
+                                $profile_image = $row['profile_image'];
 
-                                        if(empty($profile_image)){
-                                            $profile_image = "default-user.png";
-                                            echo "<img width='35' height='35' class='rounded-circle' src='assets/images/".$profile_image."' >" ;
-                                        }else{ 
-                                            echo "<img width='35' height='35' class='rounded-circle' src='assets/imagenesUsuario/".$row['profile_image']."' >" ; 
-                                        }
-                                    ?>
+                                if(empty($profile_image)){
+                                    $profile_image = "default-user.png";
+                                    echo "<img width='35' height='35' class='rounded-circle' src='assets/images/".$profile_image."' >" ;
+                                }else{ 
+                                    echo "<img width='35' height='35' class='rounded-circle' src='assets/imagenesUsuario/".$row['profile_image']."' >" ; 
+                                }
+                            ?>        
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="profile.php">Panel</a>
@@ -253,17 +274,19 @@ session_start();
                                         <?php echo $author['sinopsis']; ?>
                                     </p>
                                     <?php
-                                    
                                     echo "<form method='post' action='movies.php?id=".$author['id']."' >
                                     <button id='boton-mas'>Mas info</button>
                                     </form>";
                                     if(!empty($_SESSION['user_id'])){
-                                    echo '<form  method="post" action="add_to_watchlist.php?id='.$consultid['id'].'" >
-                                    <button id="boton-watchlist">Añadir watchlist</button>
+                                    echo '<form  method="post" action="add_to_watchlist.php?id='.$author['id'].'" >
+                                    <input type="hidden" name="return" value=" '.$link.'"?>
+                                    <button id="boton-watchlist"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>
+                                    </form>';
+                                    echo '<form  method="post" action="add_to_favorites.php?id='.$author['id'].'" >
+                                    <button id="boton-favorites"> <i title="Agregar a favoritos"class="fa-solid fa-heart fa-beat"> </i> </button>
                                     </form>';
                                     }
-                                    ?>
-                                    
+                                    ?>                                 
                             </div>
                             
                         </div>

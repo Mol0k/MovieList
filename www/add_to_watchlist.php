@@ -6,7 +6,7 @@ session_start();
 $mysqli = get_db_connection_or_die();
 $user_id = $_SESSION['user_id'];
 $movie_id = $_GET['id'];
-
+// $return = $_POST['return'];
 
 if(!isset($_SESSION['user_id']) & empty($_SESSION['user_id'])){
 		header('location: login.php');

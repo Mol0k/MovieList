@@ -14,13 +14,14 @@
    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-        <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <script src="https://kit.fontawesome.com/b18aa99892.js" crossorigin="anonymous"></script>
     <style>
         
         .quitar{
             text-decoration:none;
         }
-        .movie_card button {
+        .movie_card #boton-mas {
             cursor: pointer;
             border-style: none;
             background-color: #ff3838;
@@ -38,10 +39,73 @@
             right:0;
         }
         
-        .movie_card button:hover {
+        .movie_card #boton-mas:hover {
             transform: scale(.95) translateX(-5px);
             transition: all .5s ease-in-out;
         }
+        .movie_card #boton-watchlist {
+            cursor: pointer;
+            border-style: none;
+            background-color: #ff3838;
+            color: #fff;
+            outline: none;
+            box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
+            transition: all .5s ease-in-out;
+            line-height: 20px;
+            width: 30px;
+            margin-right: 35px;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        
+        .movie_card #boton-watchlist:hover {
+            transform: scale(.95) translateX(-5px);
+            transition: all .5s ease-in-out;
+        }
+
+        .movie_card #boton-favorites {
+            cursor: pointer;
+            border-style: none;
+          
+            background-color: #ff3838;
+            color: #fff;
+            outline: none;
+            box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
+            transition: all .5s ease-in-out;
+            line-height: 20px;
+            width: 30px;
+          
+           
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .movie_card #boton-favorites:hover {
+            transform: scale(.95) translateX(-5px);
+            transition: all .5s ease-in-out;
+        }
+        .search-message-empty-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 4.5em;
+            }
+
+        .search-message-empty-decal {
+            margin-right: 2rem;
+            font-size: 6rem;
+            transform: rotate(90deg);
+            }
+
+        .search-message-empty-message {
+            font-size: 1.5em;
+            text-rendering: optimizeLegibility;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        
         </style>
 </head>
 <body class="bg-dark" style="background-image: url('./assets/images/movie-detail-bg.png');background-repeat: no-repeat;
@@ -51,7 +115,7 @@
             <!-- <a class="navbar-brand" href="main.php">
                     <img src="./assets/images/icon.png" width="24px" height="24px" alt="logo">MovieList
                 </a> -->
-            <a class="navbar-brand" href="#">MovieList</a>
+            <a class="navbar-brand" href="main.php">MovieList</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
                 aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -59,31 +123,33 @@
             <div class="collapse navbar-collapse" id="navbarScroll">
                 <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
 
+
                     <li class="nav-item">
                         <a class="nav-link active" href="main.php">Inicio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Películas</a>
                     </li>
+                    <?php if (!empty($_SESSION['user_id'])) {
+                    ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Películas Vistas</a>
+                        <a class="nav-link" href="watchlist.php">Películas Vistas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Películas deseadas</a>
+                        <a class="nav-link" href="favorites.php">Películas favoritas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="add_movie.php">Añadir Películas</a>
                     </li>
+                    <?php } ?>
 
                 </ul>
                 <form class="d-flex justify-content-end ms-2" action="backend-search.php" method="GET">
-                    
-                    <input class="form-control me-2 my-input"type="text" placeholder="Enter your search term" name="query" required>
-		            <button class="btn btn-primary btn-search" type="submit" value="Search">Buscar</button>
+                <input class="form-control me-2 my-input" label="boton-search" type="text" placeholder="Ejemplo: Sonic" name="query" required />
+		            <button class="btn btn-primary btn-search" id="boton-search" type="submit" value="Search">Buscar</button>
                     <?php if (empty($_SESSION['user_id'])) {
                     ?>
-                    <button class="btn btn-success btn-signin ms-2" type="submit"
-                        formaction="login.php">Iniciar</button>
+                    <a class="btn btn-success btn-signin ms-2" href="login.php" role="button">Iniciar</a>    
                     <a class="btn btn-danger btn-signout ms-2" href="register.php" role="button">Registrate</a>
 
                     <?php } else { ?>
@@ -126,7 +192,7 @@
 	// establezco la longitud mínima de la consulta si lo desea
 	
 	if(strlen($query) >= $min_length){ // if query length is more or equal minimum length then
-		
+		$enlace_actual = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 		$query = htmlspecialchars($query); 
 		// cambio los caracteres utilizados en html por sus equivalentes, por ejemplo < a &gt;
 		
@@ -164,7 +230,13 @@
                                             <h3 style='color: #ff3838;margin: 2px; margin-bottom:5px'>".$row['title']."</h3>
                                             <p style='line-height: 20px;height: 70%;'> ".$row['sinopsis']."</p>
                                             <form method='post' action='movies.php?id=".$row['id']."' >
-                                                <button>Mas info</button>
+                                                <button id='boton-mas'>Mas info</button>
+                                            </form>
+                                            <form  method='post' action='add_to_watchlist.php?id=".$row['id']."' >
+                                                <button id='boton-watchlist'> <i title='Agregar a la watchlist'class='fa-solid fa-circle-plus fa-beat'> </i> </button>
+                                            </form>
+                                            <form  method='post' action='add_to_watchlist.php?id=".$row['id']."' >
+                                                <button id='boton-favorites'> <i title='Agregar a la watchlist'class='fa-solid fa-heart fa-beat'> </i> </button>
                                             </form>
                                         </div>
                                     </div>
@@ -178,7 +250,18 @@
 			
 		}
 		else{ // si no hay filas coincidentes hacer lo siguiente
-			echo "No hay resultados";
+            echo "
+            <div class='search-message-empty-container text-light'>
+                <span class='search-message-empty-decal'>
+                    <span class='search-message-empty-decal-eyes'>:</span>
+                    <span>(</span>
+                </span>
+                <h2 class='search-message-empty-message'>
+                   Sin resultados.
+                </h2>
+            </div>
+            ";
+            
 		}
 		
 	}
@@ -187,7 +270,7 @@
 	}
 ?>
 </div>
-<footer class="bg-dark text-center text-white ">
+<footer class="bg-dark text-center text-white fixed-bottom ">
         <!-- Grid container -->
         <div class="container p-4 pb-0">
             <!-- Section: Social media -->

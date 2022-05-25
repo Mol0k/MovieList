@@ -79,13 +79,11 @@
 
                 </ul>
                 <form class="d-flex justify-content-end ms-2">
-                    <input class="form-control me-2 my-input" type="search" placeholder="Buscar peliculas"
-                        aria-label="Search">
-                    <button class="btn btn-primary btn-search" type="submit">Buscar</button>
+                    <input class="form-control me-2 my-input" label="boton-search" type="text" placeholder="Ejemplo: Sonic" name="query" required />
+		            <button class="btn btn-primary btn-search" id="boton-search" type="submit" value="Search">Buscar</button>
                     <?php if (empty($_SESSION['user_id'])) {
                     ?>
-                    <button class="btn btn-success btn-signin ms-2" type="submit"
-                        formaction="login.php">Iniciar</button>
+                    <a class="btn btn-success btn-signin ms-2" href="login.php" role="button">Iniciar</a>    
                     <a class="btn btn-danger btn-signout ms-2" href="register.php" role="button">Registrate</a>
 
                     <?php } else { ?>

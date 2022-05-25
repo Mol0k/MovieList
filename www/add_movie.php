@@ -72,7 +72,7 @@ if (empty($_SESSION['user_id'])) {
             <!-- <a class="navbar-brand" href="main.php">
                     <img src="./assets/images/icon.png" width="24px" height="24px" alt="logo">MovieList
                 </a> -->
-            <a class="navbar-brand" href="#">MovieList</a>
+            <a class="navbar-brand" href="main.php">MovieList</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
                 aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -90,7 +90,7 @@ if (empty($_SESSION['user_id'])) {
                         <a class="nav-link" href="#">Películas Vistas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Películas deseadas</a>
+                        <a class="nav-link" href="favorites.php">Películas favoritas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="add_movie.php">Añadir Películas</a>
@@ -98,13 +98,11 @@ if (empty($_SESSION['user_id'])) {
 
                 </ul>
                 <form class="d-flex justify-content-end ms-2" action="backend-search.php" method="GET">
-                    <input class="form-control me-2 my-input" type="search" placeholder="Buscar peliculas"
-                        aria-label="Search">
-                    <button class="btn btn-primary btn-search" type="submit">Buscar</button>
+                    <input class="form-control me-2 my-input" label="boton-search" type="text" placeholder="Ejemplo: Sonic" name="query" required />
+		            <button class="btn btn-primary btn-search" id="boton-search" type="submit" value="Search">Buscar</button>
                     <?php if (empty($_SESSION['user_id'])) {
                     ?>
-                    <button class="btn btn-success btn-signin ms-2" type="submit"
-                        formaction="login.php">Iniciar</button>
+                    <a class="btn btn-success btn-signin ms-2" href="login.php" role="button">Iniciar</a>    
                     <a class="btn btn-danger btn-signout ms-2" href="register.php" role="button">Registrate</a>
 
                     <?php } else { ?>
