@@ -13,7 +13,10 @@
   }
   $movie_id = $_POST['movie_id'];
   $comentario = $_POST['new_comment'];
-  $date = date('Y-m-d h:i:sa');
+
+  $date = date("Y-m-d H:i:s"); 
+
+ 
   if(!empty($_POST["new_comment"]) ){
     if (!empty($_SESSION['user_id'])) {
       $query = "INSERT INTO tComentarios(comentario, movie_id, usuario_id, fecha_comentario)
