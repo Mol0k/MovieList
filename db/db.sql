@@ -25,13 +25,20 @@ CREATE TABLE tComentarios (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   comentario VARCHAR(2000),
   movie_id INTEGER NOT NULL,
-  fecha_comentario DATE,
+  fecha_comentario DATETIME,
   usuario_id INTEGER NOT NULL,
   FOREIGN KEY (movie_id) REFERENCES tMovie(id),
   FOREIGN KEY (usuario_id) REFERENCES tUser(id)
 );
 
 CREATE TABLE tWatchlist (
+  id INTEGER PRIMARY KEY AUTO_INCREMENT,
+  usuario_id INTEGER NOT NULL,
+  movie_id INTEGER NOT NULL,
+  FOREIGN KEY (movie_id) REFERENCES tMovie(id),
+  FOREIGN KEY (usuario_id) REFERENCES tUser(id)
+);
+CREATE TABLE tFavorites (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   usuario_id INTEGER NOT NULL,
   movie_id INTEGER NOT NULL,
