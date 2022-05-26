@@ -16,7 +16,7 @@ session_start();
   $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 5;
   $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
   $paginationStart = ($page - 1) * $limit;
-  $authors = $mysqli->query("SELECT * FROM tmovie ORDER BY id ASC LIMIT $paginationStart, $limit")->fetch_all(MYSQLI_ASSOC);
+  $movies = $mysqli->query("SELECT * FROM tmovie ORDER BY id ASC LIMIT $paginationStart, $limit")->fetch_all(MYSQLI_ASSOC);
   // Get total records
   $sql = $mysqli->query("SELECT count(id) AS id FROM tmovie")->fetch_all(MYSQLI_ASSOC);
   $allRecrods = $sql[0]['id'];
@@ -121,80 +121,9 @@ session_start();
 <body class="bg-dark" style="background-image: url('./assets/images/movie-detail-bg.png');background-repeat: no-repeat;
     background-size: cover;">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <div class="container-fluid">
-            <!-- <a class="navbar-brand" href="main.php">
-                    <img src="./assets/images/icon.png" width="24px" height="24px" alt="logo">MovieList
-                </a> -->
-            <a class="navbar-brand" href="main.php">MovieList</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
-                aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarScroll">
-                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-
-                    <li class="nav-item">
-                        <a class="nav-link active" href="main.php">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="all_movies.php">Películas</a>
-                    </li>
-                    <?php if (!empty($_SESSION['user_id'])) {
-                    ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="watchlist.php">Películas Vistas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="favorites.php">Películas favoritas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="add_movie.php">Añadir Películas</a>
-                    </li>
-                    <?php } ?>
-
-                </ul>
-                <form class="d-flex justify-content-end ms-2" action="backend-search.php" method="GET">
-                    
-                    <input class="form-control me-2 my-input" label="boton-search" type="text" placeholder="Ejemplo: Sonic" name="query" required />
-		            <button class="btn btn-primary btn-search" id="boton-search" type="submit" value="Search">Buscar</button>
-                    <?php if (empty($_SESSION['user_id'])) {
-                    ?>
-                    <a class="btn btn-success btn-signin ms-2" href="login.php" role="button">Iniciar</a>    
-                    <a class="btn btn-danger btn-signout ms-2" href="register.php" role="button">Registrate</a>
-
-                    <?php } else { ?>
-                    <ul class="navbar-nav bg-dark"">
-                            <li class=" nav-item dropdown ms-2">
-                        <a href="#" class="nav-link dropdown-toggle bg-dark" data-bs-toggle="dropdown"
-                            id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
-                            <?php
-                                $query = "SELECT profile_image FROM tuser WHERE id = " . $_SESSION['user_id'] ;
-                                $result = mysqli_query($mysqli, $query) or die(mysqli_error($mysqli));
-                                $row = mysqli_fetch_array($result);
-                                $profile_image = $row['profile_image'];
-
-                                if(empty($profile_image)){
-                                    $profile_image = "default-user.png";
-                                    echo "<img width='35' height='35' class='rounded-circle' src='assets/images/".$profile_image."' >" ;
-                                }else{ 
-                                    echo "<img width='35' height='35' class='rounded-circle' src='assets/imagenesUsuario/".$row['profile_image']."' >" ; 
-                                }
-                            ?>        
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="profile.php">Panel</a>
-                            <a class="dropdown-item" href="edit_profile.php">Editar
-                                perfil</a>
-                            <a class="dropdown-item" href="logout.php">Log Out</a>
-                        </div>
-                        </li>
-                    </ul>
-                    <?php } ?>
-                </form>
-            </div>
-        </div>
-    </nav>
+   
+    <!-- Incluir el header -->
+    <?php include "header.php"; ?> 
 
     <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
@@ -262,27 +191,27 @@ session_start();
                     <!-- Esto es para cuando le doy click en la imagen que me vaya para otra pag -->
                     
                     <div class="row justify-content-center wrapperino" id="foco">
-                        <?php foreach($authors as $author): ?>
+                        <?php foreach($movies as $movie): ?>
                         
                         <div class="movie_card">
-                            <?php echo "<img   src='assets/imagenesPortada/".$author['image']."' >" ?>
+                            <?php echo "<img   src='assets/imagenesPortada/".$movie['image']."' >" ?>
                             <div class="descriptions">
                                 <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                                    <?php echo $author['title']; ?>
+                                    <?php echo $movie['title']; ?>
                                     </h1>
                                     <p style="line-height: 20px;height: 70%;">
-                                        <?php echo $author['sinopsis']; ?>
+                                        <?php echo $movie['sinopsis']; ?>
                                     </p>
                                     <?php
-                                    echo "<form method='post' action='movies.php?id=".$author['id']."' >
+                                    echo "<form method='post' action='movies.php?id=".$movie['id']."' >
                                     <button id='boton-mas'>Mas info</button>
                                     </form>";
                                     if(!empty($_SESSION['user_id'])){
-                                    echo '<form  method="post" action="add_to_watchlist.php?id='.$author['id'].'" >
+                                    echo '<form  method="post" action="add_to_watchlist.php?id='.$movie['id'].'" >
                                     <input type="hidden" name="return" value=" '.$link.'"?>
-                                    <button id="boton-watchlist"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>
+                                    <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>
                                     </form>';
-                                    echo '<form  method="post" action="add_to_favorites.php?id='.$author['id'].'" >
+                                    echo '<form  method="post" action="add_to_favorites.php?id='.$movie['id'].'" >
                                     <button id="boton-favorites"> <i title="Agregar a favoritos"class="fa-solid fa-heart fa-beat"> </i> </button>
                                     </form>';
                                     }
@@ -297,7 +226,7 @@ session_start();
                         <ul class="pagination justify-content-center" style="scroll-behavior: smooth;">
                             <li class="page-item <?php if($page <= 1){ echo 'disabled'; } ?>">
                                 <a class="page-link" href="<?php if($page <= 1){ echo '#'; } else { echo "
-                                    ?page=" . $prev; } ?>">Previous</a>
+                                    ?page=" . $prev; } ?>">Anterior</a>
                             </li>
                             <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
                             <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
@@ -308,7 +237,7 @@ session_start();
                             <?php endfor; ?>
                             <li class="page-item <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
                                 <a class="page-link" href="<?php if($page >= $totoalPages){ echo '#'; } else {echo "
-                                    ?page=". $next; } ?>">Next</a>
+                                    ?page=". $next; } ?>">Siguiente</a>
                             </li>
                         </ul>
                     </nav>
@@ -317,56 +246,13 @@ session_start();
             <div class="row default-row mt-1 mb-1" id="row-2">
             </div>
         </div>
-        
-       
-        <footer class="bg-dark text-center text-white ">
-            <!-- Grid container -->
-            <div class="container p-4 pb-0">
-                <!-- Section: Social media -->
-                <section class="mb-4">
-                    <!-- Facebook -->
-                    <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" facebook" src="./assets/images/facebook.png">
-                    </a>
-
-                    <!-- Twitter -->
-                    <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" twitter" src="./assets/images/gorjeo.png">
-                    </a>
-
-                    <!-- Tik Tok -->
-                    <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" twitter" src="./assets/images/tik-tok.png">
-                    </a>
-
-                    <!-- Instagram -->
-                    <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" instagram" src="./assets/images/instagram.png">
-                    </a>
-
-
-                    <!-- Github -->
-                    <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" github" src="./assets/images/github.png">
-                    </a>
-                </section>
-                <!-- Section: Social media -->
-            </div>
-
-
-            <!-- Copyright -->
-            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-                © 2022 Copyright:
-                <a class="text-white" href="#">MovieList</a>
-            </div>
-            <!-- Copyright -->
-        </footer>
-
-
-
     </div>
 
-    <!-- jQuery + Bootstrap JS -->
+    <!-- Incluir el footer -->
+    <?php include "footer.php"; ?>  
+    
+</body>
+<!-- jQuery + Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
     $(document).ready(function() {
@@ -395,6 +281,4 @@ session_start();
     });
     </script>
     <script src="/assets/js/index.js" type="module"></script>
-</body>
-
 </html>

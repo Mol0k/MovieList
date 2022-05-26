@@ -188,7 +188,7 @@ $consultid = mysqli_fetch_array($resultado);
         <ul class="pagination justify-content-center mt-4 my-5" style="scroll-behavior: smooth;">
             <li class="page-item <?php if($page <= 1){ echo 'disabled'; } ?>">
                 <a class="page-link" href="<?php if($page <= 1){ echo '#'; } else { echo "
-                                    ?page=" . $prev; } ?>">Previous</a>
+                                    ?page=" . $prev; } ?>">Anterior</a>
             </li>
             <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
             <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
@@ -199,7 +199,7 @@ $consultid = mysqli_fetch_array($resultado);
             <?php endfor; ?>
             <li class="page-item <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
                 <a class="page-link" href="<?php if($page >= $totoalPages){ echo '#'; } else {echo "
-                ?page=". $next; } ?>">Next</a>
+                ?page=". $next; } ?>">Siguiente</a>
             </li>
         </ul>
     </nav>
