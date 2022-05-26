@@ -138,7 +138,7 @@ session_start();
                         <a class="nav-link active" href="main.php">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Películas</a>
+                        <a class="nav-link" href="all_movies.php">Películas</a>
                     </li>
                     <?php if (!empty($_SESSION['user_id'])) {
                     ?>

@@ -192,7 +192,7 @@ $consultid = mysqli_fetch_array($resultado);
             </li>
             <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
             <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
-                <a class="page-link" href="watchlist.php?page=<?= $i; ?>">
+                <a class="page-link" href="favorites.php?page=<?= $i; ?>">
                     <?= $i; ?>
                 </a>
             </li>
