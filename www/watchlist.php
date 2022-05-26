@@ -26,6 +26,7 @@ $totoalPages = ceil($allRecrods / $limit);
 // Prev + Next
 $prev = $page - 1;
 $next = $page + 1;
+
 $consult = "SELECT * FROM tmovie;"; 
 $resultado = mysqli_query($mysqli, $consult) or die(mysqli_error($mysqli));
 $consultid = mysqli_fetch_array($resultado);
@@ -97,7 +98,7 @@ $consultid = mysqli_fetch_array($resultado);
                         <a class="nav-link active" href="main.php">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Películas</a>
+                        <a class="nav-link" href="all_movies.php">Películas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="watchlist.php">Películas Vistas</a>
@@ -154,8 +155,8 @@ $consultid = mysqli_fetch_array($resultado);
     <?php
 
 
-	$query3 = 'SELECT * FROM tmovie INNER JOIN twatchlist ON tmovie.id = twatchlist.movie_id INNER JOIN tuser ON twatchlist.usuario_id = tuser.id where twatchlist.usuario_id = ' . $user_id;		
-	$res = mysqli_query($mysqli, $query3);
+	$consult_peli_visionadas = 'SELECT * FROM tmovie INNER JOIN twatchlist ON tmovie.id = twatchlist.movie_id INNER JOIN tuser ON twatchlist.usuario_id = tuser.id WHERE twatchlist.usuario_id = ' . $user_id;		
+	$result_peli_visionadas = mysqli_query($mysqli, $consult_peli_visionadas);
 	
 	?>
     <div class='cards-container card-resp'>
@@ -164,7 +165,8 @@ $consultid = mysqli_fetch_array($resultado);
             <div class="row default-row mt-5 mb-1" id="row-1">
                 <div class='container mt-2'>
                     <div class='row justify-content-center wrapperino' id='foco'>
-                        <?php while($fila = mysqli_fetch_assoc($res)){?>
+                        <?php while($fila = mysqli_fetch_assoc($result_peli_visionadas)){?>
+                            
                         <div class='movie_style'>
                             
                             <?php
@@ -176,19 +178,32 @@ $consultid = mysqli_fetch_array($resultado);
                            ?>
 							
                         </div>
-                        <?php } 
-							?>
+                        <?php } ?>
+							
                     </div>
                 </div>
             </div>
         </div>
     </div>
-	
+    <?php
+    //
+	$consult_peli_visionadas = 'SELECT * FROM tuser INNER JOIN twatchlist ON tuser.id = twatchlist.movie_id INNER JOIN tmovie ON twatchlist.usuario_id = tmovie.id WHERE twatchlist.usuario_id  = ' . $user_id;		
+	$result_peli_visionadas = mysqli_query($mysqli, $consult_peli_visionadas);
+    $fila_visionadas = mysqli_fetch_array($result_peli_visionadas);?>
+    <?php if(!$fila_visionadas){ ?>
+        <div class="text-center mt-5" style="color:red">
+            <h1 class=" mb-5">
+              NO TIENES NINGUNA PELÍCULA
+            </h1>
+        </div>
+    <?php } ?>
+
+    
     <nav aria-label="Page navigation example mt-5">
-        <ul class="pagination justify-content-center mt-4 my-5" style="scroll-behavior: smooth;">
+        <ul class="pagination justify-content-center mt-4 my-5 " style="scroll-behavior: smooth;">
             <li class="page-item <?php if($page <= 1){ echo 'disabled'; } ?>">
                 <a class="page-link" href="<?php if($page <= 1){ echo '#'; } else { echo "
-                                    ?page=" . $prev; } ?>">Previous</a>
+                                    ?page=" . $prev; } ?>">Anterior</a>
             </li>
             <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
             <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
@@ -199,7 +214,7 @@ $consultid = mysqli_fetch_array($resultado);
             <?php endfor; ?>
             <li class="page-item <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
                 <a class="page-link" href="<?php if($page >= $totoalPages){ echo '#'; } else {echo "
-                ?page=". $next; } ?>">Next</a>
+                ?page=". $next; } ?>">Siguiente</a>
             </li>
         </ul>
     </nav>
