@@ -20,7 +20,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-    <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/style_allmovies.css">
     <script src="https://kit.fontawesome.com/b18aa99892.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="#">
     <style>
@@ -107,7 +107,7 @@
             <!-- <a class="navbar-brand" href="main.php">
                     <img src="./assets/images/icon.png" width="24px" height="24px" alt="logo">MovieList
                 </a> -->
-            <a class="navbar-brand" href="#">MovieList</a>
+            <a class="navbar-brand" href="main.php">MovieList</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
                 aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -119,7 +119,7 @@
                         <a class="nav-link active" href="main.php">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="all_movies">Películas</a>
+                        <a class="nav-link" href="all_movies.php">Películas</a>
                     </li>
                     <?php if (!empty($_SESSION['user_id'])) {
                     ?>
@@ -179,13 +179,7 @@
     </nav>
 
     <div class="cards-container card-resp col mt-2 ">
-
-
-
-        <!-- Quitar el fluid  -->
         <div class="container-fluid">
-
-            <!-- Quitar el row default-row -->
             <div class="row default-row mt-1 mb-1" id="row-1">
                 <div class="col-md-2 col-xs-5">
                     <div class="list-group list-group-light mb-5 mt-5">
@@ -195,8 +189,9 @@
                                 aria-current="true">
                                 TODOS LOS GÉNEROS
                             </button>
+                        
                             <button type="submit" name="btCrimen"
-                                class="list-group-item list-group-item-action px-3 border-0">Crimen</button>
+                                class="list-group-item list-group-item-action px-3 border-0" >Crimen</button>
                             <button type="submit" name="btComedia"
                                 class="list-group-item list-group-item-action px-3 border-0">Comedia</button>
                             <button type="submit" name="btSuspense"
@@ -208,8 +203,7 @@
                             <button type="submit" name="btAventuras"
                                 class="list-group-item list-group-item-action px-3 border-0">Aventuras</button>
                             <button type="submit" name="btCienciaFiccion"
-                                class="list-group-item list-group-item-action px-3 border-0">Ciencia
-                                ficción</button>
+                                class="list-group-item list-group-item-action px-3 border-0">Ciencia  ficción</button>
                             <button type="submit" name="btTerror"
                                 class="list-group-item list-group-item-action px-3 border-0">Terror</button>
                             <button type="submit" name="btMonstruos"
@@ -217,111 +211,18 @@
                             <button type="submit" name="btSuperheroes"
                                 class="list-group-item list-group-item-action px-3 border-0">Superhéroes</button>
                             <button type="submit" name="btFantasiaOscura"
-                                class="list-group-item list-group-item-action px-3 border-0">Fantasía
-                                oscura</button> <button type="submit" name="btFantasia"
+                                class="list-group-item list-group-item-action px-3 border-0">Fantasía  oscura</button> 
+                            <button type="submit" name="btFantasia"
                                 class="list-group-item list-group-item-action px-3 border-0">Fantasía</button>
                             <button type="submit" name="btMisterio"
                                 class="list-group-item list-group-item-action px-3 border-0">Misterio</button>
                             <button type="submit" name="btEspionaje"
                                 class="list-group-item list-group-item-action px-3 border-0">Espionaje</button>
-
-
                             </from>
-
                     </div>
                 </div>
-                <div class="col-md-9 col-xs-7 ">
-                    <div class="container mt-5 ">
-                        <?php if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                        if (isset($_POST['btCrimen'])) {
-                            $crimen = "SELECT * FROM tmovie WHERE GENDER LIKE '%Crimen%'";
-                            $crimen_result = mysqli_query($mysqli, $crimen) or die(mysqli_error($mysqli));?>
-                        <?php  echo '<h1 class="text-center text-light mb-5" >PELÍCULAS DE CRIMEN</h1>'?>
-                        <div class="row justify-content-center wrapperino " id="foco">
-                      
-                            <?php while($fila_genre_crimen = mysqli_fetch_array($crimen_result)){
-                            $variable= unserialize($fila_genre_crimen['gender']);  ?>
-
-                            <div class="movie_card ">
-                                <?php echo "<img   src='assets/imagenesPortada/".$fila_genre_crimen['image']."' >" ?>
-                                <div class="descriptions">
-                                    <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                                        <?php echo $fila_genre_crimen['title']; ?>
-                                        </h1>
-                                        <p style="line-height: 20px;height: 70%;">
-                                            <?php echo $fila_genre_crimen['sinopsis']; ?>
-                                        </p>
-                                        <?php
-                                    echo "<button id='boton-mas'>
-                                    <a style='text-decoration: none;color:white'  href='movies.php?id=".$fila_genre_crimen['id']."'>Mas info</a>
-                                    </button>";
-                                    if(!empty($_SESSION['user_id'])){
-                                    echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_crimen['id'].'" >
-                                    <input type="hidden" name="return" value=" '.$link.'"?>
-                                        <button id="boton-watchlist"> <i title="Agregar a la watchlist"
-                                                class="fa-solid fa-circle-plus fa-beat"> </i> </button>
-                                        </form>';
-                                        echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_crimen['id'].'">
-                                            <button id="boton-favorites"> <i title="Agregar a favoritos"
-                                                    class="fa-solid fa-heart fa-beat"> </i> </button>
-                                        </form>';
-                                        }
-
-
-                                        ?>
-                                </div>
-                            </div>
-                            <?php }
-                         
-                        }elseif (isset($_POST['btComedia'])) {
-                            $comedia = "SELECT * FROM tmovie WHERE GENDER LIKE '%Comedia%'";
-                            $comedia_result = mysqli_query($mysqli, $comedia) or die(mysqli_error($mysqli));?>
-                            <?php  echo '<h1 class="text-center text-light mb-5" >PELÍCULAS DE COMEDIA</h1>'?>
-                            <div class="row justify-content-center wrapperino" id="foco">
-                                <?php while($fila_genre_comedia = mysqli_fetch_array($comedia_result)){
-                            $variable= unserialize($fila_genre_comedia['gender']);  ?>
-                                <div class="movie_card">
-                                    <?php echo "<img   src='assets/imagenesPortada/".$fila_genre_comedia['image']."' >" ?>
-                                    <div class="descriptions">
-                                        <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                                            <?php echo $fila_genre_comedia['title']; ?>
-                                            </h1>
-                                            <p style="line-height: 20px;height: 70%;">
-                                                <?php echo $fila_genre_comedia['sinopsis']; ?>
-                                            </p>
-                                            <?php
-                                             echo "<button id='boton-mas'>
-                                             <a style='text-decoration: none;color:white'  href='movies.php?id=".$fila_genre_comedia['id']."'>Mas info</a>
-                                             </button>";
-                                            if(!empty($_SESSION['user_id'])){
-                                            echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_comedia['id'].'" >
-                                            <input type="hidden" name="return" value=" '.$link.'"?>
-                                            <button id="boton-watchlist"> <i title="Agregar a la watchlist"
-                                                    class="fa-solid fa-circle-plus fa-beat"> </i> </button>
-                                            </form>';
-                                            echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_comedia['id'].'">
-                                                <button id="boton-favorites"> <i title="Agregar a favoritos"
-                                                        class="fa-solid fa-heart fa-beat"> </i> </button>
-                                            </form>';
-                                            }
-
-
-                                            ?>
-                                    </div>
-                                </div>
-                                <?php }
-                        }
-
-                        }
-
-                        
-                    ?>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
+               
+                <?php include "do_genre.php"; ?>           
             </div>
 
         </div>
@@ -375,5 +276,9 @@
    
     
 </body>
-
+<script>
+    if (window.history.replaceState) { // verificamos disponibilidad
+    window.history.replaceState(null, null, window.location.href);
+}
+</script>
 </html>
