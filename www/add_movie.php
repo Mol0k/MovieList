@@ -9,7 +9,23 @@ $mysqli = get_db_connection_or_die();
 if (empty($_SESSION['user_id'])) {
     header('Location: login.php');
 }
+if(isset($_POST['records-limit-addmovie'])){
+    $_SESSION['records-limit-addmovie'] = $_POST['records-limit-addmovie'];
+}
 
+$limit = isset($_SESSION['records-limit-addmovie']) ? $_SESSION['records-limit-addmovie'] : 2;
+$page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
+$paginationStart = ($page - 1) * $limit;
+$movies = $mysqli->query("SELECT * FROM tmovie  LIMIT $paginationStart, $limit")->fetch_all(MYSQLI_ASSOC);
+// Get total records
+$sql = $mysqli->query("SELECT count(id) AS id FROM tmovie")->fetch_all(MYSQLI_ASSOC);
+$allRecrods = $sql[0]['id'];
+
+// Calculate total pages
+$totoalPages = ceil($allRecrods / $limit);
+// Prev + Next
+$prev = $page - 1;
+$next = $page + 1;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,7 +81,8 @@ if (empty($_SESSION['user_id'])) {
 
 </head>
 
-<body class="bg-dark">
+<body class="bg-dark" style="background-image: url('./assets/images/movie-detail-bg.png');background-repeat: no-repeat;
+    background-size: cover;">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
@@ -137,7 +154,7 @@ if (empty($_SESSION['user_id'])) {
             </div>
         </div>
     </nav>
-    <hr class="bg-danger border-2 border-top border-danger" />
+  
     <form action="do_add_movie.php" role="form" class="row p-3 text-light" method="POST" enctype="multipart/form-data">
         <h2>DATOS DE LA PELÍCULA:</h2>
         <div class="form-group row">
@@ -247,11 +264,137 @@ if (empty($_SESSION['user_id'])) {
         <?php } ?>
 
     </form>
+    <div class="text-light d-flex flex-row-reverse bd-highlight mb-3">
+            <form action="add_movie.php" method="post">
+                <select name="records-limit-addmovie" id="records-limit-addmovie" class="custom-select">
+                    <option disabled selected>Límite</option>
+                    <?php foreach([2,4,8,10] as $limit) : ?>
+                    <option
+                        <?php if(isset($_SESSION['records-limit-addmovie']) && $_SESSION['records-limit-addmovie'] == $limit) echo 'selected'; ?>
+                        value="<?= $limit; ?>">
+                        <?= $limit; ?>
+                    </option>
+                    <?php endforeach; ?>
+                </select>
+            </form>
+        </div>
+        <!-- Datatable -->
+        <table class="table table-bordered text-light mb-5">
+            <thead>
+                <tr class="table-success">
+                    <th scope="col">#</th>
+                    <th scope="col">Título</th>
+                    <th scope="col">Sinopsis</th>
+                    <th scope="col">Imagen</th>
+                    <th scope="col">Emisión</th>
+                    <th scope="col">Duración</th>
+                    <th scope="col">Géneros</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach($movies as $movie): 
+                    $generos= unserialize($movie['gender']); 
+                    $array_generos = implode(", ",$generos);
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+                    //formatear fecha
+                    date_default_timezone_set('Europe/Madrid');
+                    setlocale(LC_TIME, 'spanish');
+                    $created= strftime("%x", strtotime($movie['created']));
+                ?>
+                    
+                <tr>
+                    <th scope="row"><?php echo $movie['id']; ?></th>
+                    <td><?php echo $movie['title']; ?></td>
+                    <td><?php echo $movie['sinopsis']; ?></td>
+                    <td><?php echo "<img style='width:30%;height:30%; margin-left: auto;margin-right: auto;display: block;' src='assets/imagenesPortada/".$movie['image']."' >" ?></td>
+                    <td><?php echo $created; ?></td>
+                    <td><?php echo $movie['duration']; ?></td>
+                    <td><?php echo $array_generos;  ?> </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <!-- Pagination -->
+        <nav aria-label="Page navigation example mt-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <?php if($page <= 1){ echo 'disabled'; } ?>">
+                    <a class="page-link"
+                        href="<?php if($page <= 1){ echo '#'; } else { echo "?page=" . $prev; } ?>">Anterior</a>
+                </li>
+                <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
+                <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
+                    <a class="page-link" href="add_movie.php?page=<?= $i; ?>"> <?= $i; ?> </a>
+                </li>
+                <?php endfor; ?>
+                <li class="page-item <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
+                    <a class="page-link"
+                        href="<?php if($page >= $totoalPages){ echo '#'; } else {echo "?page=". $next; } ?>">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    
+    
+      </div>
+    
+  </div>
+
+    <footer class="bg-dark text-center text-white ">
+            <!-- Grid container -->
+            <div class="container p-4 pb-0">
+                <!-- Section: Social media -->
+                <section class="mb-4">
+                    <!-- Facebook -->
+                    <a class="btn  btn-floating m-1 " href="#!" ">
+                      <img alt=" facebook" src="./assets/images/facebook.png">
+                    </a>
+
+                    <!-- Twitter -->
+                    <a class="btn  btn-floating m-1 " href="#!" ">
+                      <img alt=" twitter" src="./assets/images/gorjeo.png">
+                    </a>
+
+                    <!-- Tik Tok -->
+                    <a class="btn  btn-floating m-1 " href="#!" ">
+                      <img alt=" twitter" src="./assets/images/tik-tok.png">
+                    </a>
+
+                    <!-- Instagram -->
+                    <a class="btn  btn-floating m-1 " href="#!" ">
+                      <img alt=" instagram" src="./assets/images/instagram.png">
+                    </a>
+
+
+                    <!-- Github -->
+                    <a class="btn  btn-floating m-1 " href="#!" ">
+                      <img alt=" github" src="./assets/images/github.png">
+                    </a>
+                </section>
+                <!-- Section: Social media -->
+            </div>
+
+
+            <!-- Copyright -->
+            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+                © 2022 Copyright:
+                <a class="text-white" href="#">MovieList</a>
+            </div>
+            <!-- Copyright -->
+    </footer>
+   
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
     </script>
 
+  <!-- jQuery + Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#records-limit-addmovie').change(function () {
+                $('form').submit();
+            })
+        });
     </script>
     <script>
     var show = true;
@@ -269,7 +412,5 @@ if (empty($_SESSION['user_id'])) {
         }
     }
     </script>
-
-</body>
 
 </html>
