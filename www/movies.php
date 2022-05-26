@@ -139,10 +139,10 @@ require __DIR__ . '/../php_util/db_connection.php';
                 die('No se ha especificado un juego');
             }
                 $movie_id = $_GET['id'];
-                $query2 = 'SELECT * FROM tmovie WHERE id='.$movie_id;
-                $result2 = mysqli_query($mysqli, $query2) or die('Query error');
-                while($fila = mysqli_fetch_array($result2)){
-                    $variable= unserialize($fila['gender']); 
+                $consult_movies = 'SELECT * FROM tmovie WHERE id='.$movie_id;
+                $result_movies = mysqli_query($mysqli, $consult_movies) or die('Query error');
+                while($fila = mysqli_fetch_array($result_movies)){
+                    $generos= unserialize($fila['gender']); 
                     echo '<div class="container">';
                     echo '<div class="row">';
                     echo '<div class="col-md-3 mt-4 movie_style">';
@@ -159,8 +159,8 @@ require __DIR__ . '/../php_util/db_connection.php';
                     echo '<p>Fecha de lanzamiento: '.$date.'</p>';
                     echo '<p>Duración: '.$fila['duration'].'. </p>';
                     echo '<h4>Géneros: </h4>';
-                    foreach($variable as $value){
-                        echo '<p class="mb-1">'.$value.' </p>';
+                    foreach($generos as $genero){
+                        echo '<p class="mb-1">'.$genero.' </p>';
                     }
                     echo '</div>';
                     echo '</div>';
@@ -419,7 +419,11 @@ require __DIR__ . '/../php_util/db_connection.php';
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
     </script>
     
-    
+    <script>
+         if (window.history.replaceState) { // verificamos disponibilidad
+    window.history.replaceState(null, null, window.location.href);
+}
+</script>
 
 </body>
 
