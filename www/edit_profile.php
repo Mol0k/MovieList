@@ -88,42 +88,86 @@ $fila_nombre = mysqli_fetch_array($resultado_nombre);
         <h1 class="text-center mt-3">Editar usuario y avatar</h1>
         <div class="row d-flex justify-content-center align-items-center">
             <div class="">
-                <h3 class="mt-2">Hola, <?php echo $fila_nombre['username']; ?> </h3>
+               
                 <hr>
-                <form method="POST" action="update_profile.php" role="form" enctype="multipart/form-data">
+                <form method="POST" action="update_username.php" role="form" enctype="multipart/form-data">
                     <div class="form-group mt-3">
                         <label for="username">Nuevo username:</label>
                         <input type="text" name="username" id="username" class="form-control"
-                            value="<?php echo (isset($_SESSION['username'])) ? $_SESSION['username'] : ''; ?>">
+                            value="">
+                        <!-- <label for="f_nacimientos" class="form-label">Fecha de nacimiento:</label>
+                        <input type="date" class="form-control" name="f_nacimiento" id="f_nacimientos" /> -->
                     </div>
-                    <div class="form-group mt-3">
-                        <label for="imagenUsuario">Sube tu avatar:</label>
-                        <input type="file" name="imagenUsuario" id="imagenUsuario" class="form-control"">
-                    </div>
-                    <button type=" submit" name="update_user" class="btn btn-success mt-3"><span class="glyphicon glyphicon-check"></span> Actualizar usuario</button>
-                            
+                    <button type="submit" name="update_username" class="btn btn-success mt-3"><span class="glyphicon glyphicon-check"></span> Actualizar nombre</button>
                 </form>
+                <form method="POST" action="update_image_profile.php">
+                    <div class="form-group mt-3">
+                        <label for="imagenUsuarios">Sube tu avatar:</label>
+                        <input type="file" name="imagenUsuario" id="imagenUsuarios" class="form-control"">
+                    </div>
+                    <button type="submit" name="update_avatar" class="btn btn-success mt-3"><span class="glyphicon glyphicon-check"></span> Actualizar avatar</button>
+                </form>            
+                
+
                 <!-- MENSAJES QUE SE PINTARAN POR PANTALLA -->
                     
                 <?php if(isset($_SESSION['successUser'])){
                 ?>
-                <div class="alert alert-danger text-center mt-0" style="margin-top:20px;">
+                <div class="alert alert-danger text-center  mt-2" style="margin-top:20px;">
                     <?php echo $_SESSION['successUser']; ?>
                 </div>
                 <?php
                     unset($_SESSION['successUser']);
-                }?> 
-                
-                <?php if(isset($_SESSION['failedUser'])){
+                }?>
+                <?php if(isset($_SESSION['username_ocupado'])){
                 ?>
-                <div class="alert alert-danger text-center mt-0" style="margin-top:20px;">
-                    <?php echo $_SESSION['failedUser']; ?>
+                <div class="alert alert-danger text-center  mt-2" style="margin-top:20px;">
+                    <?php echo $_SESSION['username_ocupado']; ?>
                 </div>
                 <?php
-                    unset($_SESSION['failedUser']);
-                }?>  
+                    unset($_SESSION['username_ocupado']);
+                }?> 
 
-                    
+                 <!-- MENSAJE DE QUE SE HA SUBIDO LA IMAGEN -->
+                <?php if(isset($_SESSION['successProfileImage'])){
+                ?>
+                <div class="alert alert-danger text-center  mt-2" style="margin-top:20px;">
+                    <?php echo $_SESSION['successProfileImage']; ?>
+                </div>
+                <?php
+                    unset($_SESSION['successProfileImage']);
+                }?> 
+                
+                <!-- ERROR DEL TAMAÑO -->
+                <?php if(isset($_SESSION['errorTamanho'])){
+                ?>
+                <div class="alert alert-danger text-center  mt-2" style="margin-top:20px;">
+                    <?php echo $_SESSION['errorTamanho']; ?>
+                </div>
+                <?php
+                    unset($_SESSION['errorTamanho']);
+                }?> 
+
+                <!-- ERROR NO SE HA PODIDO GUARDAR -->
+                <?php if(isset($_SESSION['errorGuardar'])){
+                ?>
+                <div class="alert alert-danger text-center  mt-2" style="margin-top:20px;">
+                    <?php echo $_SESSION['errorGuardar']; ?>
+                </div>
+                <?php
+                    unset($_SESSION['errorGuardar']);
+                }?> 
+                
+                <!-- ERROR GENERICO -->
+                <?php if(isset($_SESSION['errorGenerico'])){
+                ?>
+                <div class="alert alert-danger text-center mt-2" style="margin-top:20px;">
+                    <?php echo $_SESSION['errorGenerico']; ?>
+                </div>
+                <?php
+                    unset($_SESSION['errorGenerico']);
+                }?>
+     
 
             </div>
         </div>
