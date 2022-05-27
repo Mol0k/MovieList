@@ -3,7 +3,7 @@
    * Returns a mysqli object or prints a full HTML error page and ceases execution.
    */
   function get_db_connection_or_die() {
-    $mysqli = new mysqli('localhost', 'root', '1234', 'moviedb');
+    $mysqli = new mysqli('localhost', 'root', '', 'moviedb');
     if ($mysqli->connect_error) {
       echo "<!DOCTYPE html>";
       echo "<html>";
