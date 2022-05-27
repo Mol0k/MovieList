@@ -1,4 +1,4 @@
-<footer class="bg-dark text-center text-white mt-5">
+<footer class="bg-dark text-center text-white foter mt-3">
     <!-- Grid container -->
     <div class="container p-4 pb-0">
         <!-- Section: Social media -->
@@ -29,7 +29,7 @@
               <img alt=" github" src="./assets/images/github.png">
             </a>
         </section>
-        
+
     </div>
 
 

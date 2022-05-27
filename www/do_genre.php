@@ -44,7 +44,7 @@ TABLA tmovie_genres
                               </button>";
                               if(!empty($_SESSION['user_id'])){
                                 echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_all['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'"?>
+                                        <input type="hidden" name="return" value=" '.$link.'">
                                         <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
                                       </form>';
                                 echo '<form method="post" action="add_to_favorites.php?id='.$fila_all['id'].'">
@@ -79,7 +79,7 @@ TABLA tmovie_genres
                               </button>";
                               if(!empty($_SESSION['user_id'])){
                                 echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_crimen['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'"?>
+                                        <input type="hidden" name="return" value=" '.$link.'">
                                         <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
                                       </form>';
                                 echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_crimen['id'].'">
@@ -145,7 +145,7 @@ TABLA tmovie_genres
                               </button>";
                               if(!empty($_SESSION['user_id'])){
                                 echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_suspense['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'"?>
+                                        <input type="hidden" name="return" value=" '.$link.'">
                                         <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
                                       </form>';
                                 echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_suspense['id'].'">
@@ -178,7 +178,7 @@ TABLA tmovie_genres
                               </button>";
                               if(!empty($_SESSION['user_id'])){
                                 echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_accion['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'"?>
+                                        <input type="hidden" name="return" value=" '.$link.'">
                                         <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
                                       </form>';
                                 echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_accion['id'].'">
@@ -211,7 +211,7 @@ TABLA tmovie_genres
                               </button>";
                               if(!empty($_SESSION['user_id'])){
                                 echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_drama['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'"?>
+                                        <input type="hidden" name="return" value=" '.$link.'">
                                         <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
                                       </form>';
                                 echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_drama['id'].'">
@@ -244,7 +244,7 @@ TABLA tmovie_genres
                               </button>";
                               if(!empty($_SESSION['user_id'])){
                                 echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_aventuras['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'"?>
+                                        <input type="hidden" name="return" value=" '.$link.'">
                                         <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
                                       </form>';
                                 echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_aventuras['id'].'">
@@ -277,7 +277,7 @@ TABLA tmovie_genres
                               </button>";
                               if(!empty($_SESSION['user_id'])){
                                 echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_cienciaFiccion['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'"?>
+                                        <input type="hidden" name="return" value=" '.$link.'">
                                         <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
                                       </form>';
                                 echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_cienciaFiccion['id'].'">
@@ -310,7 +310,7 @@ TABLA tmovie_genres
                               </button>";
                               if(!empty($_SESSION['user_id'])){
                                 echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_terror['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'"?>
+                                        <input type="hidden" name="return" value=" '.$link.'">
                                         <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
                                       </form>';
                                 echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_terror['id'].'">
@@ -343,7 +343,7 @@ TABLA tmovie_genres
                               </button>";
                               if(!empty($_SESSION['user_id'])){
                                 echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_monstruos['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'"?>
+                                        <input type="hidden" name="return" value=" '.$link.'">
                                         <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
                                       </form>';
                                 echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_monstruos['id'].'">
@@ -376,7 +376,7 @@ TABLA tmovie_genres
                               </button>";
                               if(!empty($_SESSION['user_id'])){
                                 echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_superheroes['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'"?>
+                                        <input type="hidden" name="return" value=" '.$link.'">
                                         <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
                                       </form>';
                                 echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_superheroes['id'].'">
@@ -409,7 +409,7 @@ TABLA tmovie_genres
                               </button>";
                               if(!empty($_SESSION['user_id'])){
                                 echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_fantasiaOscura['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'"?>
+                                        <input type="hidden" name="return" value=" '.$link.'">
                                         <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
                                       </form>';
                                 echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_fantasiaOscura['id'].'">
@@ -442,7 +442,7 @@ TABLA tmovie_genres
                               </button>";
                               if(!empty($_SESSION['user_id'])){
                                 echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_misterio['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'"?>
+                                        <input type="hidden" name="return" value=" '.$link.'">
                                         <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
                                       </form>';
                                 echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_misterio['id'].'">
@@ -475,7 +475,7 @@ TABLA tmovie_genres
                               </button>";
                               if(!empty($_SESSION['user_id'])){
                                 echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_espionaje['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'"?>
+                                        <input type="hidden" name="return" value=" '.$link.'">
                                         <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
                                       </form>';
                                 echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_espionaje['id'].'">
@@ -508,7 +508,7 @@ TABLA tmovie_genres
                               </button>";
                               if(!empty($_SESSION['user_id'])){
                                 echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_fantasia['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'"?>
+                                        <input type="hidden" name="return" value=" '.$link.'">
                                         <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
                                       </form>';
                                 echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_fantasia['id'].'">

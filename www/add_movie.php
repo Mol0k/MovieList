@@ -2,33 +2,34 @@
 ini_set('display_errors', 'On');
 require __DIR__ . '/../php_util/db_connection.php';
 
-session_start();
-$mysqli = get_db_connection_or_die();
+    session_start();
+    $mysqli = get_db_connection_or_die();
 
-// $_SESSION['user_id'] = 3;
-if (empty($_SESSION['user_id'])) {
-    header('Location: login.php');
-}
-if(isset($_POST['records-limit-addmovie'])){
-    $_SESSION['records-limit-addmovie'] = $_POST['records-limit-addmovie'];
-}
+    // $_SESSION['user_id'] = 3;
+    if (empty($_SESSION['user_id'])) {
+        header('Location: login.php');
+    }
+    if(isset($_POST['records-limit-addmovie'])){
+        $_SESSION['records-limit-addmovie'] = $_POST['records-limit-addmovie'];
+    }
 
-$limit = isset($_SESSION['records-limit-addmovie']) ? $_SESSION['records-limit-addmovie'] : 2;
-$page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
-$paginationStart = ($page - 1) * $limit;
-$movies = $mysqli->query("SELECT * FROM tmovie  LIMIT $paginationStart, $limit")->fetch_all(MYSQLI_ASSOC);
-// Get total records
-$sql = $mysqli->query("SELECT count(id) AS id FROM tmovie")->fetch_all(MYSQLI_ASSOC);
-$allRecrods = $sql[0]['id'];
+    $limit = isset($_SESSION['records-limit-addmovie']) ? $_SESSION['records-limit-addmovie'] : 2;
+    $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
+    $paginationStart = ($page - 1) * $limit;
+    
+    $movies = $mysqli->query("SELECT * FROM tmovie  LIMIT $paginationStart, $limit")->fetch_all(MYSQLI_ASSOC);
+    // Obtener el total de records
+    $sql = $mysqli->query("SELECT count(id) AS id FROM tmovie")->fetch_all(MYSQLI_ASSOC);
+    $allRecrods = $sql[0]['id'];
 
-// Calculate total pages
-$totoalPages = ceil($allRecrods / $limit);
-// Prev + Next
-$prev = $page - 1;
-$next = $page + 1;
+    //Calcular el  total de págians
+    $totoalPages = ceil($allRecrods / $limit);
+    // Anterior y siguiente
+    $prev = $page - 1;
+    $next = $page + 1;
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8" />
@@ -42,40 +43,40 @@ $next = $page + 1;
     <link rel="stylesheet" href="./assets/css/styles.css" />
     <title>Añadir películas:</title>
     <style>
-    .multipleSelection {
-        width: 300px;
-        background-color: #BCC2C1;
-    }
+        .multipleSelection {
+            width: 300px;
+            background-color: #BCC2C1;
+        }
 
-    .selectBox {
-        position: relative;
-    }
+        .selectBox {
+            position: relative;
+        }
 
-    .selectBox select {
-        width: 100%;
+        .selectBox select {
+            width: 100%;
 
-    }
+        }
 
-    .overSelect {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-    }
+        .overSelect {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
 
-    #checkBoxes {
-        display: none;
-        border: 1px #8DF5E4 solid;
-    }
+        #checkBoxes {
+            display: none;
+            border: 1px #8DF5E4 solid;
+        }
 
-    #checkBoxes label {
-        display: block;
-    }
+        #checkBoxes label {
+            display: block;
+        }
 
-    #checkBoxes label:hover {
-        background-color: #4F615E;
-    }
+        #checkBoxes label:hover {
+            background-color: #4F615E;
+        }
     </style>
 
 
@@ -84,77 +85,9 @@ $next = $page + 1;
 <body class="bg-dark" style="background-image: url('./assets/images/movie-detail-bg.png');background-repeat: no-repeat;
     background-size: cover;">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <div class="container-fluid">
-            <!-- <a class="navbar-brand" href="main.php">
-                    <img src="./assets/images/icon.png" width="24px" height="24px" alt="logo">MovieList
-                </a> -->
-            <a class="navbar-brand" href="main.php">MovieList</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
-                aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarScroll">
-                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+    <!-- Incluir el header -->
+    <?php include "./inc/header.php"; ?>
 
-                    <li class="nav-item">
-                        <a class="nav-link active" href="main.php">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Películas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Películas Vistas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="favorites.php">Películas favoritas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="add_movie.php">Añadir Películas</a>
-                    </li>
-
-                </ul>
-                <form class="d-flex justify-content-end ms-2" action="backend-search.php" method="GET">
-                    <input class="form-control me-2 my-input" label="boton-search" type="text" placeholder="Ejemplo: Sonic" name="query" required />
-		            <button class="btn btn-primary btn-search" id="boton-search" type="submit" value="Search">Buscar</button>
-                    <?php if (empty($_SESSION['user_id'])) {
-                    ?>
-                    <a class="btn btn-success btn-signin ms-2" href="login.php" role="button">Iniciar</a>    
-                    <a class="btn btn-danger btn-signout ms-2" href="register.php" role="button">Registrate</a>
-
-                    <?php } else { ?>
-                    <ul class="navbar-nav bg-dark"">
-                            <li class=" nav-item dropdown ms-2">
-                        <a href="#" class="nav-link dropdown-toggle bg-dark" data-bs-toggle="dropdown"
-                            id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
-                            <?php
-                                        $query = "SELECT * FROM tuser WHERE id = " . $_SESSION['user_id'] ;
-                                        $result = mysqli_query($mysqli, $query) or die(mysqli_error($mysqli));
-                                        $row = mysqli_fetch_array($result);
-                                        $profile_image = $row['profile_image'];
-
-                                        if(empty($profile_image)){
-                                            $profile_image = "default-user.png";
-                                            echo "<img width='35' height='35' class='rounded-circle' src='assets/images/".$profile_image."' >" ;
-                                        }else{ 
-                                            echo "<img width='35' height='35' class='rounded-circle' src='assets/imagenesUsuario/".$row['profile_image']."' >" ; 
-                                        }
-                                    ?>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="profile.php">Panel</a>
-                            <a class="dropdown-item" href="edit_profile.php">Editar
-                                perfil</a>
-                            <a class="dropdown-item" href="logout.php">Log Out</a>
-                        </div>
-                        </li>
-                    </ul>
-                    <?php } ?>
-                </form>
-            </div>
-        </div>
-    </nav>
-  
     <form action="do_add_movie.php" role="form" class="row p-3 text-light" method="POST" enctype="multipart/form-data">
         <h2>DATOS DE LA PELÍCULA:</h2>
         <div class="form-group row">
@@ -265,34 +198,34 @@ $next = $page + 1;
 
     </form>
     <div class="text-light d-flex flex-row-reverse bd-highlight mb-3">
-            <form action="add_movie.php" method="post">
-                <select name="records-limit-addmovie" id="records-limit-addmovie" class="custom-select">
-                    <option disabled selected>Límite</option>
-                    <?php foreach([2,4,8,10] as $limit) : ?>
-                    <option
-                        <?php if(isset($_SESSION['records-limit-addmovie']) && $_SESSION['records-limit-addmovie'] == $limit) echo 'selected'; ?>
-                        value="<?= $limit; ?>">
-                        <?= $limit; ?>
-                    </option>
-                    <?php endforeach; ?>
-                </select>
-            </form>
-        </div>
-        <!-- Datatable -->
-        <table class="table table-bordered text-light mb-5">
-            <thead>
-                <tr class="table-success">
-                    <th scope="col">#</th>
-                    <th scope="col">Título</th>
-                    <th scope="col">Sinopsis</th>
-                    <th scope="col">Imagen</th>
-                    <th scope="col">Emisión</th>
-                    <th scope="col">Duración</th>
-                    <th scope="col">Géneros</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach($movies as $movie): 
+        <form action="add_movie.php" method="post">
+            <select name="records-limit-addmovie" id="records-limit-addmovie" class="custom-select">
+                <option disabled selected>Límite</option>
+                <?php foreach([2,4,8,10] as $limit) : ?>
+                <option
+                    <?php if(isset($_SESSION['records-limit-addmovie']) && $_SESSION['records-limit-addmovie'] == $limit) echo 'selected'; ?>
+                    value="<?= $limit; ?>">
+                    <?= $limit; ?>
+                </option>
+                <?php endforeach; ?>
+            </select>
+        </form>
+    </div>
+    <!-- Datatable -->
+    <table class="table table-bordered text-light mb-5">
+        <thead>
+            <tr class="table-success">
+                <th scope="col">#</th>
+                <th scope="col">Título</th>
+                <th scope="col">Sinopsis</th>
+                <th scope="col">Imagen</th>
+                <th scope="col">Emisión</th>
+                <th scope="col">Duración</th>
+                <th scope="col">Géneros</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($movies as $movie): 
                     $generos= unserialize($movie['gender']); 
                     $array_generos = implode(", ",$generos);
 
@@ -301,100 +234,58 @@ $next = $page + 1;
                     setlocale(LC_TIME, 'spanish');
                     $created= strftime("%x", strtotime($movie['created']));
                 ?>
-                    
-                <tr>
-                    <th scope="row"><?php echo $movie['id']; ?></th>
-                    <td><?php echo $movie['title']; ?></td>
-                    <td><?php echo $movie['sinopsis']; ?></td>
-                    <td><?php echo "<img style='width:30%;height:30%; margin-left: auto;margin-right: auto;display: block;' src='assets/imagenesPortada/".$movie['image']."' >" ?></td>
-                    <td><?php echo $created; ?></td>
-                    <td><?php echo $movie['duration']; ?></td>
-                    <td><?php echo $array_generos;  ?> </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <!-- Pagination -->
-        <nav aria-label="Page navigation example mt-5">
-            <ul class="pagination justify-content-center">
-                <li class="page-item <?php if($page <= 1){ echo 'disabled'; } ?>">
-                    <a class="page-link"
-                        href="<?php if($page <= 1){ echo '#'; } else { echo "?page=" . $prev; } ?>">Anterior</a>
-                </li>
-                <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
-                <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
-                    <a class="page-link" href="add_movie.php?page=<?= $i; ?>"> <?= $i; ?> </a>
-                </li>
-                <?php endfor; ?>
-                <li class="page-item <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
-                    <a class="page-link"
-                        href="<?php if($page >= $totoalPages){ echo '#'; } else {echo "?page=". $next; } ?>">Siguiente</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-    
-    
-      </div>
-    
-  </div>
 
-    <footer class="bg-dark text-center text-white ">
-            <!-- Grid container -->
-            <div class="container p-4 pb-0">
-                <!-- Section: Social media -->
-                <section class="mb-4">
-                    <!-- Facebook -->
-                    <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" facebook" src="./assets/images/facebook.png">
-                    </a>
-
-                    <!-- Twitter -->
-                    <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" twitter" src="./assets/images/gorjeo.png">
-                    </a>
-
-                    <!-- Tik Tok -->
-                    <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" twitter" src="./assets/images/tik-tok.png">
-                    </a>
-
-                    <!-- Instagram -->
-                    <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" instagram" src="./assets/images/instagram.png">
-                    </a>
+            <tr>
+                <th scope="row"><?php echo $movie['id']; ?></th>
+                <td><?php echo $movie['title']; ?></td>
+                <td><?php echo $movie['sinopsis']; ?></td>
+                <td><?php echo "<img style='width:30%;height:30%; margin-left: auto;margin-right: auto;display: block;' src='assets/imagenesPortada/".$movie['image']."' >" ?>
+                </td>
+                <td><?php echo $created; ?></td>
+                <td><?php echo $movie['duration']; ?></td>
+                <td><?php echo $array_generos;  ?> </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <!-- Pagination -->
+    <nav aria-label="Page navigation example mt-5">
+        <ul class="pagination justify-content-center">
+            <li class="page-item <?php if($page <= 1){ echo 'disabled'; } ?>">
+                <a class="page-link"
+                    href="<?php if($page <= 1){ echo '#'; } else { echo "?page=" . $prev; } ?>">Anterior</a>
+            </li>
+            <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
+            <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
+                <a class="page-link" href="add_movie.php?page=<?= $i; ?>"> <?= $i; ?> </a>
+            </li>
+            <?php endfor; ?>
+            <li class="page-item <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
+                <a class="page-link"
+                    href="<?php if($page >= $totoalPages){ echo '#'; } else {echo "?page=". $next; } ?>">Siguiente</a>
+            </li>
+        </ul>
+    </nav>
 
 
-                    <!-- Github -->
-                    <a class="btn  btn-floating m-1 " href="#!" ">
-                      <img alt=" github" src="./assets/images/github.png">
-                    </a>
-                </section>
-                <!-- Section: Social media -->
-            </div>
-
-
-            <!-- Copyright -->
-            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-                © 2022 Copyright:
-                <a class="text-white" href="#">MovieList</a>
-            </div>
-            <!-- Copyright -->
-    </footer>
    
+
+    <!-- Incluir el footer -->
+    <?php include "./inc/footer.php"; ?>
+
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
     </script>
 
-  <!-- jQuery + Bootstrap JS -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- jQuery + Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('#records-limit-addmovie').change(function () {
-                $('form').submit();
-            })
-        });
+    $(document).ready(function() {
+        $('#records-limit-addmovie').change(function() {
+            $('form').submit();
+        })
+    });
     </script>
     <script>
     var show = true;

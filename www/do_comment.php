@@ -26,13 +26,13 @@
       header("Location: movies.php?id=".$movie_id);
       exit();
     }else{
-        $_SESSION['error_usuario']  = "Inicia sesión para poder comentar.";
+        $_SESSION['inicia_sesion_coment']  = "Inicia sesión para poder comentar.";
         header("Location: movies.php?id=".$movie_id);
         exit();
     }
   }else{
     header("Location: movies.php?id=".$movie_id);
-    $_SESSION['error']  = "Introduce un comentario.";
+    $_SESSION['comentario_vacio']  = "Introduce un comentario.";
     exit();
   }
   // echo "<a href='/movies.php?id=".$movie_id."'>Volver</a>";

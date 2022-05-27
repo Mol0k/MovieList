@@ -2,35 +2,39 @@
 ini_set('display_errors', 'On');
 require __DIR__ . '/../php_util/db_connection.php';
 
-session_start();
+    session_start();
 	$mysqli = get_db_connection_or_die();
-   
+
     if(isset($_POST['user_id'])){
         $user_id = $_SESSION['user_id'];
     }
 
-  if(isset($_POST['records-limit'])){
-      $_SESSION['records-limit'] = $_POST['records-limit'];
-  }
-  
-  $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 5;
-  $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
-  $paginationStart = ($page - 1) * $limit;
-  $movies = $mysqli->query("SELECT * FROM tmovie ORDER BY id ASC LIMIT $paginationStart, $limit")->fetch_all(MYSQLI_ASSOC);
-  // Get total records
-  $sql = $mysqli->query("SELECT count(id) AS id FROM tmovie")->fetch_all(MYSQLI_ASSOC);
-  $allRecrods = $sql[0]['id'];
-  
-  // Calculate total pages
-  $totoalPages = ceil($allRecrods / $limit);
-  // Prev + Next
-  $prev = $page - 1;
-  $next = $page + 1;
+    if(isset($_POST['records-limit'])){
+        $_SESSION['records-limit'] = $_POST['records-limit'];
+    }
+    
+    $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 5;
+    $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
+    $paginationStart = ($page - 1) * $limit;
+    
+    $movies = $mysqli->query("SELECT * FROM tmovie ORDER BY id ASC LIMIT $paginationStart, $limit")->fetch_all(MYSQLI_ASSOC);
+    // Obtenemos el total
+    $sql = $mysqli->query("SELECT count(id) AS id FROM tmovie")->fetch_all(MYSQLI_ASSOC);
+    $allRecrods = $sql[0]['id'];
+    
+    // Calculamos el total de páginas
+    $totoalPages = ceil($allRecrods / $limit);
+    // Anterior y posterior
+    $prev = $page - 1;
+    $next = $page + 1;
 
-  $consult = "SELECT * FROM tmovie;"; 
-  $resultado = mysqli_query($mysqli, $consult) or die(mysqli_error($mysqli));
-  $consultid = mysqli_fetch_array($resultado);
-  $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    //Para consultar el id de la movie
+    $consult = "SELECT * FROM tmovie;"; 
+    $resultado = mysqli_query($mysqli, $consult) or die(mysqli_error($mysqli));
+    $consultid = mysqli_fetch_array($resultado);
+    
+    //COGER LA RUTA ABSOLUTA
+    $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -123,7 +127,7 @@ session_start();
 
    
     <!-- Incluir el header -->
-    <?php include "header.php"; ?> 
+    <?php include "./inc/header.php"; ?> 
 
     <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
@@ -249,7 +253,7 @@ session_start();
     </div>
 
     <!-- Incluir el footer -->
-    <?php include "footer.php"; ?>  
+    <?php include "./inc/footer.php"; ?>  
     
 </body>
 <!-- jQuery + Bootstrap JS -->

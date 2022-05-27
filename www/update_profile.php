@@ -38,14 +38,16 @@
 			echo "Ha habido un error subiendo lso archivos";
 			
 		}
-	} else{
-		header('Location: edit_profile.php?failed=True');
-		die();
+	} 
+	try{
+		$sql = "UPDATE tuser SET username=?, profile_image = ? WHERE id=?";
+		$stmt= $mysqli->prepare($sql);
+		$stmt->bind_param("ssi", $username, $imagen_usuario, $id);
+		$stmt->execute();
+		$_SESSION['successUser'] = "Se ha actualizado el usuario con éxito";
+
+	}catch(Exception $e){
+		$_SESSION['failedUser'] = "Ha habido un error actualizando el usuario";
 	}
 	
-	$sql = "UPDATE tuser SET username=?, profile_image = ? WHERE id=?";
-	$stmt= $mysqli->prepare($sql);
-	$stmt->bind_param("ssi", $username, $imagen_usuario, $id);
-	$stmt->execute();
-	$_SESSION['successUser'] = "Se ha actualizado el usuario con éxito";
 ?>
