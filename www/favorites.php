@@ -9,11 +9,11 @@ require __DIR__ . '/../php_util/db_connection.php';
         header('Location: login.php');
     }
 
-    if(isset($_POST['records-limit'])){
-        $_SESSION['records-limit'] = $_POST['records-limit'];
+    if(isset($_POST['records-limit-favorites'])){
+        $_SESSION['records-limit-favorites'] = $_POST['records-limit-favorites'];
     }
 
-    $limit = isset($_SESSION['records-limit']) ? $_SESSION['records-limit'] : 10;
+    $limit = isset($_SESSION['records-limit-favorites']) ? $_SESSION['records-limit-favorites'] : 10;
     $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
     $paginationStart = ($page - 1) * $limit;
 
@@ -41,45 +41,22 @@ require __DIR__ . '/../php_util/db_connection.php';
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-    <!-- <link rel="stylesheet" href="./assets/css/styles.css"> -->
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/style_favorites_watchlist.css">
     <style>
-    .quitar {
-        text-decoration: none;
-    }
-
-    .movie_style #boton-cerrar {
-        cursor: pointer;
-        border-style: none;
-        transition: all .5s ease-in-out;
-        position: absolute;
-		top: 0;
-		right: 0;
-    }
-	
-    .movie_style #boton-cerrar:hover {
-        transform: scale(.95) translateX(1px);
-        transition: all .5s ease-in-out;
-    }
-	
-	.movie_style {
-        padding: 0 !important;
-        width: 18.9rem;
-        margin: 14px;
-        position: relative;
-        background: #fff;
-        border: 2px solid #fff;
-        box-shadow: 0px 4px 7px rgba(0, 0, 0, .5);
-
-        transition: all .5s cubic-bezier(.8, .5, .2, 1.4);
-        overflow: hidden;
-        height: 440px;
-    }
-	
+        .foter{
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #f5f5f5;
+            color: black;
+            text-align: center;
+        }
     </style>
+
 </head>
 
 <body class="bg-dark" style="background-image: url('./assets/images/movie-detail-bg.png');background-repeat: no-repeat;
@@ -115,7 +92,20 @@ require __DIR__ . '/../php_util/db_connection.php';
             </div>
         </div>
     </div>
-	
+
+    <?php
+	//
+	$consult_peli_favoritas = 'SELECT * FROM tuser INNER JOIN twatchlist ON tuser.id = twatchlist.movie_id INNER JOIN tmovie ON twatchlist.usuario_id = tmovie.id WHERE twatchlist.usuario_id  = ' . $user_id;		
+	$result_peli_favoritas = mysqli_query($mysqli, $consult_peli_favoritas);
+    $fila_favoritas = mysqli_fetch_array($result_peli_favoritas);?>
+    <?php if(!$fila_favoritas){ ?>
+        <div class="text-center mt-5" style="color:red">
+            <h1 class=" mb-5">
+                NO TIENES NINGUNA PELÍCULA FAVORITA AÑADIDA
+            </h1>
+        </div>
+    <?php } ?>
+
     <nav aria-label="Page navigation example mt-5">
         <ul class="pagination justify-content-center mt-4 my-5" style="scroll-behavior: smooth;">
             <li class="page-item <?php if($page <= 1){ echo 'disabled'; } ?>">
@@ -146,7 +136,7 @@ require __DIR__ . '/../php_util/db_connection.php';
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
     $(document).ready(function() {
-        $('#records-limit').change(function() {
+        $('#records-limit-favorites').change(function() {
             $('form').submit();
         })
     });

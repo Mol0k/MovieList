@@ -38,45 +38,11 @@ require __DIR__ . '/../php_util/db_connection.php';
     <link rel="shortcut icon" href="#">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
-
-
     <link rel="stylesheet" href="./assets/css/styles.css" />
+    <link rel="stylesheet" href="./assets/css/style_add_movie.css" />
     <title>Añadir películas:</title>
     <style>
-        .multipleSelection {
-            width: 300px;
-            background-color: #BCC2C1;
-        }
-
-        .selectBox {
-            position: relative;
-        }
-
-        .selectBox select {
-            width: 100%;
-
-        }
-
-        .overSelect {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-        }
-
-        #checkBoxes {
-            display: none;
-            border: 1px #8DF5E4 solid;
-        }
-
-        #checkBoxes label {
-            display: block;
-        }
-
-        #checkBoxes label:hover {
-            background-color: #4F615E;
-        }
+        
     </style>
 
 
@@ -122,7 +88,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                             Suspense
                         </label>
                         <label for="second">
-                            <input type="checkbox" value="Accion" name="value[] id=" second" />
+                            <input type="checkbox" value="Acción" name="value[] id=" second" />
                             Acción
                         </label>
                         <label for="third">
@@ -138,7 +104,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                             Aventuras
                         </label>
                         <label for="six">
-                            <input type="checkbox" value="Ciencia ficcion" name="value[] id=" six" />
+                            <input type="checkbox" value="Ciencia ficción" name="value[] id=" six" />
                             Ciencia ficción
                         </label>
                         <label for="seven">
@@ -150,11 +116,11 @@ require __DIR__ . '/../php_util/db_connection.php';
                             Monstruos
                         </label>
                         <label for="nine">
-                            <input type="checkbox" value="Superheroes" name="value[] id=" nine" />
+                            <input type="checkbox" value="Superhéroes" name="value[] id=" nine" />
                             Superhéroes
                         </label>
                         <label for="ten">
-                            <input type="checkbox" value="Fantasia oscura" name="value[] id=" ten" />
+                            <input type="checkbox" value="Fantasía oscura" name="value[] id=" ten" />
                             Fantasía oscura
                         </label>
                         <label for="eleven">
@@ -162,7 +128,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                             Crimen
                         </label>
                         <label for="twelve">
-                            <input type="checkbox" value="Fantasia" name="value[] id=" twelve" />
+                            <input type="checkbox" value="Fantasía" name="value[] id=" twelve" />
                             Fantasía
                         </label>
                         <label for="thirteen">

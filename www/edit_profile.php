@@ -67,7 +67,7 @@ $fila_nombre = mysqli_fetch_array($resultado_nombre);
                     <button type="submit" name="update" class="btn btn-success mt-3"><span
                             class="glyphicon glyphicon-check"></span> Actualizar contraseña</button>
                 </form>
-                 <!-- MENSAJES QUE SE PINTARAN POR PANTALLA -->
+                <!-- MENSAJES QUE SE PINTARAN POR PANTALLA -->
                 <?php if(isset($_SESSION['error'])){?>
 					
                 <div class="alert alert-danger text-center" style="margin-top:20px;">
@@ -88,27 +88,26 @@ $fila_nombre = mysqli_fetch_array($resultado_nombre);
         <h1 class="text-center mt-3">Editar usuario y avatar</h1>
         <div class="row d-flex justify-content-center align-items-center">
             <div class="">
-               
                 <hr>
-                <form method="POST" action="update_username.php" role="form" enctype="multipart/form-data">
+                <form method="POST" name="formulario" action="update_username.php" role="form" enctype="multipart/form-data">
                     <div class="form-group mt-3">
-                        <label for="username">Nuevo username:</label>
-                        <input type="text" name="username" id="username" class="form-control"
+                        <label for="usernames">Nuevo username:</label>
+                        <input type="text" name="username" id="usernames" class="form-control"
                             value="">
                         <!-- <label for="f_nacimientos" class="form-label">Fecha de nacimiento:</label>
                         <input type="date" class="form-control" name="f_nacimiento" id="f_nacimientos" /> -->
                     </div>
                     <button type="submit" name="update_username" class="btn btn-success mt-3"><span class="glyphicon glyphicon-check"></span> Actualizar nombre</button>
                 </form>
-                <form method="POST" action="update_image_profile.php">
+                <form method="POST" action="update_image_profile.php" role="form" enctype="multipart/form-data">
                     <div class="form-group mt-3">
                         <label for="imagenUsuarios">Sube tu avatar:</label>
-                        <input type="file" name="imagenUsuario" id="imagenUsuarios" class="form-control"">
+                        <input type="file" name="imagenUsuario" id="imagenUsuarios" onchange="preview()" class="form-control"">
+                        <img id="frame" alt ="Sube una imagen para ver la previsualización" src="" width="60" height="60" class="rounded-circle mt-3" />
                     </div>
                     <button type="submit" name="update_avatar" class="btn btn-success mt-3"><span class="glyphicon glyphicon-check"></span> Actualizar avatar</button>
                 </form>            
                 
-
                 <!-- MENSAJES QUE SE PINTARAN POR PANTALLA -->
                     
                 <?php if(isset($_SESSION['successUser'])){
@@ -119,16 +118,16 @@ $fila_nombre = mysqli_fetch_array($resultado_nombre);
                 <?php
                     unset($_SESSION['successUser']);
                 }?>
-                <?php if(isset($_SESSION['username_ocupado'])){
+                <?php if(isset($_SESSION['error_update_username'])){
                 ?>
                 <div class="alert alert-danger text-center  mt-2" style="margin-top:20px;">
-                    <?php echo $_SESSION['username_ocupado']; ?>
+                    <?php echo $_SESSION['error_update_username']; ?>
                 </div>
                 <?php
-                    unset($_SESSION['username_ocupado']);
+                    unset($_SESSION['error_update_username']);
                 }?> 
 
-                 <!-- MENSAJE DE QUE SE HA SUBIDO LA IMAGEN -->
+                <!-- MENSAJE DE QUE SE HA SUBIDO LA IMAGEN -->
                 <?php if(isset($_SESSION['successProfileImage'])){
                 ?>
                 <div class="alert alert-danger text-center  mt-2" style="margin-top:20px;">
@@ -138,36 +137,15 @@ $fila_nombre = mysqli_fetch_array($resultado_nombre);
                     unset($_SESSION['successProfileImage']);
                 }?> 
                 
-                <!-- ERROR DEL TAMAÑO -->
-                <?php if(isset($_SESSION['errorTamanho'])){
+                <!-- MENSAJE DE ERROR IMAGEN -->
+                <?php if(isset($_SESSION['error_profile_image'])){
                 ?>
                 <div class="alert alert-danger text-center  mt-2" style="margin-top:20px;">
-                    <?php echo $_SESSION['errorTamanho']; ?>
+                    <?php echo $_SESSION['error_profile_image']; ?>
                 </div>
                 <?php
-                    unset($_SESSION['errorTamanho']);
+                    unset($_SESSION['error_profile_image']);
                 }?> 
-
-                <!-- ERROR NO SE HA PODIDO GUARDAR -->
-                <?php if(isset($_SESSION['errorGuardar'])){
-                ?>
-                <div class="alert alert-danger text-center  mt-2" style="margin-top:20px;">
-                    <?php echo $_SESSION['errorGuardar']; ?>
-                </div>
-                <?php
-                    unset($_SESSION['errorGuardar']);
-                }?> 
-                
-                <!-- ERROR GENERICO -->
-                <?php if(isset($_SESSION['errorGenerico'])){
-                ?>
-                <div class="alert alert-danger text-center mt-2" style="margin-top:20px;">
-                    <?php echo $_SESSION['errorGenerico']; ?>
-                </div>
-                <?php
-                    unset($_SESSION['errorGenerico']);
-                }?>
-     
 
             </div>
         </div>
@@ -194,23 +172,9 @@ $fila_nombre = mysqli_fetch_array($resultado_nombre);
     })
     </script>
     <script>
-        $("input").change(function(e) {
-
-        for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {
-            
-            var file = e.originalEvent.srcElement.files[i];
-            
-            var img = document.createElement("img");
-            var reader = new FileReader();
-            reader.onloadend = function() {
-                img.src = reader.result;
-            }
-            reader.readAsDataURL(file);
-            $("input").after(img);
+        function preview() {
+            frame.src=URL.createObjectURL(event.target.files[0]);
         }
-            });
     </script>
-    <script>
-        document.getElementById('inputId').removeAttribute('name');
-    </script>
+    
 </html>

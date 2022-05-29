@@ -13,112 +13,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/style_backend_search.css">
     <script src="https://kit.fontawesome.com/b18aa99892.js" crossorigin="anonymous"></script>
     <title>Buscar resultados</title>
-    <style>
-        
-        .quitar{
-            text-decoration:none;
-        }
-        .movie_card #boton-mas {
-            cursor: pointer;
-            border-style: none;
-            background-color: #ff3838;
-            color: #fff;
-            outline: none;
-            box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
-            transition: all .5s ease-in-out;
-            line-height: 20px;
-            width: 70px;
-            font-size: 10pt;
-            margin-bottom: 5px;
-            margin-right: 2px;
-            position:absolute;
-            bottom:0;
-            right:0;
-        }
-        
-        .movie_card #boton-mas:hover {
-            transform: scale(.95) translateX(-5px);
-            transition: all .5s ease-in-out;
-        }
-        .movie_card #boton-watchlist {
-            cursor: pointer;
-            border-style: none;
-            background-color: #ff3838;
-            color: #fff;
-            outline: none;
-            box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
-            transition: all .5s ease-in-out;
-            line-height: 20px;
-            width: 30px;
-            margin-right: 35px;
-            position: absolute;
-            top: 0;
-            right: 0;
-        }
-        
-        .movie_card #boton-watchlist:hover {
-            transform: scale(.95) translateX(-5px);
-            transition: all .5s ease-in-out;
-        }
-
-        .movie_card #boton-favorites {
-            cursor: pointer;
-            border-style: none;
-          
-            background-color: #ff3838;
-            color: #fff;
-            outline: none;
-            box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
-            transition: all .5s ease-in-out;
-            line-height: 20px;
-            width: 30px;
-          
-           
-            position: absolute;
-            top: 0;
-            right: 0;
-        }
-        .movie_card #boton-favorites:hover {
-            transform: scale(.95) translateX(-5px);
-            transition: all .5s ease-in-out;
-        }
-        .search-message-empty-container {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: flex-start;
-            padding-left: 4.5em;
-            }
-
-        .search-message-empty-decal {
-            margin-right: 2rem;
-            font-size: 6rem;
-            transform: rotate(90deg);
-            }
-
-        .search-message-empty-message {
-            font-size: 1.5em;
-            text-rendering: optimizeLegibility;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-        .foter{
-            position: fixed;
-            left: 0;
-            bottom: 0;
-           
-            width: 100%;
-            background-color: #f5f5f5;
-            color: black;
-            text-align: center;
-        }
-        </style>
 </head>
 <body class="bg-dark" style="background-image: url('./assets/images/movie-detail-bg.png');background-repeat: no-repeat;
     background-size: cover;">
@@ -191,15 +91,17 @@
 		}
 		else{ // si no hay filas coincidentes hacer lo siguiente
             echo "
-            <div class='search-message-empty-container text-light'>
-                <span class='search-message-empty-decal'>
-                    <span class='search-message-empty-decal-eyes'>:</span>
-                    <span>(</span>
-                </span>
-                <h2 class='search-message-empty-message'>
-                   Sin resultados.
-                </h2>
-            </div>
+            <div class='container d-flex align-items-center justify-content-center'>
+                <div class='search-message-empty-container text-light'>
+                    <span class='search-message-empty-decal'>
+                        <span class='search-message-empty-decal-eyes'>:</span>
+                        <span>(</span>
+                    </span>
+                    <h2 class='search-message-empty-message'>
+                    Sin resultados.
+                    </h2>
+                </div>
+                </div>
             ";
             
 		}
