@@ -175,7 +175,8 @@ require __DIR__ . '/../php_util/db_connection.php';
             
         </div>
     </div>
-
+    <!-- Incluir popup registrado -->
+    <?php include_once "./inc/popup_registrado.php"; ?>  
     <!-- Incluir el footer -->
     <?php include "./inc/footer.php"; ?>
     <!-- Incluir el popup -->
