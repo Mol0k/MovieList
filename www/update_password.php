@@ -66,28 +66,33 @@ if(isset($_POST['update'])){
  
 		//check if old password is correct
 		if(password_verify($password_old, $row['encrypted_password'])){
+            if(strlen($password_nueva) > 6  && strlen($_POST['username']) < 20){
 			//check if new password match retype
-			if($password_nueva == $password_confirmar){
-				//hash our password
-				$password = password_hash($password_nueva, PASSWORD_DEFAULT);
-                try{
-                    $update = "UPDATE tuser SET encrypted_password = ? WHERE id = ?"; 
-                    $stmt = $mysqli->prepare($update);
-                    $stmt->bind_param("si", $password, $user_id);
-                    $stmt->execute();
-                    $_SESSION['success'] = "Contraseña actualizada con éxito";
-					//unset our session since no error occured
-					unset($_SESSION['password_old']);
-					unset($_SESSION['password_nueva']);
-					unset($_SESSION['password_confirmar']);
-                }catch(Exception $e){
-                    $_SESSION['error'] = $mysqli->error;
+                if($password_nueva == $password_confirmar){
+                    //hash our password
+                    $password = password_hash($password_nueva, PASSWORD_DEFAULT);
+                    try{
+                        $update = "UPDATE tuser SET encrypted_password = ? WHERE id = ?"; 
+                        $stmt = $mysqli->prepare($update);
+                        $stmt->bind_param("si", $password, $user_id);
+                        $stmt->execute();
+                        $_SESSION['success'] = "Contraseña actualizada con éxito";
+                        //unset our session since no error occured
+                        unset($_SESSION['password_old']);
+                        unset($_SESSION['password_nueva']);
+                        unset($_SESSION['password_confirmar']);
+                    }catch(Exception $e){
+                        $_SESSION['error'] = $mysqli->error;
+                    }
                 }
-			}
-			else{
-				$_SESSION['error'] = "La contraseña nueva y la que se ha vuelto a escribir no coinciden.";
-			}
-		}
+                else{
+                    $_SESSION['error'] = "La contraseña nueva y la que se ha vuelto a escribir no coinciden.";
+                }
+            }
+            else{
+                $_SESSION['error'] = "La contraseña tiene que tener mas de 6 caracteres.";
+            }
+        }   
 		else{
 			$_SESSION['error'] = "Contraseña antigua incorrecta";
 		}

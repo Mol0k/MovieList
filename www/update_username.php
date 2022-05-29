@@ -14,31 +14,37 @@
     $result = $stmt_username->get_result(); // get the mysqli result
     $user = $result->fetch_assoc();
 
-    if (empty(trim( $_POST['username']))) {
-        $username_err = "No has escrito ningun nombre.";
-    }
-    if ($user && empty($username_err)) { // if user exists
-        if ($user['username'] === $username) {
+
+
+        if(strlen($_POST['username']) > 3  && strlen($_POST['username']) < 20){
+            if ($user) { // if user exists
+                if ($user['username'] === $username) {
+                    header('location: edit_profile.php');
+                    $_SESSION['error_update_username'] = "Este nombre de usuario ya está ocupado.";
+                }
+            }else{ 
+                try{
+                    $sql = "UPDATE tuser SET username=? WHERE id=?";
+                    $stmt= $mysqli->prepare($sql);
+                    $stmt->bind_param("si", $username , $id);
+                    $stmt->execute();
+                    header('location: edit_profile.php');
+                    $_SESSION['successUser'] = "Se ha actualizado el nombre del usuario con éxito.";
+            
+                }catch(Exception $e){
+                    header('location: edit_profile.php');
+                    $_SESSION['error_update_username'] = "Ha habido un error actualizando el usuario.";
+                }
+            }
+        }else{ 
             header('location: edit_profile.php');
-            $_SESSION['username_ocupado'] = "Este nombre de usuario ya está ocupado.";
+            $_SESSION['error_update_username'] = "El nombre tiene que tener como mínimo 4 caracteres y como máximo 20.";
+            die();
         }
-        
-    }else{ 
-        try{
-            $sql = "UPDATE tuser SET username=? WHERE id=?";
-            $stmt= $mysqli->prepare($sql);
-            $stmt->bind_param("si", $username , $id);
-            $stmt->execute();
-            header('location: edit_profile.php');
-            $_SESSION['successUser'] = "Se ha actualizado el nombre del usuario con éxito";
     
-        }catch(Exception $e){
-            header('location: edit_profile.php');
-            $_SESSION['failedUser'] = "Ha habido un error actualizando el usuario";
-        }
-    }
-  
-    mysqli_close($mysqli);	
-		
+        mysqli_close($mysqli);	
+
 	
 ?>
+
+

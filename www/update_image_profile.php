@@ -34,7 +34,7 @@
 								
 									}else{ 
 										header('location: edit_profile.php');
-										$_SESSION['errorGuardar'] = "No se ha podido guardar.";
+										$_SESSION['error_profile_image'] = "No se ha podido guardar.";
 										die();	
 									}			
 							}     
@@ -51,25 +51,25 @@
 						
 						}else{ 
 							header('location: edit_profile.php');
-							$_SESSION['errorGuardar'] = "No se ha podido guardar.";
+							$_SESSION['error_profile_image'] = "No se ha podido guardar.";
 							die();	
 						}
 				}
 			
 		}else{
 			header('location: edit_profile.php');
-			$_SESSION['errorTamanho'] = "No se pueden subir imágenes de más de 2MB.";
+			$_SESSION['error_profile_image'] = "No se pueden subir imágenes de más de 2MB.";
 			die();
 			
 		}
 	}else{
 		header('location: edit_profile.php');
-		$_SESSION['errorGenerico'] = "Algo ha salido mal.";
+		$_SESSION['error_profile_image'] = "Algo ha salido mal.";
 		die();
 	}
 }else{
 	header('location: edit_profile.php');
-	// $_SESSION['errorGenerico'] = "Parece que has subido ninguna imagen.";
+	// $_SESSION['error_profile_image'] = "Parece que has subido ninguna imagen.";
 	die();
 }
 
