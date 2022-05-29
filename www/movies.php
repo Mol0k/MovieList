@@ -30,6 +30,7 @@ require __DIR__ . '/../php_util/db_connection.php';
     <!-- <link rel="stylesheet" href="./assets/css/styles.css"> -->
     <script src="https://kit.fontawesome.com/b18aa99892.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./assets/css/style_comment.css">
+    <link rel="stylesheet" href="./assets/css/profile.css">
     <link rel="shortcut icon" href="#">
     <style>
         .container {
@@ -287,7 +288,9 @@ require __DIR__ . '/../php_util/db_connection.php';
 
     <!-- Incluir el footer -->
     <?php include "./inc/footer.php"; ?>
-
+    <!-- Incluir el popup -->
+    <?php include_once "./inc/popup_uPassword.php"; ?> 
+    <?php include_once "./inc/popup_uProfile.php"; ?>
 
 
 </body>

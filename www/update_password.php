@@ -42,7 +42,7 @@
    ini_set('display_errors', 'On');
     require __DIR__ . '/../php_util/db_connection.php';
     session_start();
-
+    $return = $_POST['return_profile'];
     $mysqli = get_db_connection_or_die();
 if(isset($_POST['update'])){
 		//get POST data
@@ -101,6 +101,6 @@ if(isset($_POST['update'])){
 		$_SESSION['error'] = "Introduzca los datos necesarios para actualizar primero";
 	}
  
-	header('location: edit_profile.php');
+    header("Location: $return#popup1");
  
 ?>

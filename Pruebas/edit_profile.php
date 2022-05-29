@@ -12,6 +12,7 @@ if (empty($_SESSION['user_id'])) {
 $nombre = "SELECT username FROM tuser WHERE id = " . $_SESSION['user_id'] ;
 $resultado_nombre = mysqli_query($mysqli, $nombre) or die(mysqli_error($mysqli));
 $fila_nombre = mysqli_fetch_array($resultado_nombre);
+
 ?>
 <!DOCTYPE html>
 <html lang="es">

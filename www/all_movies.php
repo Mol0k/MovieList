@@ -21,80 +21,81 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/css/style_allmovies.css">
+    <link rel="stylesheet" href="./assets/css/profile.css">
     <script src="https://kit.fontawesome.com/b18aa99892.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="#">
     <title>Películas</title>
     <style>
-    .quitar {
-        text-decoration: none;
-    }
+        .quitar {
+            text-decoration: none;
+        }
 
-    .movie_card #boton-mas {
-        cursor: pointer;
-        border-style: none;
-        background-color: #ff3838;
-        color: #fff;
-        outline: none;
-        box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
-        transition: all .5s ease-in-out;
-        line-height: 20px;
-        width: 70px;
-        font-size: 10pt;
-        margin-bottom: 5px;
-        margin-right: 2px;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-    }
+        .movie_card #boton-mas {
+            cursor: pointer;
+            border-style: none;
+            background-color: #ff3838;
+            color: #fff;
+            outline: none;
+            box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
+            transition: all .5s ease-in-out;
+            line-height: 20px;
+            width: 70px;
+            font-size: 10pt;
+            margin-bottom: 5px;
+            margin-right: 2px;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
 
-    .movie_card #boton-mas:hover {
-        transform: scale(.95) translateX(-5px);
-        transition: all .5s ease-in-out;
-    }
+        .movie_card #boton-mas:hover {
+            transform: scale(.95) translateX(-5px);
+            transition: all .5s ease-in-out;
+        }
 
-    .movie_card #boton-watchlist {
-        cursor: pointer;
-        border-style: none;
-        background-color: #ff3838;
-        color: #fff;
-        outline: none;
-        box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
-        transition: all .5s ease-in-out;
-        line-height: 20px;
-        width: 30px;
-        margin-right: 35px;
-        position: absolute;
-        top: 0;
-        right: 0;
-    }
+        .movie_card #boton-watchlist {
+            cursor: pointer;
+            border-style: none;
+            background-color: #ff3838;
+            color: #fff;
+            outline: none;
+            box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
+            transition: all .5s ease-in-out;
+            line-height: 20px;
+            width: 30px;
+            margin-right: 35px;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
 
-    .movie_card #boton-watchlist:hover {
-        transform: scale(.95) translateX(-5px);
-        transition: all .5s ease-in-out;
-    }
+        .movie_card #boton-watchlist:hover {
+            transform: scale(.95) translateX(-5px);
+            transition: all .5s ease-in-out;
+        }
 
-    .movie_card #boton-favorites {
-        cursor: pointer;
-        border-style: none;
+        .movie_card #boton-favorites {
+            cursor: pointer;
+            border-style: none;
 
-        background-color: #ff3838;
-        color: #fff;
-        outline: none;
-        box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
-        transition: all .5s ease-in-out;
-        line-height: 20px;
-        width: 30px;
+            background-color: #ff3838;
+            color: #fff;
+            outline: none;
+            box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
+            transition: all .5s ease-in-out;
+            line-height: 20px;
+            width: 30px;
 
 
-        position: absolute;
-        top: 0;
-        right: 0;
-    }
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
 
-    .movie_card #boton-favorites:hover {
-        transform: scale(.95) translateX(-5px);
-        transition: all .5s ease-in-out;
-    }
+        .movie_card #boton-favorites:hover {
+            transform: scale(.95) translateX(-5px);
+            transition: all .5s ease-in-out;
+        }
     </style>
     
 </head>
@@ -159,6 +160,9 @@
 
     <!-- Incluir el footer -->
     <?php include "./inc/footer.php"; ?> 
+    <!-- Incluir el popup -->
+    <?php include_once "./inc/popup_uPassword.php"; ?> 
+    <?php include_once "./inc/popup_uProfile.php"; ?>       
 
 </body>
     <script>

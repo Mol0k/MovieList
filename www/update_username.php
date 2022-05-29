@@ -6,7 +6,7 @@
     $mysqli = get_db_connection_or_die();
 	$id = $_SESSION['user_id']; //
 	$username = $_POST['username']; 
-
+    $return = $_POST['return_username'];
 	$buscar_username = "SELECT * FROM tuser where username= ? ";
     $stmt_username= $mysqli->prepare($buscar_username);
     $stmt_username->bind_param("s", $username );
@@ -19,7 +19,7 @@
         if(strlen($_POST['username']) > 3  && strlen($_POST['username']) < 20){
             if ($user) { // if user exists
                 if ($user['username'] === $username) {
-                    header('location: edit_profile.php');
+                    header("Location: $return#popup2");
                     $_SESSION['error_update_username'] = "Este nombre de usuario ya está ocupado.";
                 }
             }else{ 
@@ -28,16 +28,16 @@
                     $stmt= $mysqli->prepare($sql);
                     $stmt->bind_param("si", $username , $id);
                     $stmt->execute();
-                    header('location: edit_profile.php');
+                    header("Location: $return#popup2");
                     $_SESSION['successUser'] = "Se ha actualizado el nombre del usuario con éxito.";
             
                 }catch(Exception $e){
-                    header('location: edit_profile.php');
+                    header("Location: $return#popup2");
                     $_SESSION['error_update_username'] = "Ha habido un error actualizando el usuario.";
                 }
             }
         }else{ 
-            header('location: edit_profile.php');
+            header("Location: $return#popup2");
             $_SESSION['error_update_username'] = "El nombre tiene que tener como mínimo 4 caracteres y como máximo 20.";
             die();
         }

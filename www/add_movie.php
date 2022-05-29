@@ -4,15 +4,24 @@ require __DIR__ . '/../php_util/db_connection.php';
 
     session_start();
     $mysqli = get_db_connection_or_die();
-
-    // $_SESSION['user_id'] = 3;
+    $user_id = $_SESSION['user_id'];
+    
     if (empty($_SESSION['user_id'])) {
         header('Location: login.php');
     }
+    
+
+    $role_sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
+    $query = $mysqli->query($role_sql);
+    $row_role = $query->fetch_assoc(); 
+
+    if($row_role['roles'] != "admin"){
+        header('Location: main.php');
+    }
+
     if(isset($_POST['records-limit-addmovie'])){
         $_SESSION['records-limit-addmovie'] = $_POST['records-limit-addmovie'];
     }
-
     $limit = isset($_SESSION['records-limit-addmovie']) ? $_SESSION['records-limit-addmovie'] : 2;
     $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
     $paginationStart = ($page - 1) * $limit;
@@ -27,7 +36,9 @@ require __DIR__ . '/../php_util/db_connection.php';
     // Anterior y siguiente
     $prev = $page - 1;
     $next = $page + 1;
+    
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -40,6 +51,7 @@ require __DIR__ . '/../php_util/db_connection.php';
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
     <link rel="stylesheet" href="./assets/css/styles.css" />
     <link rel="stylesheet" href="./assets/css/style_add_movie.css" />
+    <link rel="stylesheet" href="./assets/css/profile.css">
     <title>Añadir películas:</title>
     <style>
         
@@ -232,13 +244,15 @@ require __DIR__ . '/../php_util/db_connection.php';
             </li>
         </ul>
     </nav>
-
+   
 
    
 
     <!-- Incluir el footer -->
     <?php include "./inc/footer.php"; ?>
-
+    <!-- Incluir el popup -->
+    <?php include_once "./inc/popup_uPassword.php"; ?> 
+    <?php include_once "./inc/popup_uProfile.php"; ?>
 </body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">

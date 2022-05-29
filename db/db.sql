@@ -8,6 +8,7 @@ CREATE TABLE tUser (
   email VARCHAR(50) NOT NULL UNIQUE,
   encrypted_password VARCHAR(100) NOT NULL,
   roles VARCHAR(50) NOT NULL,
+  registration_date DATETIME,
   profile_image VARCHAR(200) 
   );
 

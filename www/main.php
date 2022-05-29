@@ -48,6 +48,7 @@ require __DIR__ . '/../php_util/db_connection.php';
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/css/styles.css">
     <link rel="stylesheet" href="./assets/css/style_main.css">
+    <link rel="stylesheet" href="./assets/css/profile.css">
     <script src="https://kit.fontawesome.com/b18aa99892.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="#">
     <title>MovieList</title>
@@ -176,7 +177,10 @@ require __DIR__ . '/../php_util/db_connection.php';
     </div>
 
     <!-- Incluir el footer -->
-    <?php include "./inc/footer.php"; ?>  
+    <?php include "./inc/footer.php"; ?>
+    <!-- Incluir el popup -->
+    <?php include_once "./inc/popup_uPassword.php"; ?> 
+    <?php include_once "./inc/popup_uProfile.php"; ?>   
     
 </body>
 <!-- jQuery + Bootstrap JS -->

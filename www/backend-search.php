@@ -17,6 +17,7 @@
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/css/styles.css">
     <link rel="stylesheet" href="./assets/css/style_backend_search.css">
+    <link rel="stylesheet" href="./assets/css/profile.css">
     <script src="https://kit.fontawesome.com/b18aa99892.js" crossorigin="anonymous"></script>
     <title>Buscar resultados</title>
 </head>
@@ -114,9 +115,11 @@
 </div>
 
 
-<!-- Incluir el footer -->
-<?php include "./inc/footer.php"; ?> 
-
+    <!-- Incluir el footer -->
+    <?php include "./inc/footer.php"; ?> 
+    <!-- Incluir el popup -->
+    <?php include_once "./inc/popup_uPassword.php"; ?> 
+    <?php include_once "./inc/popup_uProfile.php"; ?>       
     
 
    

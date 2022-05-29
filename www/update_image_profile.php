@@ -6,7 +6,7 @@
 
     $mysqli = get_db_connection_or_die();
 	$id = $_SESSION['user_id']; //
-	
+	$return = $_POST['return_image'];
 	$imagen_usuario=$_FILES['imagenUsuario']['name'];
 	$guardado=$_FILES['imagenUsuario']['tmp_name'];
 	$maxSize = 2097152;
@@ -28,12 +28,12 @@
 										$stmt_image= $mysqli->prepare($sql_image);
 										$stmt_image->bind_param("si", $imagen_usuario, $id);
 										$stmt_image->execute();
-										header('location: edit_profile.php');
+										header("Location: $return#popup2");
 										$_SESSION['successProfileImage'] = "Se ha actualizado la imagen con éxito.";
 										die();						
 								
 									}else{ 
-										header('location: edit_profile.php');
+										header("Location: $return#popup2");
 										$_SESSION['error_profile_image'] = "No se ha podido guardar.";
 										die();	
 									}			
@@ -45,30 +45,30 @@
 							$stmt_image= $mysqli->prepare($sql_image);
 							$stmt_image->bind_param("si", $imagen_usuario, $id);
 							$stmt_image->execute();
-							header('location: edit_profile.php');
+							header("Location: $return#popup2");
 							$_SESSION['successProfileImage'] = "Se ha actualizado la imagen con éxito.";
 							die();						
 						
 						}else{ 
-							header('location: edit_profile.php');
+							header("Location: $return#popup2");
 							$_SESSION['error_profile_image'] = "No se ha podido guardar.";
 							die();	
 						}
 				}
 			
 		}else{
-			header('location: edit_profile.php');
+			header("Location: $return#popup2");
 			$_SESSION['error_profile_image'] = "No se pueden subir imágenes de más de 2MB.";
 			die();
 			
 		}
 	}else{
-		header('location: edit_profile.php');
+		header("Location: $return#popup2");
 		$_SESSION['error_profile_image'] = "Algo ha salido mal.";
 		die();
 	}
 }else{
-	header('location: edit_profile.php');
+	header("Location: $return#popup2");
 	// $_SESSION['error_profile_image'] = "Parece que has subido ninguna imagen.";
 	die();
 }

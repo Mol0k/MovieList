@@ -45,6 +45,7 @@ require __DIR__ . '/../php_util/db_connection.php';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/profile.css">
     <link rel="stylesheet" href="./assets/css/style_favorites_watchlist.css">
     <style>
         .foter{
@@ -129,7 +130,9 @@ require __DIR__ . '/../php_util/db_connection.php';
 
     <!-- Incluir el footer -->
     <?php include "./inc/footer.php"; ?> 
-
+    <!-- Incluir el popup -->
+    <?php include_once "./inc/popup_uPassword.php"; ?> 
+    <?php include_once "./inc/popup_uProfile.php"; ?>                
 
 
 </body>
