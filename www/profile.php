@@ -71,8 +71,8 @@
                         }
                     ?>
                 </button> 
-                <span class="name mt-3"><?php echo $fila_usuario['username']?></span> 
-                <span class="idd"><?php echo $fila_usuario['email']?></span> 
+                <span class="nombre mt-3"><?php echo $fila_usuario['username']?></span> 
+                <span ><?php echo $fila_usuario['email']?></span> 
                 <div class="d-flex flex-row justify-content-center align-items-center gap-2"> 
                     <span class="idd1">Roles:
                         <?php if($fila_usuario['roles'] == NULL){
@@ -91,8 +91,8 @@
                 </button> 
                 
             </div> 
-            <div class=" px-2 rounded mt-4 date "> 
-                <span class="join">Se ha unido el
+            <div class=" px-2 rounded mt-4 fecha "> 
+                <span class="llegada">Se ha unido el
                 <?php
                     date_default_timezone_set('Europe/Madrid');
                         // En windows

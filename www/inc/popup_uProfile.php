@@ -2,11 +2,11 @@
 <?php
 $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 ?>
-<div id="popup2" class="popup-overlay text-light">
+<div id="popup2" class="popup-cuadro text-light">
     <div class="log-popup">
         <h1 class="text-center mt-3">Editar perfil</h1>
-        <a class="close-window" href="#">&times;</a>
-        <div class="log-content">
+        <a class="cerrar-ventana" href="#">&times;</a>
+        <div class="contenido-pop">
             <form method="POST" name="formulario" action="update_username.php" role="form" enctype="multipart/form-data">
                 <div class="form-group mt-3">
                     <label for="usernames">Nuevo username:</label>

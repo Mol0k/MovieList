@@ -1,3 +1,5 @@
+
+/*css de la parte del perfil*/
 .image img {
     transition: all 0.5s;
     border: 3px solid white;
@@ -16,20 +18,9 @@
     border-radius: 20px;
 }
 
-.name {
+.nombre {
     font-size: 22px;
     font-weight: bold
-}
-
-.number {
-    font-size: 22px;
-    font-weight: bold;
-}
-
-.follow {
-    font-size: 12px;
-    font-weight: 500;
-    color: white;
 }
 
 .btn1 {
@@ -41,13 +32,13 @@
     font-size: 15px
 }
 
-.join {
+.llegada {
     font-size: 14px;
     color: black;
     font-weight: bold;
 }
 
-.date {
+.fecha {
     background-color: #ccc
 }
 
@@ -77,7 +68,8 @@
     background: #6AC045;
 }
 
-.popup-overlay {
+/*POPUP CAMBIAR CONTRASEÑA Y USUARIO*/
+.popup-cuadro {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -88,8 +80,8 @@
     visibility: hidden;
     opacity: 0;
 }
-
-.popup-overlay:target {
+/* Hacer visible el popup */
+.popup-cuadro:target {
     visibility: visible;
     opacity: 1;
 }
@@ -106,8 +98,8 @@
 }
 
 
-
-.log-popup .close-window {
+/* X para cerrar el pop-up*/
+.log-popup .cerrar-ventana {
     position: absolute;
     top: 20px;
     right: 30px;
@@ -118,11 +110,11 @@
     color: rgb(255, 255, 255);
 }
 
-.log-popup .close-window:hover {
+.log-popup .cerrar-ventana:hover {
     color: #6AC045 !important;
 }
-
-.log-popup .log-content {
+/*CONTENIDO POPUP*/
+.log-popup .contenido-pop {
     max-height: 30%;
     overflow: auto;
 }
@@ -138,26 +130,17 @@
 }
 
 
-.log-input {
-    font-size: 20px;
-    padding: 5px 10px;
-    margin-top: 15px;
-    width: 60%;
-    border: 1px solid #6AC045;
-    outline: 0;
-    border-radius: 50px;
-}
 
-.btn-log {
-    font-size: 18px;
-    background: #6AC045;
-    padding: 10px;
-    border: 0;
-    outline: 0;
-    display: inline;
-    color: #fff;
-    width: 60%;
+/* Botones que llevan al loguin popup */
+.btn-main {
+    padding: 10px 30px;
+    border: 1px solid #6AC045;
+    background: transparent;
+    color: #fff !important;
+    font-size: 22px;
     border-radius: 50px;
-    margin-top: 13px;
+    margin-top: 20px;
+    margin-left: 10px;
+    
 }
 
