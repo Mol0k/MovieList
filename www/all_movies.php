@@ -7,7 +7,7 @@
     
     $mysqli = get_db_connection_or_die();
     
-   
+    $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 ?>
 
 <!DOCTYPE html>

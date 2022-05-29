@@ -1,526 +1,523 @@
-<!-- 
-**NOTA IMPORTANTE**
-ESTO HABRÍA QUE PENSAR EN CAMBIARLO. NO ES VIABLE. DE MOMENTO SE QUEDA ASÍ PERO EN UN FUTURO SE DEBE CAMBIAR.
-SOLUCIÓN:
-HABRÍA QUE TENER 2 TABLAS:
-TABLA tgenre
-    gen_id
-    gen_title
-TABLA tmovie_genres
-    mov_id FOREIGN KEY
-    gen_id FOREIGN KEY
- -->
- <?php
- $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
- ?>
+
+<?php
+
+// **NOTA IMPORTANTE**
+// ESTO HABRÍA QUE PENSAR EN CAMBIARLO. NO ES VIABLE. DE MOMENTO SE QUEDA ASÍ PERO EN UN FUTURO SE DEBE CAMBIAR.
+// SOLUCIÓN:
+// HABRÍA QUE TENER 2 TABLAS:
+// TABLA tgenre
+//     gen_id
+//     gen_title
+// TABLA tmovie_genres
+//     mov_id FOREIGN KEY
+//     gen_id FOREIGN KEY
+
+    ini_set('display_errors', 'On');
+    require_once __DIR__ . '/../php_util/db_connection.php';
+    $mysqli = get_db_connection_or_die();
+    $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+?>
 <div class="col-md-9 col-xs-7 ">
     <div class="container mt-2 ">
     <?php 
-    if (!isset($_POST['btCrimen']) && !isset($_POST['btComedia']) 
-                && !isset($_POST['btSuspense']) && !isset($_POST['btAccion']) 
-                && !isset($_POST['btDrama']) && !isset($_POST['btAventuras']) 
-                && !isset($_POST['btCienciaFiccion']) && !isset($_POST['btTerror']) 
-                && !isset($_POST['btMonstruos']) && !isset($_POST['btSuperheroes']) 
-                && !isset($_POST['btFantasiaOscura']) && !isset($_POST['btFantasia']) 
-                && !isset($_POST['btMisterio']) && !isset($_POST['btEspionaje'])) {
-            $all = "SELECT * FROM tmovie";
-            $all_result = mysqli_query($mysqli, $all) or die(mysqli_error($mysqli));?>
-            <?php  echo '<h1 class="text-center text-light mb-2" >TODAS LAS PELÍCULAS</h1>'?>
-        <div class="row justify-content-center wrapperino " id="foco">
-                    <?php while($fila_all = mysqli_fetch_array($all_result)){
-                                $variable= unserialize($fila_all['gender']);  ?>
-            <div class="movie_card ">
-                    <?php echo "<img   src='assets/imagenesPortada/".$fila_all['image']."' >" ?>
-                    <div class="descriptions">
-                        <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                        <?php echo $fila_all['title']; ?>
-                        </h3>
-                        <p style="line-height: 20px;height: 70%;">
-                        <?php echo $fila_all['sinopsis']; ?>
-                        </p>
-                        <?php
-                        echo "<button id='boton-mas'>
-                                <a style='text-decoration: none;color:white'  href='movies.php?id=".$fila_all['id']."'>Mas info</a>
-                              </button>";
-                              if(!empty($_SESSION['user_id'])){
-                                echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_all['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'">
-                                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
-                                      </form>';
-                                echo '<form method="post" action="add_to_favorites.php?id='.$fila_all['id'].'">
-                                        <button id="boton-favorites"> <i title="Agregar a favoritos" class="fa-solid fa-heart fa-beat"> </i> </button>         
-                                      </form>';
-                              }
-                             ?>
-                    </div>
+    if (!isset($_POST['btCrimen']) && !isset($_POST['btComedia']) && !isset($_POST['btSuspense']) && !isset($_POST['btAccion'])  && !isset($_POST['btDrama']) && !isset($_POST['btAventuras']) && !isset($_POST['btCienciaFiccion']) && !isset($_POST['btTerror']) 
+        && !isset($_POST['btMonstruos']) && !isset($_POST['btSuperheroes']) && !isset($_POST['btFantasiaOscura']) && !isset($_POST['btFantasia']) && !isset($_POST['btMisterio']) && !isset($_POST['btEspionaje'])) {
+        //Consulta
+        $movies = $mysqli->query("SELECT * FROM tmovie ")->fetch_all(MYSQLI_ASSOC);?>
+        <h1 class="text-center text-light mb-2" >TODAS LAS PELÍCULAS</h1>
+        <div class="row justify-content-center wrapperino" id="foco">
+            <?php foreach($movies as $movie): ?>        
+            <div class="movie_card">
+                <?php echo "<img   src='assets/imagenesPortada/".$movie['image']."' >" ?>
+                <div class="descriptions">
+                    <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px"> <?php echo $movie['title']; ?>  </h3>
+                    <p style="line-height: 20px;height: 70%;">  <?php echo $movie['sinopsis']; ?></p>
+                    <?php //AQUI HAY UN BUG QUE ME DEJA LOCO. SI NO PONGO ESTO EN UN FORMULARIO EL SIGUIENTE FORMULARIO ROMPE ?>
+                    <form method="post" action="">
+                        <button id='boton-mas'>
+                            <a style="text-decoration: none;color:white" href="movies.php?id=<?php echo $movie['id'];?>">Mas info</a>
+                        </button>
+                    </form>
+                    <?php  if(!empty($_SESSION['user_id'])){ ?>
+                    <form  method="post" action="add_to_watchlist.php?id=<?php echo $movie['id'] ?>" >    
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">
+                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    </form>
+                    <form  method="post" action="add_to_favorites.php?id=<?php echo $movie['id'] ?>" >
+                        <input type="hidden" name="return" value=" <?php echo $link ?>"> 
+                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    </form>
+                    <?php } ?>
+                </div>                            
             </div>
-                    <?php }
-        }            ?>
-     <?php  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                if (isset($_POST['btCrimen'])) {
-                    $crimen = "SELECT * FROM tmovie WHERE GENDER LIKE '%Crimen%'";
-                    $crimen_result = mysqli_query($mysqli, $crimen) or die(mysqli_error($mysqli));?>
-                    <?php  echo '<h1 class="text-center text-light mb-2" >PELÍCULAS DE CRIMEN</h1>'?>
-        <div class="row justify-content-center wrapperino " id="foco">
-                    <?php while($fila_genre_crimen = mysqli_fetch_array($crimen_result)){
-                                $variable= unserialize($fila_genre_crimen['gender']);  ?>
-            <div class="movie_card ">
-                    <?php echo "<img   src='assets/imagenesPortada/".$fila_genre_crimen['image']."' >" ?>
-                    <div class="descriptions">
-                        <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                        <?php echo $fila_genre_crimen['title']; ?>
-                        </h3>
-                        <p style="line-height: 20px;height: 70%;">
-                        <?php echo $fila_genre_crimen['sinopsis']; ?>
-                        </p>
-                        <?php
-                        echo "<button id='boton-mas'>
-                                <a style='text-decoration: none;color:white'  href='movies.php?id=".$fila_genre_crimen['id']."'>Mas info</a>
-                              </button>";
-                              if(!empty($_SESSION['user_id'])){
-                                echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_crimen['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'">
-                                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
-                                      </form>';
-                                echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_crimen['id'].'">
-                                        <button id="boton-favorites"> <i title="Agregar a favoritos" class="fa-solid fa-heart fa-beat"> </i> </button>         
-                                      </form>';
-                              }
-                             ?>
-                    </div>
-            </div>
-                    <?php }
-                }if (isset($_POST['btComedia'])) {
-                    $comedia = "SELECT * FROM tmovie WHERE GENDER LIKE '%Comedia%'";
-                    $comedia_result = mysqli_query($mysqli, $comedia) or die(mysqli_error($mysqli));?>
-                    <?php  echo '<h1 class="text-center text-light mb-2" >PELÍCULAS DE COMEDIA</h1>'?>
-        <div class="row justify-content-center wrapperino " id="foco">
-                    <?php while($fila_genre_comedia = mysqli_fetch_array($comedia_result)){
-                                $variable= unserialize($fila_genre_comedia['gender']);  ?>
-            <div class="movie_card ">
-                    <?php echo "<img   src='assets/imagenesPortada/".$fila_genre_comedia['image']."' >" ?>
-                    <div class="descriptions">
-                        <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                        <?php echo $fila_genre_comedia['title']; ?>
-                        </h3>
-                        <p style="line-height: 20px;height: 70%;">
-                        <?php echo $fila_genre_comedia['sinopsis']; ?>
-                        </p>
-                        <?php
-                        echo "<button id='boton-mas'>
-                                <a style='text-decoration: none;color:white'  href='movies.php?id=".$fila_genre_comedia['id']."'>Mas info</a>
-                              </button>";
-                              if(!empty($_SESSION['user_id'])){
-                                echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_comedia['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'"?>
-                                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
-                                      </form>';
-                                echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_comedia['id'].'">
-                                        <button id="boton-favorites"> <i title="Agregar a favoritos" class="fa-solid fa-heart fa-beat"> </i> </button>         
-                                      </form>';
-                              }
-                             ?>
-                    </div>
-            </div>
-                    <?php }
-                }if (isset($_POST['btSuspense'])) {
-                    $suspense = "SELECT * FROM tmovie WHERE GENDER LIKE '%Suspense%'";
-                    $suspense_result = mysqli_query($mysqli, $suspense) or die(mysqli_error($mysqli));?>
-                    <?php  echo '<h1 class="text-center text-light mb-2" >PELÍCULAS DE SUSPENSO</h1>'?>
-        <div class="row justify-content-center wrapperino " id="foco">
-                    <?php while($fila_genre_suspense = mysqli_fetch_array($suspense_result)){
-                                $variable= unserialize($fila_genre_suspense['gender']);  ?>
-            <div class="movie_card ">
-                    <?php echo "<img   src='assets/imagenesPortada/".$fila_genre_suspense['image']."' >" ?>
-                    <div class="descriptions">
-                        <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                        <?php echo $fila_genre_suspense['title']; ?>
-                        </h3>
-                        <p style="line-height: 20px;height: 70%;">
-                        <?php echo $fila_genre_suspense['sinopsis']; ?>
-                        </p>
-                        <?php
-                        echo "<button id='boton-mas'>
-                                <a style='text-decoration: none;color:white'  href='movies.php?id=".$fila_genre_suspense['id']."'>Mas info</a>
-                              </button>";
-                              if(!empty($_SESSION['user_id'])){
-                                echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_suspense['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'">
-                                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
-                                      </form>';
-                                echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_suspense['id'].'">
-                                        <button id="boton-favorites"> <i title="Agregar a favoritos" class="fa-solid fa-heart fa-beat"> </i> </button>         
-                                      </form>';
-                              }
-                             ?>
-                    </div>
-            </div>
-                    <?php }
-                }if (isset($_POST['btAccion'])) {
-                    $accion = "SELECT * FROM tmovie WHERE GENDER LIKE '%Accion%'";
-                    $accion_result = mysqli_query($mysqli, $accion) or die(mysqli_error($mysqli));?>
-                    <?php  echo '<h1 class="text-center text-light mb-2" >PELÍCULAS DE ACCIÓN</h1>'?>
-        <div class="row justify-content-center wrapperino " id="foco">
-                    <?php while($fila_genre_accion = mysqli_fetch_array($accion_result)){
-                                $variable= unserialize($fila_genre_accion['gender']);  ?>
-            <div class="movie_card ">
-                    <?php echo "<img   src='assets/imagenesPortada/".$fila_genre_accion['image']."' >" ?>
-                    <div class="descriptions">
-                        <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                        <?php echo $fila_genre_accion['title']; ?>
-                        </h3>
-                        <p style="line-height: 20px;height: 70%;">
-                        <?php echo $fila_genre_accion['sinopsis']; ?>
-                        </p>
-                        <?php
-                        echo "<button id='boton-mas'>
-                                <a style='text-decoration: none;color:white'  href='movies.php?id=".$fila_genre_accion['id']."'>Mas info</a>
-                              </button>";
-                              if(!empty($_SESSION['user_id'])){
-                                echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_accion['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'">
-                                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
-                                      </form>';
-                                echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_accion['id'].'">
-                                        <button id="boton-favorites"> <i title="Agregar a favoritos" class="fa-solid fa-heart fa-beat"> </i> </button>         
-                                      </form>';
-                              }
-                             ?>
-                    </div>
-            </div>
-                    <?php }
-                }if (isset($_POST['btDrama'])) {
-                    $drama = "SELECT * FROM tmovie WHERE GENDER LIKE '%Drama%'";
-                    $drama_result = mysqli_query($mysqli, $drama) or die(mysqli_error($mysqli));?>
-                    <?php  echo '<h1 class="text-center text-light mb-2" >PELÍCULAS DE DRAMA</h1>'?>
-        <div class="row justify-content-center wrapperino " id="foco">
-                    <?php while($fila_genre_drama = mysqli_fetch_array($drama_result)){
-                                $variable= unserialize($fila_genre_drama['gender']);  ?>
-            <div class="movie_card ">
-                    <?php echo "<img   src='assets/imagenesPortada/".$fila_genre_drama['image']."' >" ?>
-                    <div class="descriptions">
-                        <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                        <?php echo $fila_genre_drama['title']; ?>
-                        </h3>
-                        <p style="line-height: 20px;height: 70%;">
-                        <?php echo $fila_genre_drama['sinopsis']; ?>
-                        </p>
-                        <?php
-                        echo "<button id='boton-mas'>
-                                <a style='text-decoration: none;color:white'  href='movies.php?id=".$fila_genre_drama['id']."'>Mas info</a>
-                              </button>";
-                              if(!empty($_SESSION['user_id'])){
-                                echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_drama['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'">
-                                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
-                                      </form>';
-                                echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_drama['id'].'">
-                                        <button id="boton-favorites"> <i title="Agregar a favoritos" class="fa-solid fa-heart fa-beat"> </i> </button>         
-                                      </form>';
-                              }
-                             ?>
-                    </div>
-            </div>
-                    <?php }
-                }if (isset($_POST['btAventuras'])) {
-                    $aventuras = "SELECT * FROM tmovie WHERE GENDER LIKE '%Aventuras%'";
-                    $aventuras_result = mysqli_query($mysqli, $aventuras) or die(mysqli_error($mysqli));?>
-                    <?php  echo '<h1 class="text-center text-light mb-2" >PELÍCULAS DE AVENTURAS</h1>'?>
-        <div class="row justify-content-center wrapperino " id="foco">
-                    <?php while($fila_genre_aventuras = mysqli_fetch_array($aventuras_result)){
-                                $variable= unserialize($fila_genre_aventuras['gender']);  ?>
-            <div class="movie_card ">
-                    <?php echo "<img   src='assets/imagenesPortada/".$fila_genre_aventuras['image']."' >" ?>
-                    <div class="descriptions">
-                        <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                        <?php echo $fila_genre_aventuras['title']; ?>
-                        </h3>
-                        <p style="line-height: 20px;height: 70%;">
-                        <?php echo $fila_genre_aventuras['sinopsis']; ?>
-                        </p>
-                        <?php
-                        echo "<button id='boton-mas'>
-                                <a style='text-decoration: none;color:white'  href='movies.php?id=".$fila_genre_aventuras['id']."'>Mas info</a>
-                              </button>";
-                              if(!empty($_SESSION['user_id'])){
-                                echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_aventuras['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'">
-                                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
-                                      </form>';
-                                echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_aventuras['id'].'">
-                                        <button id="boton-favorites"> <i title="Agregar a favoritos" class="fa-solid fa-heart fa-beat"> </i> </button>         
-                                      </form>';
-                              }
-                             ?>
-                    </div>
-            </div>
-                    <?php }
-                }if (isset($_POST['btCienciaFiccion'])) {
-                    $cienciaFiccion = "SELECT * FROM tmovie WHERE GENDER LIKE '%Ciencia Ficcion%'";
-                    $cienciaFiccion_result = mysqli_query($mysqli, $cienciaFiccion) or die(mysqli_error($mysqli));?>
-                    <?php  echo '<h1 class="text-center text-light mb-2" >PELÍCULAS DE CIENCIA FICCIÓN</h1>'?>
-        <div class="row justify-content-center wrapperino " id="foco">
-                    <?php while($fila_genre_cienciaFiccion = mysqli_fetch_array($cienciaFiccion_result)){
-                                $variable= unserialize($fila_genre_cienciaFiccion['gender']);  ?>
-            <div class="movie_card ">
-                    <?php echo "<img   src='assets/imagenesPortada/".$fila_genre_cienciaFiccion['image']."' >" ?>
-                    <div class="descriptions">
-                        <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                        <?php echo $fila_genre_cienciaFiccion['title']; ?>
-                        </h3>
-                        <p style="line-height: 20px;height: 70%;">
-                        <?php echo $fila_genre_cienciaFiccion['sinopsis']; ?>
-                        </p>
-                        <?php
-                        echo "<button id='boton-mas'>
-                                <a style='text-decoration: none;color:white'  href='movies.php?id=".$fila_genre_cienciaFiccion['id']."'>Mas info</a>
-                              </button>";
-                              if(!empty($_SESSION['user_id'])){
-                                echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_cienciaFiccion['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'">
-                                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
-                                      </form>';
-                                echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_cienciaFiccion['id'].'">
-                                        <button id="boton-favorites"> <i title="Agregar a favoritos" class="fa-solid fa-heart fa-beat"> </i> </button>         
-                                      </form>';
-                              }
-                             ?>
-                    </div>
-            </div>
-                    <?php }
-                }if (isset($_POST['btTerror'])) {
-                    $terror = "SELECT * FROM tmovie WHERE GENDER LIKE '%Terror%'";
-                    $terror_result = mysqli_query($mysqli, $terror) or die(mysqli_error($mysqli));?>
-                    <?php  echo '<h1 class="text-center text-light mb-2" >PELÍCULAS DE TERROR</h1>'?>
-        <div class="row justify-content-center wrapperino " id="foco">
-                    <?php while($fila_genre_terror = mysqli_fetch_array($terror_result)){
-                                $variable= unserialize($fila_genre_terror['gender']);  ?>
-            <div class="movie_card ">
-                    <?php echo "<img   src='assets/imagenesPortada/".$fila_genre_terror['image']."' >" ?>
-                    <div class="descriptions">
-                        <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                        <?php echo $fila_genre_terror['title']; ?>
-                        </h3>
-                        <p style="line-height: 20px;height: 70%;">
-                        <?php echo $fila_genre_terror['sinopsis']; ?>
-                        </p>
-                        <?php
-                        echo "<button id='boton-mas'>
-                                <a style='text-decoration: none;color:white'  href='movies.php?id=".$fila_genre_terror['id']."'>Mas info</a>
-                              </button>";
-                              if(!empty($_SESSION['user_id'])){
-                                echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_terror['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'">
-                                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
-                                      </form>';
-                                echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_terror['id'].'">
-                                        <button id="boton-favorites"> <i title="Agregar a favoritos" class="fa-solid fa-heart fa-beat"> </i> </button>         
-                                      </form>';
-                              }
-                             ?>
-                    </div>
-            </div>
-                    <?php }
-                }if (isset($_POST['btMonstruos'])) {
-                    $monstruos = "SELECT * FROM tmovie WHERE GENDER LIKE '%Monstruos%'";
-                    $monstruos_result = mysqli_query($mysqli, $monstruos) or die(mysqli_error($mysqli));?>
-                    <?php  echo '<h1 class="text-center text-light mb-2" >PELÍCULAS DE MONSTRUOS</h1>'?>
-        <div class="row justify-content-center wrapperino " id="foco">
-                    <?php while($fila_genre_monstruos = mysqli_fetch_array($monstruos_result)){
-                                $variable= unserialize($fila_genre_monstruos['gender']);  ?>
-            <div class="movie_card ">
-                    <?php echo "<img   src='assets/imagenesPortada/".$fila_genre_monstruos['image']."' >" ?>
-                    <div class="descriptions">
-                        <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                        <?php echo $fila_genre_monstruos['title']; ?>
-                        </h3>
-                        <p style="line-height: 20px;height: 70%;">
-                        <?php echo $fila_genre_monstruos['sinopsis']; ?>
-                        </p>
-                        <?php
-                        echo "<button id='boton-mas'>
-                                <a style='text-decoration: none;color:white'  href='movies.php?id=".$fila_genre_monstruos['id']."'>Mas info</a>
-                              </button>";
-                              if(!empty($_SESSION['user_id'])){
-                                echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_monstruos['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'">
-                                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
-                                      </form>';
-                                echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_monstruos['id'].'">
-                                        <button id="boton-favorites"> <i title="Agregar a favoritos" class="fa-solid fa-heart fa-beat"> </i> </button>         
-                                      </form>';
-                              }
-                             ?>
-                    </div>
-            </div>
-                    <?php }
-                }if (isset($_POST['btSuperheroes'])) {
-                    $superheroes = "SELECT * FROM tmovie WHERE GENDER LIKE '%Superheroes%'";
-                    $superheroes_result = mysqli_query($mysqli, $superheroes) or die(mysqli_error($mysqli));?>
-                    <?php  echo '<h1 class="text-center text-light mb-2" >PELÍCULAS DE SUPERHÉROES</h1>'?>
-        <div class="row justify-content-center wrapperino " id="foco">
-                    <?php while($fila_genre_superheroes = mysqli_fetch_array($superheroes_result)){
-                                $variable= unserialize($fila_genre_superheroes['gender']);  ?>
-            <div class="movie_card ">
-                    <?php echo "<img   src='assets/imagenesPortada/".$fila_genre_superheroes['image']."' >" ?>
-                    <div class="descriptions">
-                        <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                        <?php echo $fila_genre_superheroes['title']; ?>
-                        </h3>
-                        <p style="line-height: 20px;height: 70%;">
-                        <?php echo $fila_genre_superheroes['sinopsis']; ?>
-                        </p>
-                        <?php
-                        echo "<button id='boton-mas'>
-                                <a style='text-decoration: none;color:white'  href='movies.php?id=".$fila_genre_superheroes['id']."'>Mas info</a>
-                              </button>";
-                              if(!empty($_SESSION['user_id'])){
-                                echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_superheroes['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'">
-                                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
-                                      </form>';
-                                echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_superheroes['id'].'">
-                                        <button id="boton-favorites"> <i title="Agregar a favoritos" class="fa-solid fa-heart fa-beat"> </i> </button>         
-                                      </form>';
-                              }
-                             ?>
-                    </div>
-            </div>
-                    <?php }
-                }if (isset($_POST['btFantasiaOscura'])) {
-                    $fantasiaOscura = "SELECT * FROM tmovie WHERE GENDER LIKE '%Fantasia Oscura%'";
-                    $fantasiaOscura_result = mysqli_query($mysqli, $fantasiaOscura) or die(mysqli_error($mysqli));?>
-                    <?php  echo '<h1 class="text-center text-light mb-2" >PELÍCULAS DE FANTASÍA OSCURA</h1>'?>
-        <div class="row justify-content-center wrapperino " id="foco">
-                    <?php while($fila_genre_fantasiaOscura = mysqli_fetch_array($fantasiaOscura_result)){
-                                $variable= unserialize($fila_genre_fantasiaOscura['gender']);  ?>
-            <div class="movie_card ">
-                    <?php echo "<img   src='assets/imagenesPortada/".$fila_genre_fantasiaOscura['image']."' >" ?>
-                    <div class="descriptions">
-                        <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                        <?php echo $fila_genre_fantasiaOscura['title']; ?>
-                        </h3>
-                        <p style="line-height: 20px;height: 70%;">
-                        <?php echo $fila_genre_fantasiaOscura['sinopsis']; ?>
-                        </p>
-                        <?php
-                        echo "<button id='boton-mas'>
-                                <a style='text-decoration: none;color:white'  href='movies.php?id=".$fila_genre_fantasiaOscura['id']."'>Mas info</a>
-                              </button>";
-                              if(!empty($_SESSION['user_id'])){
-                                echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_fantasiaOscura['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'">
-                                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
-                                      </form>';
-                                echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_fantasiaOscura['id'].'">
-                                        <button id="boton-favorites"> <i title="Agregar a favoritos" class="fa-solid fa-heart fa-beat"> </i> </button>         
-                                      </form>';
-                              }
-                             ?>
-                    </div>
-            </div>
-                    <?php }
-                }if (isset($_POST['btMisterio'])) {
-                    $misterio = "SELECT * FROM tmovie WHERE GENDER LIKE '%Misterio%'";
-                    $misterio_result = mysqli_query($mysqli, $misterio) or die(mysqli_error($mysqli));?>
-                    <?php  echo '<h1 class="text-center text-light mb-2" >PELÍCULAS DE MISTERIO</h1>'?>
-        <div class="row justify-content-center wrapperino " id="foco">
-                    <?php while($fila_genre_misterio = mysqli_fetch_array($misterio_result)){
-                                $variable= unserialize($fila_genre_misterio['gender']);  ?>
-            <div class="movie_card ">
-                    <?php echo "<img   src='assets/imagenesPortada/".$fila_genre_misterio['image']."' >" ?>
-                    <div class="descriptions">
-                        <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                        <?php echo $fila_genre_misterio['title']; ?>
-                        </h3>
-                        <p style="line-height: 20px;height: 70%;">
-                        <?php echo $fila_genre_misterio['sinopsis']; ?>
-                        </p>
-                        <?php
-                        echo "<button id='boton-mas'>
-                                <a style='text-decoration: none;color:white'  href='movies.php?id=".$fila_genre_misterio['id']."'>Mas info</a>
-                              </button>";
-                              if(!empty($_SESSION['user_id'])){
-                                echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_misterio['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'">
-                                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
-                                      </form>';
-                                echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_misterio['id'].'">
-                                        <button id="boton-favorites"> <i title="Agregar a favoritos" class="fa-solid fa-heart fa-beat"> </i> </button>         
-                                      </form>';
-                              }
-                             ?>
-                    </div>
-            </div>
-                    <?php }
-                }if (isset($_POST['btEspionaje'])) {
-                    $espionaje = "SELECT * FROM tmovie WHERE GENDER LIKE '%Espionaje%'";
-                    $espionaje_result = mysqli_query($mysqli, $espionaje) or die(mysqli_error($mysqli));?>
-                    <?php  echo '<h1 class="text-center text-light mb-2" >PELÍCULAS DE ESPIONAJE</h1>'?>
-        <div class="row justify-content-center wrapperino " id="foco">
-                    <?php while($fila_genre_espionaje = mysqli_fetch_array($espionaje_result)){
-                                $variable= unserialize($fila_genre_espionaje['gender']);  ?>
-            <div class="movie_card ">
-                    <?php echo "<img   src='assets/imagenesPortada/".$fila_genre_espionaje['image']."' >" ?>
-                    <div class="descriptions">
-                        <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                        <?php echo $fila_genre_espionaje['title']; ?>
-                        </h3>
-                        <p style="line-height: 20px;height: 70%;">
-                        <?php echo $fila_genre_espionaje['sinopsis']; ?>
-                        </p>
-                        <?php
-                        echo "<button id='boton-mas'>
-                                <a style='text-decoration: none;color:white'  href='movies.php?id=".$fila_genre_espionaje['id']."'>Mas info</a>
-                              </button>";
-                              if(!empty($_SESSION['user_id'])){
-                                echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_espionaje['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'">
-                                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
-                                      </form>';
-                                echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_espionaje['id'].'">
-                                        <button id="boton-favorites"> <i title="Agregar a favoritos" class="fa-solid fa-heart fa-beat"> </i> </button>         
-                                      </form>';
-                              }
-                             ?>
-                    </div>
-            </div>
-                    <?php }
-                }if (isset($_POST['btFantasia'])) {
-                    $fantasia = "SELECT * FROM tmovie WHERE GENDER LIKE '%Fantasia%'";
-                    $fantasia_result = mysqli_query($mysqli, $fantasia) or die(mysqli_error($mysqli));?>
-                    <?php  echo '<h1 class="text-center text-light mb-2" >PELÍCULAS DE FANTASÍA</h1>'?>
-        <div class="row justify-content-center wrapperino " id="foco">
-                    <?php while($fila_genre_fantasia = mysqli_fetch_array($fantasia_result)){
-                                $variable= unserialize($fila_genre_fantasia['gender']);  ?>
-            <div class="movie_card ">
-                    <?php echo "<img   src='assets/imagenesPortada/".$fila_genre_fantasia['image']."' >" ?>
-                    <div class="descriptions">
-                        <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px">
-                        <?php echo $fila_genre_fantasia['title']; ?>
-                        </h3>
-                        <p style="line-height: 20px;height: 70%;">
-                        <?php echo $fila_genre_fantasia['sinopsis']; ?>
-                        </p>
-                        <?php
-                        echo "<button id='boton-mas'>
-                                <a style='text-decoration: none;color:white'  href='movies.php?id=".$fila_genre_fantasia['id']."'>Mas info</a>
-                              </button>";
-                              if(!empty($_SESSION['user_id'])){
-                                echo '<form  method="post" action="add_to_watchlist.php?id='.$fila_genre_fantasia['id'].'" >
-                                        <input type="hidden" name="return" value=" '.$link.'">
-                                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist" class="fa-solid fa-circle-plus fa-beat"> </i> </button>     
-                                      </form>';
-                                echo '<form method="post" action="add_to_favorites.php?id='.$fila_genre_fantasia['id'].'">
-                                        <button id="boton-favorites"> <i title="Agregar a favoritos" class="fa-solid fa-heart fa-beat"> </i> </button>         
-                                      </form>';
-                              }
-                             ?>
-                    </div>
-            </div>
-                    <?php }
-                }
-            }?>
+            <?php endforeach; ?>
         </div>
+    <?php }
+        ?>
+    <?php 
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (isset($_POST['btCrimen'])) {
+            $crimens = $mysqli->query("SELECT * FROM tmovie WHERE GENDER LIKE '%Crimen%'")->fetch_all(MYSQLI_ASSOC);?>
+            <h1 class="text-center text-light mb-2" >PELÍCULAS DE CRIMEN</h1>
+            <div class="row justify-content-center wrapperino" id="foco">
+                <?php foreach($crimens as $crimen): ?>        
+                <div class="movie_card">
+                <?php echo "<img   src='assets/imagenesPortada/".$crimen['image']."' >" ?>
+                <div class="descriptions">
+                    <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px"> <?php echo $crimen['title']; ?>  </h3>
+                    <p style="line-height: 20px;height: 70%;">  <?php echo $crimen['sinopsis']; ?></p>
+                    <?php //AQUI HAY UN BUG QUE ME DEJA LOCO. SI NO PONGO ESTO EN UN FORMULARIO EL SIGUIENTE FORMULARIO ROMPE ?>
+                    <form method="post" action="">
+                        <button id='boton-mas'>
+                            <a style="text-decoration: none;color:white" href="movies.php?id=<?php echo $crimen['id'];?>">Mas info</a>
+                        </button>
+                    </form>
+                    <?php  if(!empty($_SESSION['user_id'])){ ?>
+                    <form  method="post" action="add_to_watchlist.php?id=<?php echo $crimen['id'] ?>" > 
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">
+                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    </form>
+                    <form  method="post" action="add_to_favorites.php?id=<?php echo $crimen['id'] ?>" > 
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">   
+                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    </form>
+                    <?php } ?>
+                </div>                            
+            </div>
+            <?php endforeach; ?>
+        </div>
+    <?php } 
+        ?>
+    <?php
+        if (isset($_POST['btComedia'])) {
+            $comedias = $mysqli->query("SELECT * FROM tmovie WHERE GENDER LIKE '%Comedia%'")->fetch_all(MYSQLI_ASSOC);?>
+            <h1 class="text-center text-light mb-2" >PELÍCULAS DE CRIMEN</h1>
+            <div class="row justify-content-center wrapperino" id="foco">
+                <?php foreach($comedias as $comedia): ?>        
+                <div class="movie_card">
+                <?php echo "<img   src='assets/imagenesPortada/".$comedia['image']."' >" ?>
+                <div class="descriptions">
+                    <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px"> <?php echo $comedia['title']; ?>  </h3>
+                    <p style="line-height: 20px;height: 70%;">  <?php echo $comedia['sinopsis']; ?></p>
+                    <?php //AQUI HAY UN BUG QUE ME DEJA LOCO ?>
+                    <form method="post" action="">
+                        <button id='boton-mas'>
+                            <a style="text-decoration: none;color:white" href="movies.php?id=<?php echo $comedia['id'];?>">Mas info</a>
+                        </button>
+                    </form>
+                    <?php  if(!empty($_SESSION['user_id'])){ ?>
+                    <form  method="post" action="add_to_watchlist.php?id=<?php echo $comedia['id'] ?>" >    
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">
+                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    </form>
+                    <form  method="post" action="add_to_favorites.php?id=<?php echo $comedia['id'] ?>" >
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
+                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    </form>
+                    <?php } ?>
+                </div>                            
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php } 
+            ?>
+        <?php
+        if (isset($_POST['btSuspense'])) {
+            $suspenses = $mysqli->query("SELECT * FROM tmovie WHERE GENDER LIKE '%Suspense%'")->fetch_all(MYSQLI_ASSOC);?>
+            <h1 class="text-center text-light mb-2" >PELÍCULAS DE SUSPENSE</h1>
+            <div class="row justify-content-center wrapperino" id="foco">
+                <?php foreach($suspenses as $suspense): ?>        
+                <div class="movie_card">
+                <?php echo "<img   src='assets/imagenesPortada/".$suspense['image']."' >" ?>
+                <div class="descriptions">
+                    <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px"> <?php echo $suspense['title']; ?>  </h3>
+                    <p style="line-height: 20px;height: 70%;">  <?php echo $suspense['sinopsis']; ?></p>
+                    <?php //AQUI HAY UN BUG QUE ME DEJA LOCO ?>
+                    <form method="post" action="">
+                        <button id='boton-mas'>
+                            <a style="text-decoration: none;color:white" href="movies.php?id=<?php echo $suspense['id'];?>">Mas info</a>
+                        </button>
+                    </form>
+                    <?php  if(!empty($_SESSION['user_id'])){ ?>
+                    <form  method="post" action="add_to_watchlist.php?id=<?php echo $suspense['id'] ?>" >    
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">
+                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    </form>
+                    <form  method="post" action="add_to_favorites.php?id=<?php echo $suspense['id'] ?>" >
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
+                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    </form>
+                    <?php } ?>
+                </div>                            
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php } 
+            ?>
+        <?php
+        if (isset($_POST['btAccion'])) {
+            $accions = $mysqli->query("SELECT * FROM tmovie WHERE GENDER LIKE '%Accion%'")->fetch_all(MYSQLI_ASSOC);?>
+            <h1 class="text-center text-light mb-2" >PELÍCULAS DE ACCIÓN</h1>
+            <div class="row justify-content-center wrapperino" id="foco">
+                <?php foreach($accions as $accion): ?>        
+                <div class="movie_card">
+                <?php echo "<img   src='assets/imagenesPortada/".$accion['image']."' >" ?>
+                <div class="descriptions">
+                    <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px"> <?php echo $accion['title']; ?>  </h3>
+                    <p style="line-height: 20px;height: 70%;">  <?php echo $accion['sinopsis']; ?></p>
+                    <?php //AQUI HAY UN BUG QUE ME DEJA LOCO ?>
+                    <form method="post" action="">
+                        <button id='boton-mas'>
+                            <a style="text-decoration: none;color:white" href="movies.php?id=<?php echo $accion['id'];?>">Mas info</a>
+                        </button>
+                    </form>
+                    <?php  if(!empty($_SESSION['user_id'])){ ?>
+                    <form  method="post" action="add_to_watchlist.php?id=<?php echo $accion['id'] ?>" >    
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">
+                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    </form>
+                    <form  method="post" action="add_to_favorites.php?id=<?php echo $accion['id'] ?>" >
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
+                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    </form>
+                    <?php } ?>
+                </div>                            
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php } 
+            ?>
+        <?php
+        if (isset($_POST['btDrama'])) {
+            $dramas = $mysqli->query("SELECT * FROM tmovie WHERE GENDER LIKE '%Drama%'")->fetch_all(MYSQLI_ASSOC);?>
+            <h1 class="text-center text-light mb-2" >PELÍCULAS DE DRAMA</h1>
+            <div class="row justify-content-center wrapperino" id="foco">
+                <?php foreach($dramas as $drama): ?>        
+                <div class="movie_card">
+                <?php echo "<img  src='assets/imagenesPortada/".$drama['image']."' >" ?>
+                <div class="descriptions">
+                    <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px"> <?php echo $drama['title']; ?>  </h3>
+                    <p style="line-height: 20px;height: 70%;">  <?php echo $drama['sinopsis']; ?></p>
+                    <?php //AQUI HAY UN BUG QUE ME DEJA LOCO ?>
+                    <form method="post" action="">
+                        <button id='boton-mas'>
+                            <a style="text-decoration: none;color:white" href="movies.php?id=<?php echo $drama['id'];?>">Mas info</a>
+                        </button>
+                    </form>
+                    <?php  if(!empty($_SESSION['user_id'])){ ?>
+                    <form  method="post" action="add_to_watchlist.php?id=<?php echo $drama['id'] ?>" >    
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">
+                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    </form>
+                    <form  method="post" action="add_to_favorites.php?id=<?php echo $drama['id'] ?>" >
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
+                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    </form>
+                    <?php } ?>
+                </div>                            
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php } 
+            ?>
+        <?php
+        if (isset($_POST['btAventuras'])) {
+            $aventuras = $mysqli->query("SELECT * FROM tmovie WHERE GENDER LIKE '%Aventuras%'")->fetch_all(MYSQLI_ASSOC);?>
+            <h1 class="text-center text-light mb-2" >PELÍCULAS DE AVENTURAS</h1>
+            <div class="row justify-content-center wrapperino" id="foco">
+                <?php foreach($aventuras as $aventura): ?>        
+                <div class="movie_card">
+                <?php echo "<img   src='assets/imagenesPortada/".$aventura['image']."' >" ?>
+                <div class="descriptions">
+                    <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px"> <?php echo $aventura['title']; ?>  </h3>
+                    <p style="line-height: 20px;height: 70%;">  <?php echo $aventura['sinopsis']; ?></p>
+                    <?php //AQUI HAY UN BUG QUE ME DEJA LOCO ?>
+                    <form method="post" action="">
+                        <button id='boton-mas'>
+                            <a style="text-decoration: none;color:white" href="movies.php?id=<?php echo $aventura['id'];?>">Mas info</a>
+                        </button>
+                    </form>
+                    <?php  if(!empty($_SESSION['user_id'])){ ?>
+                    <form  method="post" action="add_to_watchlist.php?id=<?php echo $aventura['id'] ?>" >    
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">
+                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    </form>
+                    <form  method="post" action="add_to_favorites.php?id=<?php echo $aventura['id'] ?>" >
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">   
+                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    </form>
+                    <?php } ?>
+                </div>                            
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php } 
+            ?>
+        <?php
+        if (isset($_POST['btCienciaFiccion'])) {
+            $cienciaFiccions = $mysqli->query("SELECT * FROM tmovie WHERE GENDER LIKE '%Ciencia ficcion%'")->fetch_all(MYSQLI_ASSOC);?>
+            <h1 class="text-center text-light mb-2" >PELÍCULAS DE CIENCIA FICCIÓN</h1>
+            <div class="row justify-content-center wrapperino" id="foco">
+                <?php foreach($cienciaFiccions as $cienciaFiccion): ?>        
+                <div class="movie_card">
+                <?php echo "<img   src='assets/imagenesPortada/".$cienciaFiccion['image']."' >" ?>
+                <div class="descriptions">
+                    <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px"> <?php echo $cienciaFiccion['title']; ?>  </h3>
+                    <p style="line-height: 20px;height: 70%;">  <?php echo $cienciaFiccion['sinopsis']; ?></p>
+                    <?php //AQUI HAY UN BUG QUE ME DEJA LOCO ?>
+                    <form method="post" action="">
+                        <button id='boton-mas'>
+                            <a style="text-decoration: none;color:white" href="movies.php?id=<?php echo $cienciaFiccion['id'];?>">Mas info</a>
+                        </button>
+                    </form>
+                    <?php  if(!empty($_SESSION['user_id'])){ ?>
+                    <form  method="post" action="add_to_watchlist.php?id=<?php echo $cienciaFiccion['id'] ?>" >    
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">
+                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    </form>
+                    <form  method="post" action="add_to_favorites.php?id=<?php echo $cienciaFiccion['id'] ?>" >
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
+                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    </form>
+                    <?php } ?>
+                </div>                            
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php } 
+            ?>
+        <?php
+        if (isset($_POST['btTerror'])) {
+            $terrors = $mysqli->query("SELECT * FROM tmovie WHERE GENDER LIKE '%Terror%'")->fetch_all(MYSQLI_ASSOC);?>
+            <h1 class="text-center text-light mb-2" >PELÍCULAS DE TERROR</h1>
+            <div class="row justify-content-center wrapperino" id="foco">
+                <?php foreach($terrors as $terror): ?>        
+                <div class="movie_card">
+                <?php echo "<img   src='assets/imagenesPortada/".$terror['image']."' >" ?>
+                <div class="descriptions">
+                    <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px"> <?php echo $terror['title']; ?>  </h3>
+                    <p style="line-height: 20px;height: 70%;">  <?php echo $terror['sinopsis']; ?></p>
+                    <?php //AQUI HAY UN BUG QUE ME DEJA LOCO ?>
+                    <form method="post" action="">
+                        <button id='boton-mas'>
+                            <a style="text-decoration: none;color:white" href="movies.php?id=<?php echo $terror['id'];?>">Mas info</a>
+                        </button>
+                    </form>
+                    <?php  if(!empty($_SESSION['user_id'])){ ?>
+                    <form  method="post" action="add_to_watchlist.php?id=<?php echo $terror['id'] ?>" >    
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">
+                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    </form>
+                    <form  method="post" action="add_to_favorites.php?id=<?php echo $terror['id'] ?>" >
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
+                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    </form>
+                    <?php } ?>
+                </div>                            
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php } 
+            ?>
+        <?php
+        if (isset($_POST['btMonstruos'])) {
+            $monstruos = $mysqli->query("SELECT * FROM tmovie WHERE GENDER LIKE '%Monstruos%'")->fetch_all(MYSQLI_ASSOC);?>
+            <h1 class="text-center text-light mb-2" >PELÍCULAS DE MONSTRUOS</h1>
+            <div class="row justify-content-center wrapperino" id="foco">
+                <?php foreach($monstruos as $monstruo): ?>        
+                <div class="movie_card">
+                <?php echo "<img   src='assets/imagenesPortada/".$monstruo['image']."' >" ?>
+                <div class="descriptions">
+                    <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px"> <?php echo $monstruo['title']; ?>  </h3>
+                    <p style="line-height: 20px;height: 70%;">  <?php echo $monstruo['sinopsis']; ?></p>
+                    <?php //AQUI HAY UN BUG QUE ME DEJA LOCO ?>
+                    <form method="post" action="">
+                        <button id='boton-mas'>
+                            <a style="text-decoration: none;color:white" href="movies.php?id=<?php echo $monstruo['id'];?>">Mas info</a>
+                        </button>
+                    </form>
+                    <?php  if(!empty($_SESSION['user_id'])){ ?>
+                    <form  method="post" action="add_to_watchlist.php?id=<?php echo $monstruo['id'] ?>" >    
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">
+                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    </form>
+                    <form  method="post" action="add_to_favorites.php?id=<?php echo $monstruo['id'] ?>" >
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
+                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    </form>
+                    <?php } ?>
+                </div>                            
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php } 
+            ?>
+        <?php
+        if (isset($_POST['btSuperheroes'])) {
+            $superheroes = $mysqli->query("SELECT * FROM tmovie WHERE GENDER LIKE '%Superheroes%'")->fetch_all(MYSQLI_ASSOC);?>
+            <h1 class="text-center text-light mb-2" >PELÍCULAS DE SUPERHÉROES</h1>
+            <div class="row justify-content-center wrapperino" id="foco">
+                <?php foreach($superheroes as $superheroe): ?>        
+                <div class="movie_card">
+                <?php echo "<img   src='assets/imagenesPortada/".$superheroe['image']."' >" ?>
+                <div class="descriptions">
+                    <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px"> <?php echo $superheroe['title']; ?>  </h3>
+                    <p style="line-height: 20px;height: 70%;">  <?php echo $superheroe['sinopsis']; ?></p>
+                    <?php //AQUI HAY UN BUG QUE ME DEJA LOCO ?>
+                    <form method="post" action="">
+                        <button id='boton-mas'>
+                            <a style="text-decoration: none;color:white" href="movies.php?id=<?php echo $superheroe['id'];?>">Mas info</a>
+                        </button>
+                    </form>
+                    <?php  if(!empty($_SESSION['user_id'])){ ?>
+                    <form  method="post" action="add_to_watchlist.php?id=<?php echo $superheroe['id'] ?>" >    
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">
+                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    </form>
+                    <form  method="post" action="add_to_favorites.php?id=<?php echo $superheroe['id'] ?>" >
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
+                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    </form>
+                    <?php } ?>
+                </div>                            
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php } 
+            ?>
+        <?php
+        if (isset($_POST['btFantasiaOscura'])) {
+            $fantasiaOscuras = $mysqli->query("SELECT * FROM tmovie WHERE GENDER LIKE '%Fantasia oscura%'")->fetch_all(MYSQLI_ASSOC);?>
+            <h1 class="text-center text-light mb-2" >PELÍCULAS DE FANTASÍA OSCURA</h1>
+            <div class="row justify-content-center wrapperino" id="foco">
+                <?php foreach($fantasiaOscuras as $fantasiaOscura): ?>        
+                <div class="movie_card">
+                <?php echo "<img   src='assets/imagenesPortada/".$fantasiaOscura['image']."' >" ?>
+                <div class="descriptions">
+                    <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px"> <?php echo $fantasiaOscura['title']; ?>  </h3>
+                    <p style="line-height: 20px;height: 70%;">  <?php echo $fantasiaOscura['sinopsis']; ?></p>
+                    <?php //AQUI HAY UN BUG QUE ME DEJA LOCO ?>
+                    <form method="post" action="">
+                        <button id='boton-mas'>
+                            <a style="text-decoration: none;color:white" href="movies.php?id=<?php echo $fantasiaOscura['id'];?>">Mas info</a>
+                        </button>
+                    </form>
+                    <?php  if(!empty($_SESSION['user_id'])){ ?>
+                    <form  method="post" action="add_to_watchlist.php?id=<?php echo $fantasiaOscura['id'] ?>" >    
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">
+                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    </form>
+                    <form  method="post" action="add_to_favorites.php?id=<?php echo $fantasiaOscura['id'] ?>" >
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
+                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    </form>
+                    <?php } ?>
+                </div>                            
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php } 
+            ?>
+        <?php
+        if (isset($_POST['btFantasia'])) {
+            $fantasias = $mysqli->query("SELECT * FROM tmovie WHERE GENDER LIKE '%Fantasia%'")->fetch_all(MYSQLI_ASSOC);?>
+            <h1 class="text-center text-light mb-2" >PELÍCULAS DE FANTASÍA</h1>
+            <div class="row justify-content-center wrapperino" id="foco">
+                <?php foreach($fantasias as $fantasia): ?>        
+                <div class="movie_card">
+                <?php echo "<img   src='assets/imagenesPortada/".$fantasia['image']."' >" ?>
+                <div class="descriptions">
+                    <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px"> <?php echo $fantasia['title']; ?>  </h3>
+                    <p style="line-height: 20px;height: 70%;">  <?php echo $fantasia['sinopsis']; ?></p>
+                    <?php //AQUI HAY UN BUG QUE ME DEJA LOCO ?>
+                    <form method="post" action="">
+                        <button id='boton-mas'>
+                            <a style="text-decoration: none;color:white" href="movies.php?id=<?php echo $fantasia['id'];?>">Mas info</a>
+                        </button>
+                    </form>
+                    <?php  if(!empty($_SESSION['user_id'])){ ?>
+                    <form  method="post" action="add_to_watchlist.php?id=<?php echo $fantasia['id'] ?>" >    
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">
+                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    </form>
+                    <form  method="post" action="add_to_favorites.php?id=<?php echo $fantasia['id'] ?>" >
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">
+                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    </form>
+                    <?php } ?>
+                </div>                            
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php } 
+            ?>
+        <?php
+        if (isset($_POST['btMisterio'])) {
+            $misterios = $mysqli->query("SELECT * FROM tmovie WHERE GENDER LIKE '%Misterio%'")->fetch_all(MYSQLI_ASSOC);?>
+            <h1 class="text-center text-light mb-2" >PELÍCULAS DE MISTERIO</h1>
+            <div class="row justify-content-center wrapperino" id="foco">
+                <?php foreach($misterios as $misterio): ?>        
+                <div class="movie_card">
+                <?php echo "<img   src='assets/imagenesPortada/".$misterio['image']."' >" ?>
+                <div class="descriptions">
+                    <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px"> <?php echo $misterio['title']; ?>  </h3>
+                    <p style="line-height: 20px;height: 70%;">  <?php echo $misterio['sinopsis']; ?></p>
+                    <?php //AQUI HAY UN BUG QUE ME DEJA LOCO ?>
+                    <form method="post" action="">
+                        <button id='boton-mas'>
+                            <a style="text-decoration: none;color:white" href="movies.php?id=<?php echo $misterio['id'];?>">Mas info</a>
+                        </button>
+                    </form>
+                    <?php  if(!empty($_SESSION['user_id'])){ ?>
+                    <form  method="post" action="add_to_watchlist.php?id=<?php echo $misterio['id'] ?>" >    
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">
+                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    </form>
+                    <form  method="post" action="add_to_favorites.php?id=<?php echo $misterio['id'] ?>" >
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
+                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    </form>
+                    <?php } ?>
+                </div>                            
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php } 
+            ?>
+        <?php
+        if (isset($_POST['btEspionaje'])) {
+            $espionajes = $mysqli->query("SELECT * FROM tmovie WHERE GENDER LIKE '%Misterio%'")->fetch_all(MYSQLI_ASSOC);?>
+            <h1 class="text-center text-light mb-2" >PELÍCULAS DE ESPIONAJE</h1>
+            <div class="row justify-content-center wrapperino" id="foco">
+                <?php foreach($espionajes as $espionaje): ?>        
+                <div class="movie_card">
+                <?php echo "<img   src='assets/imagenesPortada/".$espionaje['image']."' >" ?>
+                <div class="descriptions">
+                    <h3 style=" color: #ff3838;margin: 2px; margin-bottom:5px"> <?php echo $espionaje['title']; ?>  </h3>
+                    <p style="line-height: 20px;height: 70%;">  <?php echo $espionaje['sinopsis']; ?></p>
+                    <?php //AQUI HAY UN BUG QUE ME DEJA LOCO ?>
+                    <form method="post" action="">
+                        <button id='boton-mas'>
+                            <a style="text-decoration: none;color:white" href="movies.php?id=<?php echo $espionaje['id'];?>">Mas info</a>
+                        </button>
+                    </form>
+                    <?php  if(!empty($_SESSION['user_id'])){ ?>
+                    <form  method="post" action="add_to_watchlist.php?id=<?php echo $espionaje['id'] ?>" >    
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">
+                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    </form>
+                    <form  method="post" action="add_to_favorites.php?id=<?php echo $espionaje['id'] ?>" >
+                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
+                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    </form>
+                    <?php } ?>
+                </div>                            
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php } 
+            ?>
+        <?php 
+    }?>
     </div>
 </div>
