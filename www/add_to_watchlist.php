@@ -72,9 +72,7 @@ if(isset($_GET['id']) & !empty($_GET['id'])){
 			$_SESSION['no_logueado_Watchlist']  = "Inicia sesión para poder agregar las pelis.";
 			die();
 		}
-       
-       
-       
+
     }
 	
 }else{
