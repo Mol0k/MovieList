@@ -90,13 +90,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     //Comprobar los errores de entrada antes de la inserción en la base de datos
     if(empty($username_err) && empty($password_err) && empty($confirm_password_err) && empty($email_err)){
-        
+        $date = date("Y-m-d H:i:s"); 
         // Prepare an insert statement
-        $sql = "INSERT INTO tuser (username, email, encrypted_password) VALUES (?, ?,?)";
+        $sql = "INSERT INTO tuser (username, email, encrypted_password, registration_date) VALUES (?, ?,?,?)";
          
         if($stmt = $mysqli->prepare($sql)){
             // Bind variables to the prepared statement as parameters
-            $stmt->bind_param("sss", $username, $email,$param_password);
+            $stmt->bind_param("ssss", $username, $email,$param_password,$date);
             
             // Setear parametros
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash

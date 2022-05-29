@@ -13,6 +13,7 @@
     $sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
 	$query = $mysqli->query($sql);
 	$row = $query->fetch_assoc();
+    $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -83,11 +84,7 @@
                     </span> 
                     <span><i class="fa fa-copy"></i></span> 
                 </div> 
-                <div class="d-flex flex-row justify-content-center align-items-center mt-3"> 
-                    <span class="number">1069 
-                    <span class="follow">Followers</span>
-                </span> 
-            </div>  
+                 
             <div class=" d-flex mt-2"> 
                 <button class="btn1 btn-dark">
                     <a href="edit_profile.php" style="text-decoration: none; color:white">Editar perfil</a>
@@ -95,7 +92,15 @@
                 
             </div> 
             <div class=" px-2 rounded mt-4 date "> 
-                <span class="join">Joined May,2021</span> 
+                <span class="join">Se ha unido el
+                <?php
+                    date_default_timezone_set('Europe/Madrid');
+                        // En windows
+                    setlocale(LC_TIME, 'spanish.UTF-8');
+                    $date= strftime("%A, %d de %B de %Y", strtotime($fila_usuario['registration_date']));
+                    echo $date;
+                    ?>
+                </span> 
             </div> 
         </div> 
     </div>
@@ -103,8 +108,9 @@
     <!-- Incluir el footer -->
     <?php include "./inc/footer.php"; ?> 
 
-
-
+    <!-- Incluir el popup -->
+    <?php include_once "./inc/popup_uPassword.php"; ?> 
+    <?php include_once "./inc/popup_uProfile.php"; ?>                     
 
 
 
