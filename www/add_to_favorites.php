@@ -6,7 +6,7 @@ session_start();
 $mysqli = get_db_connection_or_die();
 $user_id = $_SESSION['user_id'];
 $movie_id = $_GET['id'];
-$return = $_POST['return'];
+$return = $_POST['return_favorites'];
 
 if(!isset($_SESSION['user_id']) & empty($_SESSION['user_id'])){
 		header('location: login.php');
@@ -36,12 +36,12 @@ if(isset($_GET['id']) & !empty($_GET['id'])){
 		$stmt_delete ->close();
 		// header('location: watchlist.php');
 
-		if (isset($_POST['boton-main'])) {
+		if (isset($_POST['boton-favorites'])) {
 			header("Location: $return");
 			die();
 		}else{
 			header("Location:movies.php?id=".$row['movie_id']);
-			$_SESSION['error_delete_favorites']  = "Película borrada de favoritos.";
+			// $_SESSION['error_delete_favorites']  = "Película borrada de favoritos.";
 			die();
 		}
 	}
@@ -53,16 +53,16 @@ if(isset($_GET['id']) & !empty($_GET['id'])){
 		$stmt_del_insert ->close();
 		// header('location: watchlist.php');
 		// header('location: watchlist.php');
-		if (isset($_POST['boton-main'])) {
+		if (isset($_POST['boton-favorites'])) {
 			header("Location: $return");
 			die();
 		}else{
 			header("Location:movies.php?id=".$row2['id']);
-			$_SESSION['añadida_favorites']  = "Película añadida a favoritos.";
+			// $_SESSION['añadida_favorites']  = "Película añadida a favoritos.";
 			die();
 		}
 	}else{
-		if (isset($_POST['boton-main'])) {
+		if (isset($_POST['boton-favorites'])) {
 			header("Location: $return");
 			die();
 		}else{

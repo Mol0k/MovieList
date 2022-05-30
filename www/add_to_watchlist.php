@@ -41,7 +41,7 @@ if(isset($_GET['id']) & !empty($_GET['id'])){
 			die();
 		}else{
 			header("Location:movies.php?id=".$row['movie_id']);
-			$_SESSION['error_delete_watchlist']  = "Película borrada de la watchlist.";
+			// $_SESSION['error_delete_watchlist']  = "Película borrada de la watchlist.";
 			die();
 		}
 
@@ -59,7 +59,7 @@ if(isset($_GET['id']) & !empty($_GET['id'])){
 			die();
 		}else{
 			header("Location:movies.php?id=".$row2['id']);
-			$_SESSION['añadida_watchlist']  = "Película añadida a la watchlist.";
+			// $_SESSION['añadida_watchlist']  = "Película añadida a la watchlist.";
 			die();
 		}
 		
@@ -69,7 +69,7 @@ if(isset($_GET['id']) & !empty($_GET['id'])){
 			die();
 		}else{
 			header("Location: movies.php?id=".$movie_id);
-			$_SESSION['no_logueado_Watchlist']  = "Inicia sesión para poder agregar las pelis.";
+			$_SESSION['no_logueado_Watchlist']  = "Inicia sesión para poder agregar la película a tu watchlist.";
 			die();
 		}
 

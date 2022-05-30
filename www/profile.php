@@ -13,7 +13,7 @@
     $sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
 	$query = $mysqli->query($sql);
 	$row = $query->fetch_assoc();
-    $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    $ruta_absoluta = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 ?>
 <!DOCTYPE html>
 <html lang="es">

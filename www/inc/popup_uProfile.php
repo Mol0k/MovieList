@@ -1,6 +1,6 @@
 
 <?php
-$link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$ruta_absoluta = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 ?>
 <div id="popup2" class="popup-cuadro text-light">
     <div class="log-popup">
@@ -15,7 +15,7 @@ $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                         <!-- <label for="f_nacimientos" class="form-label">Fecha de nacimiento:</label>
                         <input type="date" class="form-control" name="f_nacimiento" id="f_nacimientos" /> -->
                 </div>
-                <input type="hidden" name="return_username" value=" <?php echo $link ?>">
+                <input type="hidden" name="return_username" value=" <?php echo $ruta_absoluta ?>">
                 <button type="submit" name="update_username" class="btn btn-success mt-3"><span class="glyphicon glyphicon-check"></span> Actualizar nombre</button>
             </form>
             <form method="POST" action="update_image_profile.php" role="form" enctype="multipart/form-data">
@@ -24,7 +24,7 @@ $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                     <input type="file" name="imagenUsuario" id="imagenUsuarios" onchange="preview()" class="form-control"">
                         <img id="frame" alt ="Sube una imagen para ver la previsualización" src="" width="60" height="60" class="rounded-circle mt-3" />
                 </div>
-                    <input type="hidden" name="return_image" value=" <?php echo $link ?>">
+                    <input type="hidden" name="return_image" value=" <?php echo $ruta_absoluta ?>">
                     <button type="submit" name="update_avatar" class="btn btn-success mt-3"><span class="glyphicon glyphicon-check"></span> Actualizar avatar</button>
             </form>            
                 

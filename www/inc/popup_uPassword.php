@@ -1,6 +1,6 @@
 
 <?php
-$link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+$ruta_absoluta = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 ?>
 <div id="popup1" class="popup-cuadro  text-light">
     <div class="log-popup">
@@ -23,7 +23,7 @@ $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                     <input type="password" name="password_confirmar" id="password_confirmar" class="form-control "
                         value="<?php echo (isset($_SESSION['password_confirmar'])) ? $_SESSION['password_confirmar'] : ''; ?>">
                 </div>
-                <input type="hidden" name="return_profile" value=" <?php echo $link ?>">
+                <input type="hidden" name="return_profile" value=" <?php echo $ruta_absoluta ?>">
                 <button type="submit" name="update" class="btn btn-success mt-3"><span
                     class="glyphicon glyphicon-check"></span> Actualizar contraseña</button>
             </form>
