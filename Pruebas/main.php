@@ -34,7 +34,7 @@ require __DIR__ . '/../php_util/db_connection.php';
     $consultid = mysqli_fetch_array($resultado);
     
     //COGER LA RUTA ABSOLUTA
-    $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    $ruta_absoluta = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
     if(isset($_SESSION['user_id'])){
         $user_id = $_SESSION['user_id'];
@@ -162,7 +162,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                                         $add = null;                                    }
                                 
                                 ?>
-                                    <input type="hidden" name="return" value=" <?php echo $link ?>">
+                                    <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>">
                                     <button class="boton-watchlist 
                                     <?php if ($add != null){
                                         echo $add;
@@ -170,7 +170,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                                     ?>" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>         
                                 </form>
                                 <form  method="post" action="add_to_favorites.php?id=<?php echo $movie['id'] ?>" >
-                                    <input type="hidden" name="return" value=" <?php echo $link ?>"> 
+                                    <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>"> 
                                     <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart  fa-beat"> </i> </button>
                                 </form>
                                 <?php } ?>
