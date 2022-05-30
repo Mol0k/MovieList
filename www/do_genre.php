@@ -2,7 +2,12 @@
 <?php
 
 // **NOTA IMPORTANTE**
-// ESTO HABRÍA QUE PENSAR EN CAMBIARLO. NO ES VIABLE. DE MOMENTO SE QUEDA ASÍ PERO EN UN FUTURO SE DEBE CAMBIAR.
+// ESTO HABRÍA QUE PENSAR EN CAMBIARLO. NO ES VIABLE.
+// THIS IS THE JUNGLE.
+// MUCHO CÓDIGO
+// IT'S CRAZY.
+//PERDÍ LA CABEZA
+// DE MOMENTO SE QUEDA ASÍ PERO EN UN FUTURO SE  CAMBIARÁ.
 // SOLUCIÓN:
 // HABRÍA QUE TENER 2 TABLAS:
 // TABLA tgenre
@@ -15,7 +20,13 @@
     ini_set('display_errors', 'On');
     require_once __DIR__ . '/../php_util/db_connection.php';
     $mysqli = get_db_connection_or_die();
-    $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    
+    if(isset($_SESSION['user_id'])){
+        $user_id = $_SESSION['user_id'];
+    }
+    
+    $ruta_absoluta = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    
 ?>
 <div class="col-md-9 col-xs-7 ">
     <div class="container mt-2 ">
@@ -40,12 +51,46 @@
                     </form>
                     <?php  if(!empty($_SESSION['user_id'])){ ?>
                     <form  method="post" action="add_to_watchlist.php?id=<?php echo $movie['id'] ?>" >    
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">
-                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>">
+                    <?php 
+                        $exist_watchlist = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_watchlist = $mysqli ->prepare($exist_watchlist);
+                        $stmt_watchlist -> bind_param("ii", $user_id, $movie['id']);
+                        $stmt_watchlist -> execute();
+                        $result_watchlist = $stmt_watchlist->get_result();
+                        $row_watchlist = $result_watchlist->fetch_array(); 
+                    ?>
+                        <?php
+                        if(!empty($row_watchlist)){?>                                            
+                            <button id="boton-watchlist" name="boton-main"> <i title ="Quitar de la watchlist"class="fa-solid fa-check"></i>  </button>    
+                        <?php 
+                        } else { 
+                        ?>
+                            <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>                                   
+                        <?php
+                        } 
+                        ?>         
                     </form>
                     <form  method="post" action="add_to_favorites.php?id=<?php echo $movie['id'] ?>" >
-                        <input type="hidden" name="return" value=" <?php echo $link ?>"> 
-                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    <input type="hidden" name="return_favorites" value=" <?php echo $ruta_absoluta ?>">
+                    <?php
+                        $exist_favorites = "SELECT * FROM tfavorites WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_favorites = $mysqli ->prepare($exist_favorites);
+                        $stmt_favorites -> bind_param("ii", $user_id, $movie['id']);
+                        $stmt_favorites -> execute();
+                        $result_favorites = $stmt_favorites->get_result();
+                        $row_favorites = $result_favorites->fetch_array(); 
+                    ?>
+                        <?php 
+                        if(!empty($row_favorites)){?>    
+                            <button id="boton-favorites" name="boton-favorites"> <i title="Quitar de favoritos"class="fa-solid fa-heart-circle-minus"> </i> </button>
+                        <?php 
+                        } else { 
+                        ?>
+                            <button id="boton-favorites" name="boton-favorites"> <i title="Agregar de favoritos"class="fa-solid fa-heart-circle-plus fa-beat"> </i> </button>
+                        <?php
+                        } 
+                        ?>
                     </form>
                     <?php } ?>
                 </div>                            
@@ -74,12 +119,43 @@
                     </form>
                     <?php  if(!empty($_SESSION['user_id'])){ ?>
                     <form  method="post" action="add_to_watchlist.php?id=<?php echo $crimen['id'] ?>" > 
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">
-                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>">
+                    <?php 
+                        $exist_watchlist = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_watchlist = $mysqli ->prepare($exist_watchlist);
+                        $stmt_watchlist -> bind_param("ii", $user_id, $crimen['id']);
+                        $stmt_watchlist -> execute();
+                        $result_watchlist = $stmt_watchlist->get_result();
+                        $row_watchlist = $result_watchlist->fetch_array(); 
+                    ?>
+                        <?php
+                        if(!empty($row_watchlist)){?>                                            
+                            <button id="boton-watchlist" name="boton-main"> <i title ="Quitar de la watchlist"class="fa-solid fa-check"></i>  </button>    
+                        <?php 
+                        } else { 
+                        ?>
+                            <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>                                   
+                        <?php
+                        } 
+                        ?> 
                     </form>
                     <form  method="post" action="add_to_favorites.php?id=<?php echo $crimen['id'] ?>" > 
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">   
-                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    <?php 
+                        $exist_favorites = "SELECT * FROM tfavorites WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_favorites = $mysqli ->prepare($exist_favorites);
+                        $stmt_favorites -> bind_param("ii", $user_id, $crimen['id']);
+                        $stmt_favorites -> execute();
+                        $result_favorites = $stmt_favorites->get_result();
+                        $row_favorites = $result_favorites->fetch_array();
+                    if(!empty($row_favorites)){?>    
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Quitar de favoritos"class="fa-solid fa-heart-circle-minus"> </i> </button>
+                    <?php 
+                    } else { 
+                    ?>
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Agregar de favoritos"class="fa-solid fa-heart-circle-plus fa-beat"> </i> </button>
+                    <?php
+                    } 
+                    ?>
                     </form>
                     <?php } ?>
                 </div>                            
@@ -107,12 +183,43 @@
                     </form>
                     <?php  if(!empty($_SESSION['user_id'])){ ?>
                     <form  method="post" action="add_to_watchlist.php?id=<?php echo $comedia['id'] ?>" >    
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">
-                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>">
+                    <?php 
+                        $exist_watchlist = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_watchlist = $mysqli ->prepare($exist_watchlist);
+                        $stmt_watchlist -> bind_param("ii", $user_id, $comedia['id']);
+                        $stmt_watchlist -> execute();
+                        $result_watchlist = $stmt_watchlist->get_result();
+                        $row_watchlist = $result_watchlist->fetch_array(); 
+                    ?>
+                        <?php
+                        if(!empty($row_watchlist)){?>                                            
+                            <button id="boton-watchlist" name="boton-main"> <i title ="Quitar de la watchlist"class="fa-solid fa-check"></i>  </button>    
+                        <?php 
+                        } else { 
+                        ?>
+                            <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>                                   
+                        <?php
+                        } 
+                        ?> 
                     </form>
                     <form  method="post" action="add_to_favorites.php?id=<?php echo $comedia['id'] ?>" >
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
-                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    <?php 
+                        $exist_favorites = "SELECT * FROM tfavorites WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_favorites = $mysqli ->prepare($exist_favorites);
+                        $stmt_favorites -> bind_param("ii", $user_id, $comedia['id']);
+                        $stmt_favorites -> execute();
+                        $result_favorites = $stmt_favorites->get_result();
+                        $row_favorites = $result_favorites->fetch_array();
+                    if(!empty($row_favorites)){?>    
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Quitar de favoritos"class="fa-solid fa-heart-circle-minus"> </i> </button>
+                    <?php 
+                    } else { 
+                    ?>
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Agregar de favoritos"class="fa-solid fa-heart-circle-plus fa-beat"> </i> </button>
+                    <?php
+                    } 
+                    ?>
                     </form>
                     <?php } ?>
                 </div>                            
@@ -140,12 +247,43 @@
                     </form>
                     <?php  if(!empty($_SESSION['user_id'])){ ?>
                     <form  method="post" action="add_to_watchlist.php?id=<?php echo $suspense['id'] ?>" >    
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">
-                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>">
+                    <?php 
+                        $exist_watchlist = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_watchlist = $mysqli ->prepare($exist_watchlist);
+                        $stmt_watchlist -> bind_param("ii", $user_id, $suspense['id']);
+                        $stmt_watchlist -> execute();
+                        $result_watchlist = $stmt_watchlist->get_result();
+                        $row_watchlist = $result_watchlist->fetch_array(); 
+                    ?>
+                        <?php
+                        if(!empty($row_watchlist)){?>                                            
+                            <button id="boton-watchlist" name="boton-main"> <i title ="Quitar de la watchlist"class="fa-solid fa-check"></i>  </button>    
+                        <?php 
+                        } else { 
+                        ?>
+                            <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>                                   
+                        <?php
+                        } 
+                        ?> 
                     </form>
                     <form  method="post" action="add_to_favorites.php?id=<?php echo $suspense['id'] ?>" >
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
-                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    <?php 
+                        $exist_favorites = "SELECT * FROM tfavorites WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_favorites = $mysqli ->prepare($exist_favorites);
+                        $stmt_favorites -> bind_param("ii", $user_id, $suspense['id']);
+                        $stmt_favorites -> execute();
+                        $result_favorites = $stmt_favorites->get_result();
+                        $row_favorites = $result_favorites->fetch_array();
+                    if(!empty($row_favorites)){?>    
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Quitar de favoritos"class="fa-solid fa-heart-circle-minus"> </i> </button>
+                    <?php 
+                    } else { 
+                    ?>
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Agregar de favoritos"class="fa-solid fa-heart-circle-plus fa-beat"> </i> </button>
+                    <?php
+                    } 
+                    ?>
                     </form>
                     <?php } ?>
                 </div>                            
@@ -173,12 +311,43 @@
                     </form>
                     <?php  if(!empty($_SESSION['user_id'])){ ?>
                     <form  method="post" action="add_to_watchlist.php?id=<?php echo $accion['id'] ?>" >    
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">
-                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>">
+                    <?php 
+                        $exist_watchlist = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_watchlist = $mysqli ->prepare($exist_watchlist);
+                        $stmt_watchlist -> bind_param("ii", $user_id, $accion['id']);
+                        $stmt_watchlist -> execute();
+                        $result_watchlist = $stmt_watchlist->get_result();
+                        $row_watchlist = $result_watchlist->fetch_array(); 
+                    ?>
+                        <?php
+                        if(!empty($row_watchlist)){?>                                            
+                            <button id="boton-watchlist" name="boton-main"> <i title ="Quitar de la watchlist"class="fa-solid fa-check"></i>  </button>    
+                        <?php 
+                        } else { 
+                        ?>
+                            <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>                                   
+                        <?php
+                        } 
+                        ?> 
                     </form>
                     <form  method="post" action="add_to_favorites.php?id=<?php echo $accion['id'] ?>" >
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
-                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    <?php 
+                        $exist_favorites = "SELECT * FROM tfavorites WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_favorites = $mysqli ->prepare($exist_favorites);
+                        $stmt_favorites -> bind_param("ii", $user_id, $accion['id']);
+                        $stmt_favorites -> execute();
+                        $result_favorites = $stmt_favorites->get_result();
+                        $row_favorites = $result_favorites->fetch_array();
+                    if(!empty($row_favorites)){?>    
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Quitar de favoritos"class="fa-solid fa-heart-circle-minus"> </i> </button>
+                    <?php 
+                    } else { 
+                    ?>
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Agregar de favoritos"class="fa-solid fa-heart-circle-plus fa-beat"> </i> </button>
+                    <?php
+                    } 
+                    ?>
                     </form>
                     <?php } ?>
                 </div>                            
@@ -206,12 +375,43 @@
                     </form>
                     <?php  if(!empty($_SESSION['user_id'])){ ?>
                     <form  method="post" action="add_to_watchlist.php?id=<?php echo $drama['id'] ?>" >    
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">
-                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>">
+                    <?php 
+                        $exist_watchlist = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_watchlist = $mysqli ->prepare($exist_watchlist);
+                        $stmt_watchlist -> bind_param("ii", $user_id, $drama['id']);
+                        $stmt_watchlist -> execute();
+                        $result_watchlist = $stmt_watchlist->get_result();
+                        $row_watchlist = $result_watchlist->fetch_array(); 
+                    ?>
+                        <?php
+                        if(!empty($row_watchlist)){?>                                            
+                            <button id="boton-watchlist" name="boton-main"> <i title ="Quitar de la watchlist"class="fa-solid fa-check"></i>  </button>    
+                        <?php 
+                        } else { 
+                        ?>
+                            <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>                                   
+                        <?php
+                        } 
+                        ?> 
                     </form>
                     <form  method="post" action="add_to_favorites.php?id=<?php echo $drama['id'] ?>" >
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
-                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    <?php 
+                        $exist_favorites = "SELECT * FROM tfavorites WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_favorites = $mysqli ->prepare($exist_favorites);
+                        $stmt_favorites -> bind_param("ii", $user_id, $drama['id']);
+                        $stmt_favorites -> execute();
+                        $result_favorites = $stmt_favorites->get_result();
+                        $row_favorites = $result_favorites->fetch_array();
+                    if(!empty($row_favorites)){?>    
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Quitar de favoritos"class="fa-solid fa-heart-circle-minus"> </i> </button>
+                    <?php 
+                    } else { 
+                    ?>
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Agregar de favoritos"class="fa-solid fa-heart-circle-plus fa-beat"> </i> </button>
+                    <?php
+                    } 
+                    ?>
                     </form>
                     <?php } ?>
                 </div>                            
@@ -239,12 +439,43 @@
                     </form>
                     <?php  if(!empty($_SESSION['user_id'])){ ?>
                     <form  method="post" action="add_to_watchlist.php?id=<?php echo $aventura['id'] ?>" >    
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">
-                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>">
+                    <?php 
+                        $exist_watchlist = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_watchlist = $mysqli ->prepare($exist_watchlist);
+                        $stmt_watchlist -> bind_param("ii", $user_id, $aventura['id']);
+                        $stmt_watchlist -> execute();
+                        $result_watchlist = $stmt_watchlist->get_result();
+                        $row_watchlist = $result_watchlist->fetch_array(); 
+                    ?>
+                        <?php
+                        if(!empty($row_watchlist)){?>                                            
+                            <button id="boton-watchlist" name="boton-main"> <i title ="Quitar de la watchlist"class="fa-solid fa-check"></i>  </button>    
+                        <?php 
+                        } else { 
+                        ?>
+                            <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>                                   
+                        <?php
+                        } 
+                        ?> 
                     </form>
                     <form  method="post" action="add_to_favorites.php?id=<?php echo $aventura['id'] ?>" >
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">   
-                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    <?php 
+                        $exist_favorites = "SELECT * FROM tfavorites WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_favorites = $mysqli ->prepare($exist_favorites);
+                        $stmt_favorites -> bind_param("ii", $user_id, $aventura['id']);
+                        $stmt_favorites -> execute();
+                        $result_favorites = $stmt_favorites->get_result();
+                        $row_favorites = $result_favorites->fetch_array();
+                    if(!empty($row_favorites)){?>    
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Quitar de favoritos"class="fa-solid fa-heart-circle-minus"> </i> </button>
+                    <?php 
+                    } else { 
+                    ?>
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Agregar de favoritos"class="fa-solid fa-heart-circle-plus fa-beat"> </i> </button>
+                    <?php
+                    } 
+                    ?>
                     </form>
                     <?php } ?>
                 </div>                            
@@ -272,12 +503,42 @@
                     </form>
                     <?php  if(!empty($_SESSION['user_id'])){ ?>
                     <form  method="post" action="add_to_watchlist.php?id=<?php echo $cienciaFiccion['id'] ?>" >    
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">
-                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
-                    </form>
+                    <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>">
+                    <?php 
+                        $exist_watchlist = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_watchlist = $mysqli ->prepare($exist_watchlist);
+                        $stmt_watchlist -> bind_param("ii", $user_id, $cienciaFiccion['id']);
+                        $stmt_watchlist -> execute();
+                        $result_watchlist = $stmt_watchlist->get_result();
+                        $row_watchlist = $result_watchlist->fetch_array(); 
+                    ?>
+                        <?php
+                        if(!empty($row_watchlist)){?>                                            
+                            <button id="boton-watchlist" name="boton-main"> <i title ="Quitar de la watchlist"class="fa-solid fa-check"></i>  </button>    
+                        <?php 
+                        } else { 
+                        ?>
+                            <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>                                   
+                        <?php
+                        } 
+                        ?> 
                     <form  method="post" action="add_to_favorites.php?id=<?php echo $cienciaFiccion['id'] ?>" >
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
-                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    <?php 
+                        $exist_favorites = "SELECT * FROM tfavorites WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_favorites = $mysqli ->prepare($exist_favorites);
+                        $stmt_favorites -> bind_param("ii", $user_id, $cienciaFiccion['id']);
+                        $stmt_favorites -> execute();
+                        $result_favorites = $stmt_favorites->get_result();
+                        $row_favorites = $result_favorites->fetch_array();
+                    if(!empty($row_favorites)){?>    
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Quitar de favoritos"class="fa-solid fa-heart-circle-minus"> </i> </button>
+                    <?php 
+                    } else { 
+                    ?>
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Agregar de favoritos"class="fa-solid fa-heart-circle-plus fa-beat"> </i> </button>
+                    <?php
+                    } 
+                    ?>
                     </form>
                     <?php } ?>
                 </div>                            
@@ -305,12 +566,43 @@
                     </form>
                     <?php  if(!empty($_SESSION['user_id'])){ ?>
                     <form  method="post" action="add_to_watchlist.php?id=<?php echo $terror['id'] ?>" >    
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">
-                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>">
+                    <?php 
+                        $exist_watchlist = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_watchlist = $mysqli ->prepare($exist_watchlist);
+                        $stmt_watchlist -> bind_param("ii", $user_id, $terror['id']);
+                        $stmt_watchlist -> execute();
+                        $result_watchlist = $stmt_watchlist->get_result();
+                        $row_watchlist = $result_watchlist->fetch_array(); 
+                    ?>
+                        <?php
+                        if(!empty($row_watchlist)){?>                                            
+                            <button id="boton-watchlist" name="boton-main"> <i title ="Quitar de la watchlist"class="fa-solid fa-check"></i>  </button>    
+                        <?php 
+                        } else { 
+                        ?>
+                            <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>                                   
+                        <?php
+                        } 
+                        ?> 
                     </form>
                     <form  method="post" action="add_to_favorites.php?id=<?php echo $terror['id'] ?>" >
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
-                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    <?php 
+                        $exist_favorites = "SELECT * FROM tfavorites WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_favorites = $mysqli ->prepare($exist_favorites);
+                        $stmt_favorites -> bind_param("ii", $user_id, $terror['id']);
+                        $stmt_favorites -> execute();
+                        $result_favorites = $stmt_favorites->get_result();
+                        $row_favorites = $result_favorites->fetch_array();
+                    if(!empty($row_favorites)){?>    
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Quitar de favoritos"class="fa-solid fa-heart-circle-minus"> </i> </button>
+                    <?php 
+                    } else { 
+                    ?>
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Agregar de favoritos"class="fa-solid fa-heart-circle-plus fa-beat"> </i> </button>
+                    <?php
+                    } 
+                    ?>
                     </form>
                     <?php } ?>
                 </div>                            
@@ -338,12 +630,43 @@
                     </form>
                     <?php  if(!empty($_SESSION['user_id'])){ ?>
                     <form  method="post" action="add_to_watchlist.php?id=<?php echo $monstruo['id'] ?>" >    
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">
-                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>">
+                    <?php 
+                        $exist_watchlist = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_watchlist = $mysqli ->prepare($exist_watchlist);
+                        $stmt_watchlist -> bind_param("ii", $user_id, $monstruo['id']);
+                        $stmt_watchlist -> execute();
+                        $result_watchlist = $stmt_watchlist->get_result();
+                        $row_watchlist = $result_watchlist->fetch_array(); 
+                    ?>
+                        <?php
+                        if(!empty($row_watchlist)){?>                                            
+                            <button id="boton-watchlist" name="boton-main"> <i title ="Quitar de la watchlist"class="fa-solid fa-check"></i>  </button>    
+                        <?php 
+                        } else { 
+                        ?>
+                            <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>                                   
+                        <?php
+                        } 
+                        ?> 
                     </form>
                     <form  method="post" action="add_to_favorites.php?id=<?php echo $monstruo['id'] ?>" >
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
-                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    <?php 
+                        $exist_favorites = "SELECT * FROM tfavorites WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_favorites = $mysqli ->prepare($exist_favorites);
+                        $stmt_favorites -> bind_param("ii", $user_id, $monstruo['id']);
+                        $stmt_favorites -> execute();
+                        $result_favorites = $stmt_favorites->get_result();
+                        $row_favorites = $result_favorites->fetch_array();
+                    if(!empty($row_favorites)){?>    
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Quitar de favoritos"class="fa-solid fa-heart-circle-minus"> </i> </button>
+                    <?php 
+                    } else { 
+                    ?>
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Agregar de favoritos"class="fa-solid fa-heart-circle-plus fa-beat"> </i> </button>
+                    <?php
+                    } 
+                    ?>
                     </form>
                     <?php } ?>
                 </div>                            
@@ -371,12 +694,43 @@
                     </form>
                     <?php  if(!empty($_SESSION['user_id'])){ ?>
                     <form  method="post" action="add_to_watchlist.php?id=<?php echo $superheroe['id'] ?>" >    
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">
-                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>">
+                    <?php 
+                        $exist_watchlist = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_watchlist = $mysqli ->prepare($exist_watchlist);
+                        $stmt_watchlist -> bind_param("ii", $user_id, $superheroe['id']);
+                        $stmt_watchlist -> execute();
+                        $result_watchlist = $stmt_watchlist->get_result();
+                        $row_watchlist = $result_watchlist->fetch_array(); 
+                    ?>
+                        <?php
+                        if(!empty($row_watchlist)){?>                                            
+                            <button id="boton-watchlist" name="boton-main"> <i title ="Quitar de la watchlist"class="fa-solid fa-check"></i>  </button>    
+                        <?php 
+                        } else { 
+                        ?>
+                            <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>                                   
+                        <?php
+                        } 
+                        ?> 
                     </form>
                     <form  method="post" action="add_to_favorites.php?id=<?php echo $superheroe['id'] ?>" >
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
-                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    <?php 
+                        $exist_favorites = "SELECT * FROM tfavorites WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_favorites = $mysqli ->prepare($exist_favorites);
+                        $stmt_favorites -> bind_param("ii", $user_id, $superheroe['id']);
+                        $stmt_favorites -> execute();
+                        $result_favorites = $stmt_favorites->get_result();
+                        $row_favorites = $result_favorites->fetch_array();
+                    if(!empty($row_favorites)){?>    
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Quitar de favoritos"class="fa-solid fa-heart-circle-minus"> </i> </button>
+                    <?php 
+                    } else { 
+                    ?>
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Agregar de favoritos"class="fa-solid fa-heart-circle-plus fa-beat"> </i> </button>
+                    <?php
+                    } 
+                    ?>
                     </form>
                     <?php } ?>
                 </div>                            
@@ -404,12 +758,43 @@
                     </form>
                     <?php  if(!empty($_SESSION['user_id'])){ ?>
                     <form  method="post" action="add_to_watchlist.php?id=<?php echo $fantasiaOscura['id'] ?>" >    
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">
-                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>">
+                    <?php 
+                        $exist_watchlist = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_watchlist = $mysqli ->prepare($exist_watchlist);
+                        $stmt_watchlist -> bind_param("ii", $user_id, $fantasiaOscura['id']);
+                        $stmt_watchlist -> execute();
+                        $result_watchlist = $stmt_watchlist->get_result();
+                        $row_watchlist = $result_watchlist->fetch_array(); 
+                    ?>
+                        <?php
+                        if(!empty($row_watchlist)){?>                                            
+                            <button id="boton-watchlist" name="boton-main"> <i title ="Quitar de la watchlist"class="fa-solid fa-check"></i>  </button>    
+                        <?php 
+                        } else { 
+                        ?>
+                            <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>                                   
+                        <?php
+                        } 
+                        ?> 
                     </form>
                     <form  method="post" action="add_to_favorites.php?id=<?php echo $fantasiaOscura['id'] ?>" >
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
-                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    <?php 
+                        $exist_favorites = "SELECT * FROM tfavorites WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_favorites = $mysqli ->prepare($exist_favorites);
+                        $stmt_favorites -> bind_param("ii", $user_id, $fantasiaOscura['id']);
+                        $stmt_favorites -> execute();
+                        $result_favorites = $stmt_favorites->get_result();
+                        $row_favorites = $result_favorites->fetch_array();
+                    if(!empty($row_favorites)){?>    
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Quitar de favoritos"class="fa-solid fa-heart-circle-minus"> </i> </button>
+                    <?php 
+                    } else { 
+                    ?>
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Agregar de favoritos"class="fa-solid fa-heart-circle-plus fa-beat"> </i> </button>
+                    <?php
+                    } 
+                    ?>
                     </form>
                     <?php } ?>
                 </div>                            
@@ -437,12 +822,43 @@
                     </form>
                     <?php  if(!empty($_SESSION['user_id'])){ ?>
                     <form  method="post" action="add_to_watchlist.php?id=<?php echo $fantasia['id'] ?>" >    
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">
-                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>">
+                    <?php 
+                        $exist_watchlist = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_watchlist = $mysqli ->prepare($exist_watchlist);
+                        $stmt_watchlist -> bind_param("ii", $user_id, $movie['id']);
+                        $stmt_watchlist -> execute();
+                        $result_watchlist = $stmt_watchlist->get_result();
+                        $row_watchlist = $result_watchlist->fetch_array(); 
+                    ?>
+                        <?php
+                        if(!empty($row_watchlist)){?>                                            
+                            <button id="boton-watchlist" name="boton-main"> <i title ="Quitar de la watchlist"class="fa-solid fa-check"></i>  </button>    
+                        <?php 
+                        } else { 
+                        ?>
+                            <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>                                   
+                        <?php
+                        } 
+                        ?> 
                     </form>
                     <form  method="post" action="add_to_favorites.php?id=<?php echo $fantasia['id'] ?>" >
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">
-                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    <?php 
+                        $exist_favorites = "SELECT * FROM tfavorites WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_favorites = $mysqli ->prepare($exist_favorites);
+                        $stmt_favorites -> bind_param("ii", $user_id, $fantasi['id']);
+                        $stmt_favorites -> execute();
+                        $result_favorites = $stmt_favorites->get_result();
+                        $row_favorites = $result_favorites->fetch_array();
+                    if(!empty($row_favorites)){?>    
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Quitar de favoritos"class="fa-solid fa-heart-circle-minus"> </i> </button>
+                    <?php 
+                    } else { 
+                    ?>
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Agregar de favoritos"class="fa-solid fa-heart-circle-plus fa-beat"> </i> </button>
+                    <?php
+                    } 
+                    ?>
                     </form>
                     <?php } ?>
                 </div>                            
@@ -470,12 +886,43 @@
                     </form>
                     <?php  if(!empty($_SESSION['user_id'])){ ?>
                     <form  method="post" action="add_to_watchlist.php?id=<?php echo $misterio['id'] ?>" >    
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">
-                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>">
+                    <?php 
+                        $exist_watchlist = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_watchlist = $mysqli ->prepare($exist_watchlist);
+                        $stmt_watchlist -> bind_param("ii", $user_id, $misterio['id']);
+                        $stmt_watchlist -> execute();
+                        $result_watchlist = $stmt_watchlist->get_result();
+                        $row_watchlist = $result_watchlist->fetch_array(); 
+                    ?>
+                        <?php
+                        if(!empty($row_watchlist)){?>                                            
+                            <button id="boton-watchlist" name="boton-main"> <i title ="Quitar de la watchlist"class="fa-solid fa-check"></i>  </button>    
+                        <?php 
+                        } else { 
+                        ?>
+                            <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>                                   
+                        <?php
+                        } 
+                        ?> 
                     </form>
                     <form  method="post" action="add_to_favorites.php?id=<?php echo $misterio['id'] ?>" >
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
-                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    <?php 
+                        $exist_favorites = "SELECT * FROM tfavorites WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_favorites = $mysqli ->prepare($exist_favorites);
+                        $stmt_favorites -> bind_param("ii", $user_id, $movie['id']);
+                        $stmt_favorites -> execute();
+                        $result_favorites = $stmt_favorites->get_result();
+                        $row_favorites = $result_favorites->fetch_array();
+                    if(!empty($row_favorites)){?>    
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Quitar de favoritos"class="fa-solid fa-heart-circle-minus"> </i> </button>
+                    <?php 
+                    } else { 
+                    ?>
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Agregar de favoritos"class="fa-solid fa-heart-circle-plus fa-beat"> </i> </button>
+                    <?php
+                    } 
+                    ?>
                     </form>
                     <?php } ?>
                 </div>                            
@@ -503,12 +950,44 @@
                     </form>
                     <?php  if(!empty($_SESSION['user_id'])){ ?>
                     <form  method="post" action="add_to_watchlist.php?id=<?php echo $espionaje['id'] ?>" >    
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">
-                        <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>        
+                    <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>">
+                    <?php 
+                        $exist_watchlist = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_watchlist = $mysqli ->prepare($exist_watchlist);
+                        $stmt_watchlist -> bind_param("ii", $user_id, $espionaje['id']);
+                        $stmt_watchlist -> execute();
+                        $result_watchlist = $stmt_watchlist->get_result();
+                        $row_watchlist = $result_watchlist->fetch_array(); 
+                    ?>
+                        <?php
+                        if(!empty($row_watchlist)){?>                                            
+                            <button id="boton-watchlist" name="boton-main"> <i title ="Quitar de la watchlist"class="fa-solid fa-check"></i>  </button>    
+                        <?php 
+                        } else { 
+                        ?>
+                            <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>                                   
+                        <?php
+                        } 
+                        ?> 
                     </form>
                     <form  method="post" action="add_to_favorites.php?id=<?php echo $espionaje['id'] ?>" >
-                        <input type="hidden" name="return" value=" <?php echo $link ?>">    
-                        <button id="boton-favorites" name="boton-main"> <i title="Agregar a favoritos"class="fa-solid fa-heart"> </i> </button>
+                    <input type="hidden" name="return_favorites" value=" <?php echo $ruta_absoluta ?>"> 
+                    <?php 
+                        $exist_favorites = "SELECT * FROM tfavorites WHERE usuario_id = ? AND movie_id = ?";
+                        $stmt_favorites = $mysqli ->prepare($exist_favorites);
+                        $stmt_favorites -> bind_param("ii", $user_id, $espionaje['id']);
+                        $stmt_favorites -> execute();
+                        $result_favorites = $stmt_favorites->get_result();
+                        $row_favorites = $result_favorites->fetch_array();
+                    if(!empty($row_favorites)){?>    
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Quitar de favoritos"class="fa-solid fa-heart-circle-minus"> </i> </button>
+                    <?php 
+                    } else { 
+                    ?>
+                        <button id="boton-favorites" name="boton-favorites"> <i title="Agregar de favoritos"class="fa-solid fa-heart-circle-plus fa-beat"> </i> </button>
+                    <?php
+                    } 
+                    ?>
                     </form>
                     <?php } ?>
                 </div>                            

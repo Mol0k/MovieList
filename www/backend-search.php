@@ -2,9 +2,12 @@
 	ini_set('display_errors', 'On');
     require __DIR__ . '/../php_util/db_connection.php';
     session_start();
-        
+    if(isset($_SESSION['user_id'])){
+        $user_id = $_SESSION['user_id'];
+    }    
     $mysqli = get_db_connection_or_die();
-	
+    $ruta_absoluta = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -54,11 +57,11 @@
         // o si desea hacer coincidir solo la palabra completa, por lo que "gogohello" está fuera, use '% $consulta %' ... O ... '$ consulta %' ... O ... '% $ consulta'
 		if(mysqli_num_rows($result) > 0){ // if one or more rows are returned do following
 			
-			while($row = mysqli_fetch_array($result)){
+			while($fila = mysqli_fetch_array($result)){
 			// $results = mysql_fetch_array($raw_results) pone los datos de la base de datos en el array, mientras es válido hace el bucle
 			
 				// echo "<p><h3>".$row['title']."</h3>".$row['sinopsis']."</p>";
-                echo "
+               ?>
                 <div class='cards-container card-resp'>
                     <h2 class='text-center text-light mt-3'>Resultados de la búsqueda</h2>
                     <div class='container-fluid'>
@@ -66,18 +69,53 @@
                             <div class='container mt-5'>
                                 <div class='row justify-content-center wrapperino' id='foco'>
                                     <div class='movie_card'>
-                                    <img  width='15%' src='assets/imagenesPortada/".$row['image']."' >
+                                    <img  width='15%' src='assets/imagenesPortada/<?php echo $fila['image']?>' >
                                         <div class='descriptions'>
-                                            <h3 style='color: #ff3838;margin: 2px; margin-bottom:5px'>".$row['title']."</h3>
-                                            <p style='line-height: 20px;height: 70%;'> ".$row['sinopsis']."</p>
-                                            <form method='post' action='movies.php?id=".$row['id']."' >
+                                            <h3 style='color: #ff3838;margin: 2px; margin-bottom:5px'><?php echo $fila['title'] ?></h3>
+                                            <p style='line-height: 20px;height: 70%;'> <?php echo $fila['sinopsis']?></p>
+                                            <form method='post' action='movies.php?id=<?php echo $fila['id']?>' >
                                                 <button id='boton-mas'>Mas info</button>
                                             </form>
-                                            <form  method='post' action='add_to_watchlist.php?id=".$row['id']."' >
-                                                <button id='boton-watchlist'> <i title='Agregar a la watchlist'class='fa-solid fa-circle-plus fa-beat'> </i> </button>
+                                            <form  method='post' action='add_to_watchlist.php?id=<?php echo $fila['id'] ?>' >
+                                                <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>"> 
+                                                <?php
+                                                    $exist_watchlist = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
+                                                    $stmt_watchlist = $mysqli ->prepare($exist_watchlist);
+                                                    $stmt_watchlist -> bind_param("ii", $user_id, $fila['id']);
+                                                    $stmt_watchlist -> execute();
+                                                    $result_watchlist = $stmt_watchlist->get_result();
+                                                    $row_watchlist = $result_watchlist->fetch_array();
+                                                ?>
+                                                <?php if(!empty($row_watchlist)){?> 
+                                                    <button id="boton-watchlist" name="boton-main"> <i title ="Quitar de la watchlist"class="fa-solid fa-check"></i>  </button>   
+                                                <?php 
+                                                } else { 
+                                                ?>
+                                                <button id="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>                                   
+                                                <?php
+                                                } 
+                                                ?>
                                             </form>
-                                            <form  method='post' action='add_to_watchlist.php?id=".$row['id']."' >
-                                                <button id='boton-favorites'> <i title='Agregar a la watchlist'class='fa-solid fa-heart fa-beat'> </i> </button>
+
+                                            <form  method='post' action='add_to_favorites.php?id=<?php echo $fila['id']?>' >
+                                                <input type="hidden" name="return_favorites" value=" <?php echo $ruta_absoluta ?>"> 
+                                                <?php 
+                                                    $exist_favorites = "SELECT * FROM tfavorites WHERE usuario_id = ? AND movie_id = ?";
+                                                    $stmt_favorites = $mysqli ->prepare($exist_favorites);
+                                                    $stmt_favorites -> bind_param("ii", $user_id, $fila['id']);
+                                                    $stmt_favorites -> execute();
+                                                    $result_favorites = $stmt_favorites->get_result();
+                                                    $row_favorites = $result_favorites->fetch_array();
+                                                if(!empty($row_favorites)){?>    
+                                                        <button id="boton-favorites" name="boton-favorites"> <i title="Quitar de favoritos"class="fa-solid fa-heart-circle-minus"> </i> </button>
+                                                <?php 
+                                                } else { 
+                                                ?>
+                                                    <button id="boton-favorites" name="boton-favorites"> <i title="Agregar de favoritos"class="fa-solid fa-heart-circle-plus fa-beat"> </i> </button>
+                                                <?php
+                                                } 
+                                                ?>
+                                    
                                             </form>
                                         </div>
                                     </div>
@@ -85,13 +123,13 @@
                             </div>
                         </div>
                     </div>
-                </div>";
-				// resultados de los posts obtenidos de la base de datos (título y texto) también puede mostrar el id ($results['id'])
-			}
+                </div>
+				<!-- resultados de los posts obtenidos de la base de datos (título y texto) también puede mostrar el id ($results['id']) -->
+			<?php } ?>
 			
-		}
-		else{ // si no hay filas coincidentes hacer lo siguiente
-            echo "
+		<?php }
+		else{ ?> 
+        <!-- // si no hay filas coincidentes hacer lo siguiente -->
             <div class='container d-flex align-items-center justify-content-center'>
                 <div class='search-message-empty-container text-light'>
                     <span class='search-message-empty-decal'>
@@ -103,11 +141,10 @@
                     </h2>
                 </div>
                 </div>
-            ";
             
-		}
+		<?php } ?>
 		
-	}
+	<?php }
 	else{ // if query length is less than minimum
 		echo "Minimo de busqueda ".$min_length;
 	}
@@ -126,7 +163,7 @@
 </body>
     <!-- jQuery + Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    
+    <script src="https://kit.fontawesome.com/b18aa99892.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
     </script>

@@ -8,14 +8,14 @@ require __DIR__ . '/../php_util/db_connection.php';
     //LO COMENTE PORQUE SALE ERROR DE QUE NO ESTA DEFINIDO
     // $user_id = $_SESSION['user_id'];
 
-    if(isset($_POST['user_id'])){
+    if(isset($_SESSION['user_id'])){
         $user_id = $_SESSION['user_id'];
     }
     //CONSULTA PARA COMPROBAR SI UN USUARIO ES ADMIN O UN USUARIO NORMAL
     // $consult_admin = "SELECT roles FROM tuser WHERE id = " .$_SESSION['user_id'];
     // $result_admin = mysqli_query($mysqli, $consult_admin) or die(mysqli_error($mysqli));
     // $admin = mysqli_fetch_array($result_admin);
-    $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    $ruta_absoluta = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -98,14 +98,45 @@ require __DIR__ . '/../php_util/db_connection.php';
                     <div class="row row-cols-auto">
                         <div class="col mt-2">
                             <form action="add_to_watchlist.php?id=<?php echo $fila['id']?>" method="post">
-                                <button  type="submit" class="btn btn-primary "> <i class="fa-solid fa-circle-plus fa-beat"> </i> Añadir a la watchlist</button>
-                                <input type="hidden" name="return" value="<?php ".$link."?>">
+                            <input type="hidden" name="return" value="<?php $ruta_absoluta ?>">
+                            <?php
+                                $exist_watchlist = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
+                                $stmt_watchlist = $mysqli ->prepare($exist_watchlist);
+                                $stmt_watchlist -> bind_param("ii", $user_id, $fila['id']);
+                                $stmt_watchlist -> execute();
+                                $result_watchlist = $stmt_watchlist->get_result();
+                                $row_watchlist = $result_watchlist->fetch_array(); 
+                            
+                            if(!empty($row_watchlist)){?>  
+                                <button  type="submit" class="btn btn-danger "> <i class="fa-solid fa-check"> </i> Quitar de la watchlistt</button>
+                            <?php 
+                            } else { 
+                            ?>
+                            <button  type="submit" class="btn btn-primary "> <i class="fa-solid fa-circle-plus fa-beat"> </i> Añadir a la watchlist</button>
+                            <?php
+                            } 
+                            ?>    
                             </form>
                         </div>
                         <div class="col mt-2">
                             <form action="add_to_favorites.php?id=<?php echo $fila['id']?>" method="post">
-                                <button  type="submit" class="btn btn-danger"><i class="fa-solid fa-heart fa-beat"> </i> Añadir a favoritos</button>
-                                
+                            <input type="hidden" name="return_favorites" value=" <?php echo $ruta_absoluta ?>"> 
+                            <?php 
+                                $exist_favorites = "SELECT * FROM tfavorites WHERE usuario_id = ? AND movie_id = ?";
+                                $stmt_favorites = $mysqli ->prepare($exist_favorites);
+                                $stmt_favorites -> bind_param("ii", $user_id, $fila['id']);
+                                $stmt_favorites -> execute();
+                                $result_favorites = $stmt_favorites->get_result();
+                                $row_favorites = $result_favorites->fetch_array();
+                            if(!empty($row_favorites)){?>    
+                                <button  type="submit" class="btn btn-danger"><i class="fa-solid fa-heart-circle-minus"> </i> Quitar de favoritos</button>
+                            <?php 
+                            } else { 
+                            ?>
+                                <button  type="submit" class="btn btn-secondary"><i class="fa-solid fa-heart-circle-plus fa-beat"> </i> Añadir a favoritos</button>
+                            <?php
+                            } 
+                            ?>
                             </form>
                         </div>
                     </div>
@@ -126,7 +157,6 @@ require __DIR__ . '/../php_util/db_connection.php';
             // $result_2 = $stmt_2->get_result();
             // $row = $result_2->fetch_array();
             // if (!empty($_SESSION['user_id'])) {
-               
             //     if(!empty($row)){
             //         echo  '<p class="text-danger mt-2"> Ya la tienes en la watchlist</p>';
             //     } else{
@@ -136,27 +166,7 @@ require __DIR__ . '/../php_util/db_connection.php';
             ?>
 
             <!-- MENSAJES DE TEXTO DE LA WATCHLIST -->
-            <?php if(isset($_SESSION['añadida_watchlist'])){
-            ?>
-            <div class="w-25 p-3 alert alert-danger text-center" style="margin-top:20px;">
-                <?php 
-                    echo $_SESSION['añadida_watchlist']; 
-                ?>
-            </div>
-            <?php
-                unset($_SESSION['añadida_watchlist']);
-            }?>
-
-            <?php if(isset($_SESSION['error_delete_watchlist'])){
-            ?>
-            <div class="w-25 p-3 alert alert-danger text-center" style="margin-top:20px;">
-                <?php 
-                    echo $_SESSION['error_delete_watchlist']; 
-                ?>
-            </div>
-            <?php
-                    unset($_SESSION['error_delete_watchlist']);
-            }?>
+           
             <?php if(isset($_SESSION['no_logueado_Watchlist'])){
             ?>
             <div class="w-25 p-3 alert alert-danger text-center" style="margin-top:20px;">
@@ -167,27 +177,7 @@ require __DIR__ . '/../php_util/db_connection.php';
             }?>
 
             <!-- MENSAJES DE TEXTO DE FAVORITOS -->
-            <?php if(isset($_SESSION['añadida_favorites'])){
-            ?>
-            <div class="w-25 p-3 alert alert-danger text-center" style="margin-top:20px;">
-                <?php 
-                    echo $_SESSION['añadida_favorites']; 
-                ?>
-            </div>
-            <?php
-                    unset($_SESSION['añadida_favorites']);
-            }?>
-
-            <?php if(isset($_SESSION['error_delete_favorites'])){
-            ?>
-            <div class="w-25 p-3 alert alert-danger text-center" style="margin-top:20px;">
-                <?php 
-                    echo $_SESSION['error_delete_favorites']; 
-                ?>
-            </div>
-            <?php
-                    unset($_SESSION['error_delete_favorites']);
-            }?>
+            
             <?php if(isset($_SESSION['no_logueado_favorites'])){
             ?>
             <div class="w-25 p-3 alert alert-danger text-center" style="margin-top:20px;">
@@ -202,36 +192,35 @@ require __DIR__ . '/../php_util/db_connection.php';
                     <div class="col-sm-5 col-md-6 col-12 pb-4">
                         <h1 class="mt-2">Comentarios</h1>
                         <?php
-                             //  $query3 = 'SELECT * FROM tComentarios WHERE movie_id='.$movie_id; 
-                            // $query3 = 'SELECT *, tuser.username, tuser.profile_image from tcomentarios INNER JOIN tuser ON tcomentarios.usuario_id = tuser.id';
-                            $query3 = 'SELECT *, tuser.username, tuser.profile_image FROM  tcomentarios INNER JOIN tuser ON tcomentarios.usuario_id = tuser.id 
-                            INNER JOIN tmovie  ON tcomentarios.movie_id = tmovie.id  WHERE movie_id = '.$movie_id;
-                            $result3 = mysqli_query($mysqli, $query3) or die('Query error');
+                        
+                        $query3 = 'SELECT *, tuser.username, tuser.profile_image FROM  tcomentarios INNER JOIN tuser ON tcomentarios.usuario_id = tuser.id 
+                        INNER JOIN tmovie  ON tcomentarios.movie_id = tmovie.id  WHERE movie_id = '.$movie_id;
+                        $result3 = mysqli_query($mysqli, $query3) or die('Query error');
 
                         while ($row = mysqli_fetch_array($result3)) {?>
                         <div class="comment mt-4 text-justify float-left">
                             <?php 
-                                $profile_image = $row['profile_image'];
-                                if(empty($profile_image)){
-                                    $profile_image = "default-user.png";
-                                    echo "<img width='35' height='35' class='rounded-circle' src='assets/images/".$profile_image."' >" ;
-                                }else{ 
-                                    echo "<img width='35' height='35' class='rounded-circle' src='assets/imagenesUsuario/".$row['profile_image']."' >" ; 
-                                }
+                            $profile_image = $row['profile_image'];
+                            if(empty($profile_image)){
+                                $profile_image = "default-user.png";
+                                echo "<img width='35' height='35' class='rounded-circle' src='assets/images/".$profile_image."' >" ;
+                            }else{ 
+                                echo "<img width='35' height='35' class='rounded-circle' src='assets/imagenesUsuario/".$row['profile_image']."' >" ; 
+                            }
                                 
                             ?>
                             <h4>
                                 <?php echo $row['username'] ?>
                             </h4>
                             <span>
-                                <?php 
-                                    //formatear fecha
-                                    date_default_timezone_set('Europe/Madrid');
-                                    // En windows
-                                    setlocale(LC_TIME, 'spanish');
-                                    $date= strftime("%c", strtotime($row['fecha_comentario']));
-                                    echo $date;
-                                ?>
+                            <?php 
+                                //formatear fecha
+                                date_default_timezone_set('Europe/Madrid');
+                                // En windows
+                                setlocale(LC_TIME, 'spanish');
+                                $date= strftime("%c", strtotime($row['fecha_comentario']));
+                                echo $date;
+                            ?>
                             </span>
                             <br>
                             <p>
