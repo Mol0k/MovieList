@@ -23,7 +23,7 @@
     transform: scale(.95) translateX(-5px);
     transition: all .5s ease-in-out;
 }
-.movie_card #boton-watchlist {
+.movie_card .boton-watchlist {
     cursor: pointer;
     border-style: none;
     background-color: #ff3838;
@@ -39,7 +39,24 @@
     right: 0;
 }
 
-.movie_card #boton-watchlist:hover {
+/* Nuevo boton CAMBIAR ESTILO BOTON */
+/* .movie_card .boton-watchlist-activo {
+    cursor: pointer;
+    border-style: none;
+    background-color: #006e3b;
+    color: rgb(128, 11, 11);
+    outline: none;
+    box-shadow: 0px 2px 3px rgba(0, 0, 0, .4);
+    transition: all .5s ease-in-out;
+    line-height: 20px;
+    width: 30px;
+    margin-right: 35px;
+    position: absolute;
+    top: 0;
+    right: 0;
+} */
+
+.movie_card .boton-watchlist:hover {
     transform: scale(.95) translateX(-5px);
     transition: all .5s ease-in-out;
 }
