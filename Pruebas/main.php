@@ -146,25 +146,28 @@ require __DIR__ . '/../php_util/db_connection.php';
                                 <?php  if(!empty($_SESSION['user_id'])){ ?>
 
                                 <form  method="post" action="add_to_watchlist.php?id=<?php echo $movie['id'] ?>" >    
+
+                                <?php
+                                //  $consult_vision = "SELECT * from twatchlist INNER JOIN tmovie ON twatchlist.movie_id = tmovie.id WHERE usuario_id = '.$user_id.'"; 
+                                 $exist = "SELECT * FROM `twatchlist` WHERE usuario_id = ? AND movie_id = ?";
+                                 $stmt_2 = $mysqli ->prepare($exist);
+                                 $stmt_2 -> bind_param("ii", $user_id, $movie['id']);
+                                 $stmt_2 -> execute();
+                                 $result_2 = $stmt_2->get_result();
+                                 $row = $result_2->fetch_array();
+                                    if(!empty($row)){
+                                        $add = "boton-watchlist-activo";
+                                        
+                                    } else{ 
+                                        $add = null;                                    }
+                                
+                                ?>
                                     <input type="hidden" name="return" value=" <?php echo $link ?>">
-                                    <?php
-                                        //Esta consulta es para comprobar si el usuario tiene en la watchlist la pelicula y si es asi se cambiara el boton a check
-                                        //$consult_vision = "SELECT * from twatchlist INNER JOIN tmovie ON twatchlist.movie_id = tmovie.id WHERE usuario_id = '.$user_id.'"; 
-                                        $exist = "SELECT * FROM `twatchlist` WHERE usuario_id = ? AND movie_id = ?";
-                                        $stmt_2 = $mysqli ->prepare($exist);
-                                        $stmt_2 -> bind_param("ii", $user_id, $movie['id']);
-                                        $stmt_2 -> execute();
-                                        $result_2 = $stmt_2->get_result();
-                                        $row = $result_2->fetch_array();
-                                        if(!empty($row)){?>                                            
-                                            <button class="boton-watchlist" name="boton-main"> <i title ="Quitar de la watchlist"class="fa-solid fa-check"></i>  </button>    
-                                        <?php 
-                                        } else { 
-                                        ?>
-                                            <button class="boton-watchlist" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>                                   
-                                        <?php
-                                        } 
-                                        ?>
+                                    <button class="boton-watchlist 
+                                    <?php if ($add != null){
+                                        echo $add;
+                                    } 
+                                    ?>" name="boton-main"> <i title="Agregar a la watchlist"class="fa-solid fa-circle-plus fa-beat"> </i> </button>         
                                 </form>
                                 <form  method="post" action="add_to_favorites.php?id=<?php echo $movie['id'] ?>" >
                                     <input type="hidden" name="return" value=" <?php echo $link ?>"> 
