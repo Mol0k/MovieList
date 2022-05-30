@@ -96,7 +96,7 @@ require __DIR__ . '/../php_util/db_connection.php';
 
     <?php
 	//
-	$consult_peli_favoritas = 'SELECT * FROM tuser INNER JOIN twatchlist ON tuser.id = twatchlist.movie_id INNER JOIN tmovie ON twatchlist.usuario_id = tmovie.id WHERE twatchlist.usuario_id  = ' . $user_id;		
+	$consult_peli_favoritas = 'SELECT * FROM tuser INNER JOIN tfavorites ON tuser.id = tfavorites.movie_id INNER JOIN tmovie ON tfavorites.usuario_id = tmovie.id WHERE tfavorites.usuario_id  = ' . $user_id;		
 	$result_peli_favoritas = mysqli_query($mysqli, $consult_peli_favoritas);
     $fila_favoritas = mysqli_fetch_array($result_peli_favoritas);?>
     <?php if(!$fila_favoritas){ ?>
