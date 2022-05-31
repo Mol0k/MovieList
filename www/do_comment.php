@@ -19,7 +19,7 @@
  
   if(!empty($_POST["new_comment"]) ){
     if (!empty($_SESSION['user_id'])) {
-      $query = "INSERT INTO tComentarios(comentario, movie_id, usuario_id, fecha_comentario)
+      $query = "INSERT INTO tcomentarios(comentario, movie_id, usuario_id, fecha_comentario)
       VALUES ('".$comentario."',".$movie_id.",".$user_id_a_insertar.",'".$date."')";
       mysqli_query($mysqli, $query) or die('Error');
       mysqli_insert_id($mysqli);
