@@ -4,10 +4,10 @@ $mysqli = get_db_connection_or_die();
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" >
     <div class="container-fluid">
-        <!-- <a class="navbar-brand" href="main.php">
+        <!-- <a class="navbar-brand" href="index.php">
                 <img src="./assets/images/icon.png" width="24px" height="24px" alt="logo">MovieList
             </a> -->
-        <a class="navbar-brand" href="main.php">MovieList</a>
+        <a class="navbar-brand" href="index.php">MovieList</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
             aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -16,7 +16,7 @@ $mysqli = get_db_connection_or_die();
             <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
 
                 <li class="nav-item">
-                    <a class="nav-link active" href="main.php">Inicio</a>
+                    <a class="nav-link active" href="index.php">Inicio</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="all_movies.php">Películas</a>

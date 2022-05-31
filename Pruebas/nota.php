@@ -80,7 +80,7 @@ session_start();
       <div class="collapse navbar-collapse" id="navbarScroll">
         <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
           <li class="nav-item">
-            <a class="nav-link active" href="main.php">Inicio</a>
+            <a class="nav-link active" href="index.php">Inicio</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Películas</a>
@@ -146,7 +146,7 @@ session_start();
 
         <!-- Select dropdown -->
         <div class="text-light d-flex flex-row-reverse bd-highlight mb-3">
-            <form action="main.php" method="post">
+            <form action="index.php" method="post">
                 <select name="records-limit" id="records-limit" class="custom-select">
                     <option disabled selected>Records Limit</option>
                     <?php foreach([2,4,8,10] as $limit) : ?>
@@ -191,7 +191,7 @@ session_start();
                 </li>
                 <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
                 <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
-                    <a class="page-link" href="main.php?page=<?= $i; ?>"> <?= $i; ?> </a>
+                    <a class="page-link" href="index.php?page=<?= $i; ?>"> <?= $i; ?> </a>
                 </li>
                 <?php endfor; ?>
                 <li class="page-item <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
@@ -261,7 +261,7 @@ session_start();
                             </li>
                             <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
                             <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
-                                <a class="page-link" href="main.php?page=<?= $i; ?>">
+                                <a class="page-link" href="index.php?page=<?= $i; ?>">
                                     <?= $i; ?>
                                 </a>
                             </li>

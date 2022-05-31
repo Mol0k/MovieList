@@ -187,7 +187,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                             </li>
                             <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
                             <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
-                                <a class="page-link" href="main.php?page=<?= $i; ?>">
+                                <a class="page-link" href="index.php?page=<?= $i; ?>">
                                     <?= $i; ?>
                                 </a>
                             </li>

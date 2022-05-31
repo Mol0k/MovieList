@@ -100,8 +100,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             
             // Intentar ejecutar el prepared statement.
             if($stmt->execute()){
-                // Que rediriga a main.php
-                header("location: main.php");
+                // Que rediriga a index.php
+                header("location: index.php");
             } else{
                 echo "¡Uy! Algo ha ido mal. Por favor, inténtelo de nuevo más tarde";
             }

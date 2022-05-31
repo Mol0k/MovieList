@@ -27,7 +27,7 @@ if(isset($_GET['id']) & !empty($_GET['id'])){
 		die();
 	}
 }else{
-	header('location: main.php');
+	header('location: index.php');
 }
 
 ?>

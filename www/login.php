@@ -8,7 +8,7 @@ $mysqli = get_db_connection_or_die();
 
 // Check if the user is already logged in, if yes then redirect him to welcome page
 if(isset($_SESSION["user_id"]) && $_SESSION["user_id"] === true){
-    header("location: main.php");
+    header("location: index.php");
     exit;
 }
  
@@ -47,7 +47,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             if (password_verify($password, $only_row[1])) {
                 session_start();
                 $_SESSION['user_id'] = $only_row[0];
-                header('Location: main.php');
+                header('Location: index.php');
             } else {
                 $login_err = "Usuario o contraseña incorrectos.";}
         } else{

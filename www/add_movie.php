@@ -16,7 +16,7 @@ require __DIR__ . '/../php_util/db_connection.php';
     $row_role = $query->fetch_assoc(); 
 
     if($row_role['roles'] != "admin"){
-        header('Location: main.php');
+        header('Location: index.php');
     }
 
     if(isset($_POST['records-limit-addmovie'])){
