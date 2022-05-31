@@ -1,6 +1,6 @@
 .multipleSelection {
     width: 300px;
-    background-color: #BCC2C1;
+    background-color: #ffffff;
 }
 
 .selectBox {
@@ -30,5 +30,5 @@
 }
 
 #checkBoxes label:hover {
-    background-color: #4F615E;
+    background-color: #7bbdc6;
 }

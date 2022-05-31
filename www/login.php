@@ -94,7 +94,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                         <div class="form-group d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
-                                                <label class="form-label" for="f_nomb_user">Nombre</label>
+                                                <label class="form-label" for="f_nomb_user">Nombre de usuario</label>
                                                 <input type="text" id="f_nomb_user" name="username"
                                                 class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
                                                 <span class="invalid-feedback"><?php echo $username_err; ?></span>
