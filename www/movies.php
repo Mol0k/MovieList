@@ -81,11 +81,14 @@ require __DIR__ . '/../php_util/db_connection.php';
                             <h1><?php echo $fila['title']?></h1>
                             <p ><?php echo $fila['sinopsis']?></p>
                             <?php 
+                            //Formatear fechas
                             date_default_timezone_set('Europe/Madrid');
-                            setlocale(LC_TIME, 'spanish');
-                            $date= strftime("%x", strtotime($fila['created']));  
+                            setlocale(LC_TIME, 'es_ES.UTF-8');
+                            //DEPRECATED EN LA VERSIÓN 8 DE PHP strftime
+                            // $date= strftime("%x", strtotime($fila['created'])); 
+                            $date = date_create($fila['created']);
                             ?>
-                            <p>Fecha de nacimiento: <?php echo $date?></p>
+                            <p>Estreno: <?php echo date_format($date, 'd-m-Y');?></p>
                             <p>Duración: <?php echo $fila['duration']?></p>
                             <h4>Géneros: </h4>
                             <?php  foreach($generos as $genero){ ?>
@@ -216,10 +219,12 @@ require __DIR__ . '/../php_util/db_connection.php';
                             <?php 
                                 //formatear fecha
                                 date_default_timezone_set('Europe/Madrid');
-                                // En windows
                                 setlocale(LC_TIME, 'spanish');
-                                $date= strftime("%c", strtotime($row['fecha_comentario']));
-                                echo $date;
+                                //DEPRECATED EN LA VERSIÓN 8 DE PHP strftime
+                                // $date= strftime("%c", strtotime($row['fecha_comentario']));
+                                // echo $date;
+                                $date = date_create($row['fecha_comentario']);
+                                echo date_format($date, 'd-m-Y H:i:s');
                             ?>
                             </span>
                             <br>
