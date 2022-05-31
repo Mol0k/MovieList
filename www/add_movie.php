@@ -29,10 +29,10 @@ require __DIR__ . '/../php_util/db_connection.php';
     $movies = $mysqli->query("SELECT * FROM tmovie  LIMIT $paginationStart, $limit")->fetch_all(MYSQLI_ASSOC);
     // Obtener el total de records
     $sql = $mysqli->query("SELECT count(id) AS id FROM tmovie")->fetch_all(MYSQLI_ASSOC);
-    $allRecrods = $sql[0]['id'];
+    $allRecords = $sql[0]['id'];
 
     //Calcular el  total de págians
-    $totoalPages = ceil($allRecrods / $limit);
+    $totalPaginas = ceil($allRecords / $limit);
     // Anterior y siguiente
     $prev = $page - 1;
     $next = $page + 1;
@@ -49,14 +49,10 @@ require __DIR__ . '/../php_util/db_connection.php';
     <link rel="shortcut icon" href="#">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
-    <link rel="stylesheet" href="./assets/css/styles.css" />
     <link rel="stylesheet" href="./assets/css/style_add_movie.css" />
+    <link rel="stylesheet" href="./assets/css/styles.css" />
     <link rel="stylesheet" href="./assets/css/profile.css">
     <title>Añadir películas:</title>
-    <style>
-        
-    </style>
-
 
 </head>
 
@@ -176,7 +172,7 @@ require __DIR__ . '/../php_util/db_connection.php';
 
     </form>
     <div class="text-light d-flex flex-row-reverse bd-highlight mb-3">
-        <form action="add_movie.php" method="post">
+        <form action="add_movie.php" id ="form-pag" method="post">
             <select name="records-limit-addmovie" id="records-limit-addmovie" class="custom-select">
                 <option disabled selected>Límite</option>
                 <?php foreach([2,4,8,10] as $limit) : ?>
@@ -233,20 +229,20 @@ require __DIR__ . '/../php_util/db_connection.php';
                 <a class="page-link"
                     href="<?php if($page <= 1){ echo '#'; } else { echo "?page=" . $prev; } ?>">Anterior</a>
             </li>
-            <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
+            <?php for($i = 1; $i <= $totalPaginas; $i++ ): ?>
             <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
                 <a class="page-link" href="add_movie.php?page=<?= $i; ?>"> <?= $i; ?> </a>
             </li>
             <?php endfor; ?>
-            <li class="page-item <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
+            <li class="page-item <?php if($page >= $totalPaginas) { echo 'disabled'; } ?>">
                 <a class="page-link"
-                    href="<?php if($page >= $totoalPages){ echo '#'; } else {echo "?page=". $next; } ?>">Siguiente</a>
+                    href="<?php if($page >= $totalPaginas){ echo '#'; } else {echo "?page=". $next; } ?>">Siguiente</a>
             </li>
         </ul>
     </nav>
    
 
-   
+    fa-solid fa-check
 
     <!-- Incluir el footer -->
     <?php include "./inc/footer.php"; ?>
@@ -263,7 +259,8 @@ require __DIR__ . '/../php_util/db_connection.php';
     <script>
     $(document).ready(function() {
         $('#records-limit-addmovie').change(function() {
-            $('form').submit();
+            var frm = document.getElementById("form-pag");
+            frm.submit();
         })
     });
     </script>
