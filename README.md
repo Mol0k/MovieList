@@ -1,6 +1,6 @@
 # 📽 MOVIELIST 
 > Este repositorio describe el trabajo realizado en el proyecto final de FP de Desarrollo de Aplicaciones Web. El proyecto consiste en el desarrollo web de una página de películas. El objetivo de dicha web es dar al usuario la posibilidad de agregar una lista de las películas que ha visto y una lista de favoritos, también se mostrará información acerca de las mismas.
->  Live demo [_here_](https://www.example.com). 
+>  Live demo [_here_](http://the-movies-lists.herokuapp.com/). 
 
 ## Contenido
 * [Información General](#información-general)
