@@ -239,6 +239,12 @@ require __DIR__ . '/../php_util/db_connection.php';
 
 
                     <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
+                        <?php if(isset($_SESSION['error_coment'])){?>
+                        <div class="alert alert-danger text-center mt-0" style="margin-top:20px;"> <?php echo $_SESSION['error_coment']; ?> </div>
+                        <?php unset($_SESSION['error_coment']);}?>
+                        <?php if(isset($_SESSION['duplicado_coment'])){?>
+                        <div class="alert alert-danger text-center mt-0" style="margin-top:20px;"><?php echo $_SESSION['duplicado_coment']; ?> </div>
+                        <?php  unset($_SESSION['duplicado_coment']);}?> 
                         <form id="algin-form" action="do_comment.php" method="post">
                             <div class="form-group" id="form-comment">
                                 <h4>Deja tu comentario</h4>
@@ -253,23 +259,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                                 <button type="submit" value="Comentar"
                                     class="btn btn-primary mt-2 p-2 mb-4">Comentar</button>
 
-                                <?php if(isset($_SESSION['comentario_vacio'])){
-                                ?>
-                                <div class="alert alert-danger text-center mt-0" style="margin-top:20px;">
-                                    <?php echo $_SESSION['comentario_vacio']; ?>
-                                </div>
-                                <?php
-                                    unset($_SESSION['comentario_vacio']);
-                                }?>
-
-                                <?php if(isset($_SESSION['inicia_sesion_coment'])){
-                                ?>
-                                <div class="alert alert-danger text-center mt-0" style="margin-top:20px;">
-                                    <?php echo $_SESSION['inicia_sesion_coment']; ?>
-                                </div>
-                                <?php
-                                    unset($_SESSION['inicia_sesion_coment']);
-                                }?>
+                                <!-- ANTES ESTABAN AQUI LOS MENSAJES DE ERROR -->
                             </div>
                         </form>
                     </div>
