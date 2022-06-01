@@ -76,6 +76,7 @@
                                             <form method='post' action='movies.php?id=<?php echo $fila['id']?>' >
                                                 <button id='boton-mas'>Mas info</button>
                                             </form>
+                                            <?php  if(!empty($_SESSION['user_id'])){ ?>
                                             <form  method='post' action='add_to_watchlist.php?id=<?php echo $fila['id'] ?>' >
                                                 <input type="hidden" name="return" value=" <?php echo $ruta_absoluta ?>"> 
                                                 <?php
@@ -117,6 +118,7 @@
                                                 ?>
                                     
                                             </form>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                 </div>
