@@ -231,7 +231,12 @@ require __DIR__ . '/../php_util/db_connection.php';
                             <p>
                                 <?php echo $row['comentario'] ?>
                             </p>
-
+                                <?php if($row['usuario_id'] == $user_id) {?>
+                                <form  id= "algin-form" action="del_comment.php?id=<?php echo $movie_id?>" method="post">
+                                    <input type="hidden" name="movie_id" value="<?php echo $movie_id; ?>">
+                                    <button type="submit" value="Borrar" class="btn btn-danger">Borrar comentario</button>
+                                <?php } ?>
+                            </form>
                         </div>
                         <?php }?>
                     
@@ -249,19 +254,14 @@ require __DIR__ . '/../php_util/db_connection.php';
                             <div class="form-group" id="form-comment">
                                 <h4>Deja tu comentario</h4>
                                 <label for="message">Mensaje</label>
-                                <textarea name="new_comment" id="" msg cols="30" rows="5"
-                                    class="form-control  text-light" style="background-color: #212529 ;"></textarea>
+                                <textarea name="new_comment" id="" msg cols="30" rows="5" class="form-control  text-light" style="background-color: #212529 ;"></textarea>
                             </div>
-
-
                             <div class="form-group" id="form-comment-div">
                                 <input type="hidden" name="movie_id" value="<?php echo $movie_id; ?>">
-                                <button type="submit" value="Comentar"
-                                    class="btn btn-primary mt-2 p-2 mb-4">Comentar</button>
-
+                                <button type="submit" value="Comentar" class="btn btn-primary mt-2 p-2 mb-4">Comentar</button>
                                 <!-- ANTES ESTABAN AQUI LOS MENSAJES DE ERROR -->
                             </div>
-                        </form>
+                        </form>  
                     </div>
                 </div>
             </section>
