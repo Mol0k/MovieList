@@ -44,21 +44,10 @@ require __DIR__ . '/../php_util/db_connection.php';
     <title>Watchlist</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/css/footer.css">
     <link rel="stylesheet" href="./assets/css/styles.css">
     <link rel="stylesheet" href="./assets/css/profile.css">
     <link rel="stylesheet" href="./assets/css/style_favorites_watchlist.css">
-    <style>
-        .foter{
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            padding: 0px 0px 5px 0px;
-            background-color: #f5f5f5;
-            color: black;
-            text-align: center;
-        }
-    </style>
 </head>
 
 <body class="bg-dark" style="background-image: url('./assets/images/movie-detail-bg.png');background-repeat: no-repeat;
@@ -73,10 +62,10 @@ require __DIR__ . '/../php_util/db_connection.php';
 	
 	?>
     <div class='cards-container card-resp'>
-        <h2 class="text-center text-light mt-5 me-2 ">PELICULAS VISTAS</h2>
+        <h2 class="text-center text-light mt-4 me-2 ">PELÍCULAS VISTAS</h2>
         <div class='container-fluid'>
-            <div class="row default-row mt-5 mb-1" id="row-1">
-                <div class='container mt-2'>
+            <div class="row default-row mt-4 mb-1" id="row-1">
+                <div class='container mt-4'>
                     <div class='row justify-content-center wrapperino' id='foco'>
                         <?php while($fila = mysqli_fetch_assoc($result_peli_visionadas)){?>
                         <div class='movie_style'>
@@ -99,16 +88,16 @@ require __DIR__ . '/../php_util/db_connection.php';
 	$result_peli_visionadas = mysqli_query($mysqli, $consult_peli_visionadas);
     $fila_visionadas = mysqli_fetch_array($result_peli_visionadas);?>
     <?php if(!$fila_visionadas){ ?>
-        <div class="text-center mt-5" style="color:red">
-            <h1 class=" mb-5">
-                NO TIENES NINGUNA PELÍCULA AÑADIDA
+        <div class="text-center mt-4" style="color:red">
+            <h1 class=" mb-4">
+            AÑADE ALGUNA PELÍCULA A TU LISTA DE VISIONADOS
             </h1>
         </div>
     <?php } ?>
 
 
-    <nav aria-label="Page navigation example mt-5">
-        <ul class="pagination justify-content-center mt-4 my-5 " style="scroll-behavior: smooth;">
+    <nav aria-label="Page navigation example mt-4">
+        <ul class="pagination justify-content-center mt-4 my-5" >
             <li class="page-item <?php if($page <= 1){ echo 'disabled'; } ?>">
                 <a class="page-link" href="<?php if($page <= 1){ echo '#'; } else { echo "
                                     ?page=" . $prev; } ?>">Anterior</a>
@@ -133,7 +122,6 @@ require __DIR__ . '/../php_util/db_connection.php';
     <!-- Incluir el popup -->
     <?php include_once "./inc/popup_uPassword.php"; ?> 
     <?php include_once "./inc/popup_uProfile.php"; ?>                
-
 
 </body>
     <!-- jQuery + Bootstrap JS -->

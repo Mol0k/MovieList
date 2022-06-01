@@ -2,8 +2,8 @@
 $mysqli = get_db_connection_or_die();
 
 ?>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" id="#navbar_id" >
+<!-- sticky-top -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark " id="#navbar_id" >
     <div class="container-fluid">
         <!-- <a class="navbar-brand" href="index.php">
                 <img src="./assets/images/icon.png" width="24px" height="24px" alt="logo">MovieList
@@ -15,9 +15,9 @@ $mysqli = get_db_connection_or_die();
         </button>
         <div class="collapse navbar-collapse" id="navbar">
                 <!-- CON SCROLL -->
-                <!-- <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;"> -->
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                 <!-- SIN SCROLL -->
-                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav" >
+                <!-- <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav" > -->
 
                 <li class="nav-item">
                     <a class="nav-link active" href="index.php">Inicio</a>
@@ -91,3 +91,8 @@ $mysqli = get_db_connection_or_die();
         </div>
     </div>
 </nav>
+<script>
+     $(document).on('click',function(){
+   $('.collapse').collapse('hide');
+});
+</script>

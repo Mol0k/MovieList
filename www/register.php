@@ -217,11 +217,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                     </form>
 
                                 </div>
-                                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-
-                                    <img src="./assets/images/2-2-iron-man-png-clipart.png" class="img-fluid" style="width: 100%; height: 100%;"alt="Sample image">
-
-                                </div>
+                               
                             </div>
                         </div>
                     </div>

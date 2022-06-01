@@ -156,7 +156,7 @@
 
         </div>
     </div>
-
+    <button onclick="topFunction()" id="botonScroll" title="Ir hacia arriba"><i class="fa-solid fa-angle-up"></i></button>
 
     <!-- Incluir el footer -->
     <?php include "./inc/footer.php"; ?> 
@@ -166,7 +166,7 @@
 
 </body>
 
-
+    <script src="./assets/js/scrollToTop.js"></script>
     <script>
         if (window.history.replaceState) { // verificamos disponibilidad
             window.history.replaceState(null, null, window.location.href);

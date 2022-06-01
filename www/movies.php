@@ -24,11 +24,13 @@ require __DIR__ . '/../php_util/db_connection.php';
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">  -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-    <!-- <link rel="stylesheet" href="./assets/css/styles.css"> -->
     <script src="https://kit.fontawesome.com/b18aa99892.js" crossorigin="anonymous"></script>
+   
     <link rel="stylesheet" href="./assets/css/style_comment.css">
     <link rel="stylesheet" href="./assets/css/profile.css">
     <link rel="shortcut icon" href="#">
@@ -36,7 +38,9 @@ require __DIR__ . '/../php_util/db_connection.php';
         .container {
             max-width: 1800px;
         }
-
+        /* body{
+            font-family: 'Roboto Slab', serif;
+        } */
         .movie_style {
             padding: 0 !important;
             width: 18.9rem;
@@ -192,7 +196,7 @@ require __DIR__ . '/../php_util/db_connection.php';
 
             <section>
                 <div class="row">
-                    <div class="col-sm-5 col-md-6 col-12 pb-4">
+                    <div class="col-sm-5 col-md-6 col-12 pb-4" >
                         <h1 class="mt-2">Comentarios</h1>
                         <?php
                         

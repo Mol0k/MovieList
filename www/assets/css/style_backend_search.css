@@ -96,3 +96,24 @@
     text-align: center;
 }
 
+#botonScroll {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 10px;
+    z-index: 99;
+    border: none;
+    outline: none;
+    background-color: rgb(215, 7, 7);
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+/* Solo para movil el scroll hacia arriba */
+@media only screen and (min-width: 769px) {
+    #botonScroll {
+        display: none !important;
+    }
+}

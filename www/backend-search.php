@@ -152,7 +152,7 @@
 	}
 ?>
 </div>
-
+<button onclick="topFunction()" id="botonScroll" title="Ir hacia arriba"><i class="fa-solid fa-angle-up"></i></button>
 
     <!-- Incluir el footer -->
     <?php include "./inc/footer.php"; ?> 
@@ -163,6 +163,7 @@
 
    
 </body>
+    <script src="./assets/js/scrollToTop.js"></script>
     <!-- jQuery + Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/b18aa99892.js" crossorigin="anonymous"></script>

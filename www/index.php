@@ -52,14 +52,14 @@ require __DIR__ . '/../php_util/db_connection.php';
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-    <link rel="stylesheet" href="./assets/css/styles.css">
-    <link rel="stylesheet" href="./assets/css/style_main.css">
-    <link rel="stylesheet" href="./assets/css/profile.css">
+    <link rel="stylesheet" href="./assets/css/styles.css" type="text/css">
+    <link rel="stylesheet" href="./assets/css/style_main.css" type="text/css"> 
+    <link rel="stylesheet" href="./assets/css/profile.css" type="text/css">
 
     <script src="https://kit.fontawesome.com/b18aa99892.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="#">
     <title>MovieList</title>
-
+     <script src="./assets/js/scrollToTop.js"></script>
 </head>
 
 <body class="bg-dark" style="background-image: url('./assets/images/movie-detail-bg.png');background-repeat: no-repeat;
@@ -217,6 +217,7 @@ require __DIR__ . '/../php_util/db_connection.php';
             
         </div>
     </div>
+    <button onclick="topFunction()" id="botonScroll" title="Ir hacia arriba"><i class="fa-solid fa-angle-up"></i></button>
     <!-- Incluir popup registrado -->
     <?php include_once "./inc/popup_registrado.php"; ?>  
     <!-- Incluir el footer -->
@@ -226,33 +227,36 @@ require __DIR__ . '/../php_util/db_connection.php';
     <?php include_once "./inc/popup_uProfile.php"; ?>   
     
 </body>
-<!-- jQuery + Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-    $(document).ready(function() {
-        $('#records-limit').change(function() {
-            $('form').submit();
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
         })
-    });
     </script>
+    <script src="./assets/js/scrollToTop.js"></script>
+    <script>
+        //Cuando el usuario entre en la página principal el div que muestra las películas cogerá el foco.
+        const foco = document.getElementById('foco');
+        // foco.scrollIntoView(true);
+        foco.scrollIntoView({
+            block: 'center',
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#records-limit').change(function() {
+                $('form').submit();
+            })
+        });
+    </script>
+    <!-- jQuery + Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-
-    <script>
-    $(function() {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
-    </script>
-    <script>
-    const foco = document.getElementById('foco');
-
-    // foco.scrollIntoView(true);
-    foco.scrollIntoView({
-        block: 'center',
-    });
-    </script>
-    <script src="/assets/js/index.js" type="module"></script>
+    <!-- Script para que el usuario pueda ir hacia arriba dandole a un botón -->
+   
+</script>
 </html>
