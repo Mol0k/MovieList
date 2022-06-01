@@ -2,18 +2,22 @@
 $mysqli = get_db_connection_or_die();
 
 ?>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" >
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" id="#navbar_id" >
     <div class="container-fluid">
         <!-- <a class="navbar-brand" href="index.php">
                 <img src="./assets/images/icon.png" width="24px" height="24px" alt="logo">MovieList
             </a> -->
         <a class="navbar-brand" href="index.php">MovieList</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
-            aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
+            aria-controls="navbar" aria-expanded="false"  id="boton-navbar" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarScroll">
-            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+        <div class="collapse navbar-collapse" id="navbar">
+                <!-- CON SCROLL -->
+                <!-- <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;"> -->
+                <!-- SIN SCROLL -->
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav" >
 
                 <li class="nav-item">
                     <a class="nav-link active" href="index.php">Inicio</a>
@@ -74,7 +78,7 @@ $mysqli = get_db_connection_or_die();
                             }
                         ?>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                    <div class="dropdown-menu dropdown-menu-end"  style="position:absolute" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="profile.php">Panel</a>
                         <a class="dropdown-item" href="#popup1">Editar contraseña</a>
                         <a class="dropdown-item" href="#popup2">Editar perfil</a>
