@@ -94,14 +94,14 @@
             <div class=" px-2 rounded mt-4 fecha "> 
                 <span class="llegada">Se ha unido el
                 <?php
-                    date_default_timezone_set('Europe/Madrid');
-                    setlocale(LC_TIME, 'spanish.UTF-8');
-                    $date= strftime("%A, %d de %B de %Y", strtotime($fila_usuario['registration_date']));
-                    echo $date;
                     // date_default_timezone_set('Europe/Madrid');
-                    // setlocale(LC_TIME, 'spanish');
-                    // $date = date_create($fila_usuario['registration_date']);
-                    // echo date_format($date, 'd-m-Y H:i:s');
+                    // setlocale(LC_TIME, 'spanish.UTF-8');
+                    // $date= strftime("%A, %d de %B de %Y", strtotime($fila_usuario['registration_date']));
+                    // echo $date;
+                    date_default_timezone_set('Europe/Madrid');
+                    setlocale(LC_TIME, 'spanish');
+                    $date = date_create($fila_usuario['registration_date']);
+                    echo date_format($date, 'd-m-Y H:i:s');
                     ?>
                 </span> 
             </div> 
