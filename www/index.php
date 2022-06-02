@@ -84,7 +84,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                 <div class="container">
                     <div class="carousel-caption text-start">
                         <h1>My MovieList.</h1>
-                        <p>Registrate para añadir tus peliculas favoritas.</p>
+                        <p>Registrate para añadir tus películas favoritas.</p>
                         <p><a class="btn btn-lg btn-primary" href="register.php">Registrate ahora</a></p>
                     </div>
                 </div>
@@ -96,20 +96,20 @@ require __DIR__ . '/../php_util/db_connection.php';
                 <div class="container">
                     <div class="carousel-caption">
                         <h1>WatchList.</h1>
-                        <p>Añade tus peliculas a la lista de WatchList.</p>
-                        <p><a class="btn btn-lg btn-primary" href="watchlist.php">Leer más</a></p>
+                        <p>Añade tus películas a la WatchList.</p>
+                        <p><a class="btn btn-lg btn-primary" href="watchlist.php">Watchlist</a></p>
                     </div>
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="assets/images/popcorn.jpg" class="bd-placeholder-img" alt="popcorn" width="100%"
+                <img src="assets/images/imagen7.jpg" class="bd-placeholder-img" alt="popcorn" width="100%"
                     height="100%">
 
                 <div class="container">
                     <div class="carousel-caption text-end">
-                        <h1>Ayudanos.</h1>
-                        <p>Inicia sesión y mandanos las peliculas que desees para agregarlas a la página.</p>
-                        <p><a class="btn btn-lg btn-primary" href="#">Explora</a></p>
+                        <h1>Inicia sesión.</h1>
+                        <p>Inicia sesión y disfruta de todas las funcionalidades.</p>
+                        <p><a class="btn btn-lg btn-primary" href="#">Iniciar sesión</a></p>
                     </div>
                 </div>
             </div>
@@ -232,6 +232,7 @@ require __DIR__ . '/../php_util/db_connection.php';
             $('[data-toggle="tooltip"]').tooltip()
         })
     </script>
+    <!-- Script para que el usuario pueda ir hacia arriba dandole a un botón -->
     <script src="./assets/js/scrollToTop.js"></script>
     <script>
         //Cuando el usuario entre en la página principal el div que muestra las películas cogerá el foco.
@@ -256,7 +257,4 @@ require __DIR__ . '/../php_util/db_connection.php';
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <!-- Script para que el usuario pueda ir hacia arriba dandole a un botón -->
-   
-</script>
 </html>
