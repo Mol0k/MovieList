@@ -55,19 +55,18 @@
         // '%$consulta%' es lo que estoy buscando, % significa cualquier cosa, por ejemplo si $consulta es Hola
         // coincidirá con "hola", "Hola hombre", "gogohello", si desea una coincidencia exacta, use `title`='$query'
         // o si desea hacer coincidir solo la palabra completa, por lo que "gogohello" está fuera, use '% $consulta %' ... O ... '$ consulta %' ... O ... '% $ consulta'
-		if(mysqli_num_rows($result) > 0){ // if one or more rows are returned do following
-			
-			while($fila = mysqli_fetch_array($result)){
-			// $results = mysql_fetch_array($raw_results) pone los datos de la base de datos en el array, mientras es válido hace el bucle
-			
-				// echo "<p><h3>".$row['title']."</h3>".$row['sinopsis']."</p>";
-               ?>
+		?>
                 <div class='cards-container card-resp'>
                     <h2 class='text-center text-light mt-3'>Resultados de la búsqueda</h2>
                     <div class='container-fluid'>
                         <div class='row default-row mt-1 mb-1' id='row-1'>
                             <div class='container mt-5'>
                                 <div class='row justify-content-center wrapperino' id='foco'>
+                                <!-- // if one or more rows are returned do following -->
+                                <?php  if(mysqli_num_rows($result) > 0){ ?>	 
+                                <?php while($fila = mysqli_fetch_array($result)){
+                                    // $results = mysql_fetch_array($raw_results) pone los datos de la base de datos en el array, mientras es válido hace el bucle
+                                ?>
                                     <div class='movie_card'>
                                     <img  width='15%' src='assets/imagenesPortada/<?php echo $fila['image']?>' >
                                         <div class='descriptions'>
@@ -121,14 +120,12 @@
                                             <?php } ?>
                                         </div>
                                     </div>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-				<!-- resultados de los posts obtenidos de la base de datos (título y texto) también puede mostrar el id ($results['id']) -->
-			<?php } ?>
-			
 		<?php }
 		else{ ?> 
         <!-- // si no hay filas coincidentes hacer lo siguiente -->
@@ -138,17 +135,17 @@
                         <span class='search-message-empty-decal-eyes'>:</span>
                         <span>(</span>
                     </span>
-                    <h2 class='search-message-empty-message'>
+                    <h1 class='search-message-empty-message'>
                     Sin resultados.
-                    </h2>
+                    </h1>
                 </div>
                 </div>
             
 		<?php } ?>
 		
 	<?php }
-	else{ // if query length is less than minimum
-		echo "Minimo de busqueda ".$min_length;
+	else{ // Si la longitud de la query es menor a 3
+		echo "<h1 class='text-light text-center mt-5'>Mínimo de 3 letras para la realizar la búsqueda.</h1> ";
 	}
 ?>
 </div>
