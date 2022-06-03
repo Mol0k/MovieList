@@ -207,7 +207,6 @@ require __DIR__ . '/../php_util/db_connection.php';
                     date_default_timezone_set('Europe/Madrid');
                     setlocale(LC_TIME, 'spanish');
                     $date = date_create($movie['created']);
-                    echo date_format($date, 'd-m-Y');
                     
                 ?>
 
@@ -217,7 +216,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                 <td><?php echo $movie['sinopsis']; ?></td>
                 <td><?php echo "<img style='width:30%;height:30%; margin-left: auto;margin-right: auto;display: block;' src='assets/imagenesPortada/".$movie['image']."' >" ?>
                 </td>
-                <td><?php echo $created; ?></td>
+                <td><?php echo date_format($date, 'd-m-Y'); ?></td>
                 <td><?php echo $movie['duration']; ?></td>
                 <td><?php echo $array_generos;  ?> </td>
             </tr>
