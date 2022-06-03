@@ -11,13 +11,13 @@
     $stmt_username= $mysqli->prepare($buscar_username);
     $stmt_username->bind_param("s", $username );
     $stmt_username->execute();
-    $result = $stmt_username->get_result(); // get the mysqli result
+    $result = $stmt_username->get_result();
     $user = $result->fetch_assoc();
 
 
 
         if(strlen($_POST['username']) > 3  && strlen($_POST['username']) < 20){
-            if ($user) { // if user exists
+            if ($user) { // si el usuario existe
                 if ($user['username'] === $username) {
                     header("Location: $return#popup2");
                     $_SESSION['error_update_username'] = "Este nombre de usuario ya está ocupado.";

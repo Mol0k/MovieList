@@ -10,7 +10,7 @@ require __DIR__ . '/../php_util/db_connection.php';
         header('Location: login.php');
     }
     
-
+    //Consulta para comprobar si el usuario es admin o un usuario normal
     $role_sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
     $query = $mysqli->query($role_sql);
     $row_role = $query->fetch_assoc(); 
@@ -19,6 +19,7 @@ require __DIR__ . '/../php_util/db_connection.php';
         header('Location: index.php');
     }
 
+    //Paginación
     if(isset($_POST['records-limit-addmovie'])){
         $_SESSION['records-limit-addmovie'] = $_POST['records-limit-addmovie'];
     }
@@ -202,11 +203,12 @@ require __DIR__ . '/../php_util/db_connection.php';
             <?php foreach($movies as $movie): 
                     $generos= unserialize($movie['gender']); 
                     $array_generos = implode(", ",$generos);
-
                     //formatear fecha
                     date_default_timezone_set('Europe/Madrid');
                     setlocale(LC_TIME, 'spanish');
-                    $created= strftime("%x", strtotime($movie['created']));
+                    $date = date_create($movie['created']);
+                    echo date_format($date, 'd-m-Y');
+                    
                 ?>
 
             <tr>
@@ -240,22 +242,21 @@ require __DIR__ . '/../php_util/db_connection.php';
             </li>
         </ul>
     </nav>
-   
-
-    fa-solid fa-check
 
     <!-- Incluir el footer -->
     <?php include "./inc/footer.php"; ?>
     <!-- Incluir el popup -->
     <?php include_once "./inc/popup_uPassword.php"; ?> 
     <?php include_once "./inc/popup_uProfile.php"; ?>
+
 </body>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
     </script>
-
     <!-- jQuery + Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <script>
     $(document).ready(function() {
         $('#records-limit-addmovie').change(function() {

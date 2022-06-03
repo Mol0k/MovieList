@@ -17,7 +17,7 @@
             $stmt_select -> execute();
             $result_2 = $stmt_select->get_result();
             $row = $result_2->fetch_array();
-        if($row){
+        if($row){ //si el usuario tiene comentarios los borramos
             $del_list = "DELETE FROM tcomentarios WHERE id = ? and usuario_id = ?";
             $stmt_del = $mysqli->prepare($del_list);
             $stmt_del ->bind_param("ii", $row['id'], $user_id);

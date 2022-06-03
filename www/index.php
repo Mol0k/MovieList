@@ -219,12 +219,12 @@ require __DIR__ . '/../php_util/db_connection.php';
     </div>
     <button onclick="topFunction()" id="botonScroll" title="Ir hacia arriba"><i class="fa-solid fa-angle-up"></i></button>
     <!-- Incluir popup registrado -->
-    <?php include_once "./inc/popup_registrado.php"; ?>  
+    <?php include "./inc/popup_registrado.php"; ?>  
     <!-- Incluir el footer -->
     <?php include "./inc/footer.php"; ?>
     <!-- Incluir el popup -->
-    <?php include_once "./inc/popup_uPassword.php"; ?> 
-    <?php include_once "./inc/popup_uProfile.php"; ?>   
+    <?php include "./inc/popup_uPassword.php"; ?> 
+    <?php include "./inc/popup_uProfile.php"; ?>   
     
 </body>
     <script>
@@ -236,11 +236,15 @@ require __DIR__ . '/../php_util/db_connection.php';
     <script src="./assets/js/scrollToTop.js"></script>
     <script>
         //Cuando el usuario entre en la página principal el div que muestra las películas cogerá el foco.
+        //Solo se ejecutará cuando el tamaño sea mayor a 767px osea solo para pc.
         const foco = document.getElementById('foco');
         // foco.scrollIntoView(true);
-        foco.scrollIntoView({
+        if(screen.width > 767){
+            foco.scrollIntoView({
             block: 'center',
         });
+        }
+        
     </script>
 
     <script>

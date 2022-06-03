@@ -3,7 +3,7 @@ $mysqli = get_db_connection_or_die();
 
 ?>
 <!-- sticky-top -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark " id="#navbar_id" >
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" id="#navbar_id" >
     <div class="container-fluid">
         <!-- <a class="navbar-brand" href="index.php">
                 <img src="./assets/images/icon.png" width="24px" height="24px" alt="logo">MovieList
@@ -18,7 +18,6 @@ $mysqli = get_db_connection_or_die();
                 <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                 <!-- SIN SCROLL -->
                 <!-- <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav" > -->
-
                 <li class="nav-item">
                     <a class="nav-link active" href="index.php">Inicio</a>
                 </li>
@@ -65,11 +64,12 @@ $mysqli = get_db_connection_or_die();
                     <a href="#" class="nav-link dropdown-toggle bg-dark" data-bs-toggle="dropdown"
                         id="navbarDropdownMenuLink" role="button" aria-haspopup="true" aria-expanded="false">
                         <?php
+                            //Consulta para obtener la imagen del usuario.
                             $query = "SELECT profile_image FROM tuser WHERE id = " . $_SESSION['user_id'] ;
                             $result = mysqli_query($mysqli, $query) or die(mysqli_error($mysqli));
                             $row = mysqli_fetch_array($result);
                             $profile_image = $row['profile_image'];
-
+                            //Si el usuario no tiene ninguna imagen se le pondrá una por defecto y si no se recogera la que tenga en la bd.
                             if(empty($profile_image)){
                                 $profile_image = "default-user.png";
                                 echo "<img width='35' height='35' class='rounded-circle' src='assets/images/".$profile_image."' >" ;

@@ -73,9 +73,6 @@
 	die();
 }
 
-
-		
 $mysqli->close();
-		
-	
+
 ?>

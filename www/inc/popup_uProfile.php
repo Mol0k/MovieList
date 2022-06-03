@@ -70,6 +70,7 @@ $ruta_absoluta = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     </div>
 </div>
 <script>
+    //función que mostrara la imagen al cargarla.
     function preview() {
         frame.src=URL.createObjectURL(event.target.files[0]);
     }

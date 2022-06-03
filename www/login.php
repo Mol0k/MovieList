@@ -4,39 +4,38 @@ require __DIR__ . '/../php_util/db_connection.php';
 
 session_start();
 $mysqli = get_db_connection_or_die();
-// Initialize the session
 
-// Check if the user is already logged in, if yes then redirect him to welcome page
+
+// Comprobar si el usuario ya ha iniciado la sesión, en caso correcto, redirigirlo a la página de inicio
 if(isset($_SESSION["user_id"]) && $_SESSION["user_id"] === true){
     header("location: index.php");
     exit;
 }
  
-// Include config file
 
- 
-// Define variables and initialize with empty values
+// Definir variables e inicializar con valores vacíos
 $username = $password = "";
 $username_err = $password_err = $login_err = "";
  
-// Processing form data when form is submitted
+// Procesamiento de los datos del formulario al enviarlo
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
  
-    // Check if username is empty
+    // Comprobar si el nombre de usuario está vacío
     if(empty(trim($_POST["username"]))){
         $username_err = "Introduce un nombre de usuario.";
     } else{
         $username = trim($_POST["username"]);
     }
     
-    // Check if password is empty
+    // Comprobar si la contraseña está vacía
     if(empty(trim($_POST["password"]))){
         $password_err = "Introduce tu contraseña.";
     } else{
         $password = trim($_POST["password"]);
     }
     
-    // Validate credentials
+    // Validar las credenciales
     if(empty($username_err) && empty($password_err)){
         $username = $_POST['username'];
         // Prepare a select statement
@@ -85,9 +84,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         <div class="card-body p-md-5">
                             <div class="row justify-content-center">
                                 <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                                 
                                     <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Iniciar sesión</p>
-                                   
 
                                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" role="form" enctype="multipart/form-data" class="mx-1 mx-md-4">
 

@@ -5,7 +5,6 @@
         <div class="contenido-pop">
             <p>La cuenta ha sido creada correctamente. Ahora puedes loguearte<p>
             <a href="login.php" class="btn btn-primary btn-lg " role="button">Logueate</a>
-
         </div>
     </div>
 </div>

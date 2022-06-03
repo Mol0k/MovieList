@@ -50,7 +50,8 @@
     <?php include "./inc/header.php"; ?> 
 
 
-    <?php 
+    <?php
+        //Seleccionamos los datos del usuario que tiene iniciada sesion
         $consultar_usuario = "SELECT * FROM tuser WHERE id = " . $user_id ;
         $resultado_usuario = mysqli_query($mysqli, $consultar_usuario) or die(mysqli_error($mysqli));
         $fila_usuario = mysqli_fetch_array($resultado_usuario);
@@ -84,7 +85,6 @@
                     </span> 
                     <span><i class="fa fa-copy"></i></span> 
                 </div> 
-                 
             <div class=" d-flex mt-2"> 
                 <button class="btn1 btn-dark">
                     <a href="edit_profile.php" style="text-decoration: none; color:white">Editar perfil</a>
@@ -94,10 +94,12 @@
             <div class=" px-2 rounded mt-4 fecha "> 
                 <span class="llegada">Se ha unido el
                 <?php
+                    //DEPRECATED EN PHP 8
                     // date_default_timezone_set('Europe/Madrid');
                     // setlocale(LC_TIME, 'spanish.UTF-8');
                     // $date= strftime("%A, %d de %B de %Y", strtotime($fila_usuario['registration_date']));
                     // echo $date;
+                    //Formateamos la fecha
                     date_default_timezone_set('Europe/Madrid');
                     setlocale(LC_TIME, 'spanish');
                     $date = date_create($fila_usuario['registration_date']);

@@ -57,14 +57,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $result = $stmt->get_result(); // get the mysqli result
         $user = $result->fetch_assoc();
         
-        if ($user) { // if user exists
-          if ($user['username'] === $username) {
-            $username_err = "Este nombre de usuario ya está ocupado.";
-          }
-      
-          if ($user['email'] === $email) {
-            $email_err ="Este email ya ha sido registrado.";
-          }
+        if ($user) { // si el usuario existe
+            if ($user['username'] === $username) {
+                $username_err = "Este nombre de usuario ya está ocupado.";
+            }
+        
+            if ($user['email'] === $email) {
+                $email_err ="Este email ya ha sido registrado.";
+            }
         }
         $stmt->close();
     }
@@ -95,7 +95,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $sql = "INSERT INTO tuser (username, email, encrypted_password, registration_date) VALUES (?, ?,?,?)";
          
         if($stmt = $mysqli->prepare($sql)){
-            // Bind variables to the prepared statement as parameters
+            // Bind variables al prepared statement como parametros
             $stmt->bind_param("ssss", $username, $email,$param_password,$date);
             
             // Setear parametros

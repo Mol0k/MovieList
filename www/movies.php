@@ -258,7 +258,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                             <div class="form-group" id="form-comment">
                                 <h4>Deja tu comentario</h4>
                                 <label for="message">Mensaje</label>
-                                <textarea name="new_comment" id="" msg cols="30" rows="5" class="form-control  text-light" style="background-color: #212529 ;"></textarea>
+                                <textarea name="new_comment" id="" msg cols="30" rows="5" class="form-control  text-light" maxlength="100" style="background-color: #212529 ;"></textarea>
                             </div>
                             <div class="form-group" id="form-comment-div">
                                 <input type="hidden" name="movie_id" value="<?php echo $movie_id; ?>">

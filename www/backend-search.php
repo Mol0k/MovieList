@@ -62,10 +62,11 @@
                         <div class='row default-row mt-1 mb-1' id='row-1'>
                             <div class='container mt-5'>
                                 <div class='row justify-content-center wrapperino' id='foco'>
-                                <!-- // if one or more rows are returned do following -->
+                                <!-- si se devuelven una o más filas, haga lo siguiente -->
+                                        
                                 <?php  if(mysqli_num_rows($result) > 0){ ?>	 
                                 <?php while($fila = mysqli_fetch_array($result)){
-                                    // $results = mysql_fetch_array($raw_results) pone los datos de la base de datos en el array, mientras es válido hace el bucle
+                                    
                                 ?>
                                     <div class='movie_card'>
                                     <img  width='15%' src='assets/imagenesPortada/<?php echo $fila['image']?>' >
