@@ -17,7 +17,7 @@ if(isset($_GET['id']) & !empty($_GET['id'])){
 		$stmt_select -> execute();
 		$result_2 = $stmt_select->get_result();
 		$row = $result_2->fetch_array();
-	if($row){
+	if($row){ //si existen peliculas en la favoritos las borramos
 		$del_list = "DELETE FROM `tfavorites` WHERE `tfavorites`.`id` = ?";
 		$stmt_del = $mysqli->prepare($del_list);
 		$stmt_del ->bind_param("i", $row['id']);
@@ -27,7 +27,7 @@ if(isset($_GET['id']) & !empty($_GET['id'])){
 		die();
 	}
 }else{
-	header('location: main.php');
+	header('location: index.php');
 }
 
 ?>

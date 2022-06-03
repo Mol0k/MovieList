@@ -42,7 +42,7 @@
    ini_set('display_errors', 'On');
     require __DIR__ . '/../php_util/db_connection.php';
     session_start();
-
+    $return = $_POST['return_profile'];
     $mysqli = get_db_connection_or_die();
 if(isset($_POST['update'])){
 		//get POST data
@@ -51,43 +51,48 @@ if(isset($_POST['update'])){
 		$password_confirmar = $_POST['password_confirmar'];
         $user_id = $_SESSION['user_id']; 
  
-		//create a session for the data incase error occurs
+		//creamos una sesión para los datos en caso de error
 		$_SESSION['password_old'] = $password_old;
 		$_SESSION['password_nueva'] = $password_nueva;
 		$_SESSION['password_confirmar'] = $password_confirmar;
  
-		//connection
+	
 	
  
-		//get user details
+		//obtenemos los datos del usuario
 		$sql = "SELECT * FROM tuser WHERE id = '".$_SESSION['user_id']."'";
 		$query = $mysqli->query($sql);
 		$row = $query->fetch_assoc();
  
-		//check if old password is correct
+		//comprobamos si la antigua contraseña es correcta
 		if(password_verify($password_old, $row['encrypted_password'])){
-			//check if new password match retype
-			if($password_nueva == $password_confirmar){
-				//hash our password
-				$password = password_hash($password_nueva, PASSWORD_DEFAULT);
-                try{
-                    $update = "UPDATE tuser SET encrypted_password = ? WHERE id = ?"; 
-                    $stmt = $mysqli->prepare($update);
-                    $stmt->bind_param("si", $password, $user_id);
-                    $stmt->execute();
-                    $_SESSION['success'] = "Contraseña actualizada con éxito";
-					//unset our session since no error occured
-					unset($_SESSION['password_old']);
-					unset($_SESSION['password_nueva']);
-					unset($_SESSION['password_confirmar']);
-                }catch(Exception $e){
-                    $_SESSION['error'] = $mysqli->error;
+            if(strlen($password_nueva) > 6  && strlen($_POST['username']) < 20){
+			//comprobamos si la nueva contraseña coincide con la reescrita
+                if($password_nueva == $password_confirmar){
+                    //hasheamos la password
+                    $password = password_hash($password_nueva, PASSWORD_DEFAULT);
+                    try{
+                        $update = "UPDATE tuser SET encrypted_password = ? WHERE id = ?"; 
+                        $stmt = $mysqli->prepare($update);
+                        $stmt->bind_param("si", $password, $user_id);
+                        $stmt->execute();
+                        $_SESSION['success'] = "Contraseña actualizada con éxito";
+                        //Desactivamos nuestra sesión si no se ha producido ningún error
+                        unset($_SESSION['password_old']);
+                        unset($_SESSION['password_nueva']);
+                        unset($_SESSION['password_confirmar']);
+                    }catch(Exception $e){
+                        $_SESSION['error'] = $mysqli->error;
+                    }
                 }
-			}
-			else{
-				$_SESSION['error'] = "La contraseña nueva y la que se ha vuelto a escribir no coinciden.";
-			}
-		}
+                else{
+                    $_SESSION['error'] = "La contraseña nueva y la que se ha vuelto a escribir no coinciden.";
+                }
+            }
+            else{
+                $_SESSION['error'] = "La contraseña tiene que tener mas de 6 caracteres.";
+            }
+        }   
 		else{
 			$_SESSION['error'] = "Contraseña antigua incorrecta";
 		}
@@ -96,6 +101,6 @@ if(isset($_POST['update'])){
 		$_SESSION['error'] = "Introduzca los datos necesarios para actualizar primero";
 	}
  
-	header('location: edit_profile.php');
+    header("Location: $return#popup1");
  
 ?>

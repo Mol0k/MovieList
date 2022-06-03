@@ -4,15 +4,25 @@ require __DIR__ . '/../php_util/db_connection.php';
 
     session_start();
     $mysqli = get_db_connection_or_die();
-
-    // $_SESSION['user_id'] = 3;
+    $user_id = $_SESSION['user_id'];
+    
     if (empty($_SESSION['user_id'])) {
         header('Location: login.php');
     }
+    
+    //Consulta para comprobar si el usuario es admin o un usuario normal
+    $role_sql = "SELECT * FROM tuser WHERE id = '".$user_id."'";
+    $query = $mysqli->query($role_sql);
+    $row_role = $query->fetch_assoc(); 
+
+    if($row_role['roles'] != "admin"){
+        header('Location: index.php');
+    }
+
+    //Paginación
     if(isset($_POST['records-limit-addmovie'])){
         $_SESSION['records-limit-addmovie'] = $_POST['records-limit-addmovie'];
     }
-
     $limit = isset($_SESSION['records-limit-addmovie']) ? $_SESSION['records-limit-addmovie'] : 2;
     $page = (isset($_GET['page']) && is_numeric($_GET['page']) ) ? $_GET['page'] : 1;
     $paginationStart = ($page - 1) * $limit;
@@ -20,14 +30,16 @@ require __DIR__ . '/../php_util/db_connection.php';
     $movies = $mysqli->query("SELECT * FROM tmovie  LIMIT $paginationStart, $limit")->fetch_all(MYSQLI_ASSOC);
     // Obtener el total de records
     $sql = $mysqli->query("SELECT count(id) AS id FROM tmovie")->fetch_all(MYSQLI_ASSOC);
-    $allRecrods = $sql[0]['id'];
+    $allRecords = $sql[0]['id'];
 
     //Calcular el  total de págians
-    $totoalPages = ceil($allRecrods / $limit);
+    $totalPaginas = ceil($allRecords / $limit);
     // Anterior y siguiente
     $prev = $page - 1;
     $next = $page + 1;
+    
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -38,47 +50,10 @@ require __DIR__ . '/../php_util/db_connection.php';
     <link rel="shortcut icon" href="#">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
-
-
+    <link rel="stylesheet" href="./assets/css/style_add_movie.css" />
     <link rel="stylesheet" href="./assets/css/styles.css" />
+    <link rel="stylesheet" href="./assets/css/profile.css">
     <title>Añadir películas:</title>
-    <style>
-        .multipleSelection {
-            width: 300px;
-            background-color: #BCC2C1;
-        }
-
-        .selectBox {
-            position: relative;
-        }
-
-        .selectBox select {
-            width: 100%;
-
-        }
-
-        .overSelect {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-        }
-
-        #checkBoxes {
-            display: none;
-            border: 1px #8DF5E4 solid;
-        }
-
-        #checkBoxes label {
-            display: block;
-        }
-
-        #checkBoxes label:hover {
-            background-color: #4F615E;
-        }
-    </style>
-
 
 </head>
 
@@ -122,7 +97,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                             Suspense
                         </label>
                         <label for="second">
-                            <input type="checkbox" value="Accion" name="value[] id=" second" />
+                            <input type="checkbox" value="Acción" name="value[] id=" second" />
                             Acción
                         </label>
                         <label for="third">
@@ -138,7 +113,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                             Aventuras
                         </label>
                         <label for="six">
-                            <input type="checkbox" value="Ciencia ficcion" name="value[] id=" six" />
+                            <input type="checkbox" value="Ciencia ficción" name="value[] id=" six" />
                             Ciencia ficción
                         </label>
                         <label for="seven">
@@ -150,11 +125,11 @@ require __DIR__ . '/../php_util/db_connection.php';
                             Monstruos
                         </label>
                         <label for="nine">
-                            <input type="checkbox" value="Superheroes" name="value[] id=" nine" />
+                            <input type="checkbox" value="Superhéroes" name="value[] id=" nine" />
                             Superhéroes
                         </label>
                         <label for="ten">
-                            <input type="checkbox" value="Fantasia oscura" name="value[] id=" ten" />
+                            <input type="checkbox" value="Fantasía oscura" name="value[] id=" ten" />
                             Fantasía oscura
                         </label>
                         <label for="eleven">
@@ -162,7 +137,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                             Crimen
                         </label>
                         <label for="twelve">
-                            <input type="checkbox" value="Fantasia" name="value[] id=" twelve" />
+                            <input type="checkbox" value="Fantasía" name="value[] id=" twelve" />
                             Fantasía
                         </label>
                         <label for="thirteen">
@@ -198,7 +173,7 @@ require __DIR__ . '/../php_util/db_connection.php';
 
     </form>
     <div class="text-light d-flex flex-row-reverse bd-highlight mb-3">
-        <form action="add_movie.php" method="post">
+        <form action="add_movie.php" id ="form-pag" method="post">
             <select name="records-limit-addmovie" id="records-limit-addmovie" class="custom-select">
                 <option disabled selected>Límite</option>
                 <?php foreach([2,4,8,10] as $limit) : ?>
@@ -228,11 +203,11 @@ require __DIR__ . '/../php_util/db_connection.php';
             <?php foreach($movies as $movie): 
                     $generos= unserialize($movie['gender']); 
                     $array_generos = implode(", ",$generos);
-
                     //formatear fecha
                     date_default_timezone_set('Europe/Madrid');
                     setlocale(LC_TIME, 'spanish');
-                    $created= strftime("%x", strtotime($movie['created']));
+                    $date = date_create($movie['created']);
+                    
                 ?>
 
             <tr>
@@ -241,7 +216,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                 <td><?php echo $movie['sinopsis']; ?></td>
                 <td><?php echo "<img style='width:30%;height:30%; margin-left: auto;margin-right: auto;display: block;' src='assets/imagenesPortada/".$movie['image']."' >" ?>
                 </td>
-                <td><?php echo $created; ?></td>
+                <td><?php echo date_format($date, 'd-m-Y'); ?></td>
                 <td><?php echo $movie['duration']; ?></td>
                 <td><?php echo $array_generos;  ?> </td>
             </tr>
@@ -255,35 +230,37 @@ require __DIR__ . '/../php_util/db_connection.php';
                 <a class="page-link"
                     href="<?php if($page <= 1){ echo '#'; } else { echo "?page=" . $prev; } ?>">Anterior</a>
             </li>
-            <?php for($i = 1; $i <= $totoalPages; $i++ ): ?>
+            <?php for($i = 1; $i <= $totalPaginas; $i++ ): ?>
             <li class="page-item <?php if($page == $i) {echo 'active'; } ?>">
                 <a class="page-link" href="add_movie.php?page=<?= $i; ?>"> <?= $i; ?> </a>
             </li>
             <?php endfor; ?>
-            <li class="page-item <?php if($page >= $totoalPages) { echo 'disabled'; } ?>">
+            <li class="page-item <?php if($page >= $totalPaginas) { echo 'disabled'; } ?>">
                 <a class="page-link"
-                    href="<?php if($page >= $totoalPages){ echo '#'; } else {echo "?page=". $next; } ?>">Siguiente</a>
+                    href="<?php if($page >= $totalPaginas){ echo '#'; } else {echo "?page=". $next; } ?>">Siguiente</a>
             </li>
         </ul>
     </nav>
 
-
-   
-
     <!-- Incluir el footer -->
     <?php include "./inc/footer.php"; ?>
+    <!-- Incluir el popup -->
+    <?php include_once "./inc/popup_uPassword.php"; ?> 
+    <?php include_once "./inc/popup_uProfile.php"; ?>
 
 </body>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
     </script>
-
     <!-- jQuery + Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <script>
     $(document).ready(function() {
         $('#records-limit-addmovie').change(function() {
-            $('form').submit();
+            var frm = document.getElementById("form-pag");
+            frm.submit();
         })
     });
     </script>

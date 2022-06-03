@@ -57,14 +57,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $result = $stmt->get_result(); // get the mysqli result
         $user = $result->fetch_assoc();
         
-        if ($user) { // if user exists
-          if ($user['username'] === $username) {
-            $username_err = "Este nombre de usuario ya está ocupado.";
-          }
-      
-          if ($user['email'] === $email) {
-            $email_err ="Este email ya ha sido registrado.";
-          }
+        if ($user) { // si el usuario existe
+            if ($user['username'] === $username) {
+                $username_err = "Este nombre de usuario ya está ocupado.";
+            }
+        
+            if ($user['email'] === $email) {
+                $email_err ="Este email ya ha sido registrado.";
+            }
         }
         $stmt->close();
     }
@@ -90,21 +90,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     //Comprobar los errores de entrada antes de la inserción en la base de datos
     if(empty($username_err) && empty($password_err) && empty($confirm_password_err) && empty($email_err)){
-        
+        $date = date("Y-m-d H:i:s"); 
         // Prepare an insert statement
-        $sql = "INSERT INTO tuser (username, email, encrypted_password) VALUES (?, ?,?)";
+        $sql = "INSERT INTO tuser (username, email, encrypted_password, registration_date) VALUES (?, ?,?,?)";
          
         if($stmt = $mysqli->prepare($sql)){
-            // Bind variables to the prepared statement as parameters
-            $stmt->bind_param("sss", $username, $email,$param_password);
+            // Bind variables al prepared statement como parametros
+            $stmt->bind_param("ssss", $username, $email,$param_password,$date);
             
             // Setear parametros
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
             
             // Intentar ejecutar el prepared statement.
             if($stmt->execute()){
-                // Que rediriga a main.php
-                header("location: main.php");
+                // Que rediriga a index.php
+                header("location: index.php#registrado");
             } else{
                 echo "¡Uy! Algo ha ido mal. Por favor, inténtelo de nuevo más tarde";
             }
@@ -151,7 +151,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                         <div class="form-group d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
-                                                <label class="form-label" for="f_nomb_user">Nombre</label>
+                                                <label class="form-label" for="f_nomb_user">Nombre de usuario</label>
                                                 <input type="text" id="f_nomb_user" name="username"
                                                 class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username'], ENT_QUOTES) : ''; ?>">
                                                 <span class="invalid-feedback"><?php echo $username_err; ?></span>
@@ -217,11 +217,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                     </form>
 
                                 </div>
-                                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-
-                                    <img src="./assets/images/2-2-iron-man-png-clipart.png" class="img-fluid" style="width: 100%; height: 100%;"alt="Sample image">
-
-                                </div>
+                               
                             </div>
                         </div>
                     </div>

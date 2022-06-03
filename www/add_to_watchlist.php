@@ -15,39 +15,39 @@ if(isset($_GET['id']) & !empty($_GET['id'])){
 
 	
 		$movie_id = $_GET['id'];
-		$prueba = "SELECT * FROM `tmovie` WHERE id = ? ";
+		$prueba = "SELECT * FROM tmovie WHERE id = ? ";
 		$stmt_prueba = $mysqli ->prepare($prueba);
 		$stmt_prueba -> bind_param("i", $movie_id);
 		$stmt_prueba -> execute();
 		$result_3= $stmt_prueba->get_result();
 		$row2 = $result_3->fetch_array();
 	
-		$query = "SELECT * FROM `twatchlist` WHERE usuario_id = ? AND movie_id = ?";
+		$query = "SELECT * FROM twatchlist WHERE usuario_id = ? AND movie_id = ?";
 		$stmt_select = $mysqli ->prepare($query);
 		$stmt_select -> bind_param("ii", $user_id, $movie_id);
 		$stmt_select -> execute();
 		$result_2 = $stmt_select->get_result();
 		$row = $result_2->fetch_array();
 		
-	if($row){
-		$delete_watchlist = "DELETE FROM `twatchlist` WHERE `twatchlist`.`id` = ?";
+	if($row){ //si el usuario tiene peliculas borramos la pelicula de la watchlist
+		$delete_watchlist = "DELETE FROM twatchlist WHERE `twatchlist`.`id` = ?";
 		$stmt_delete = $mysqli->prepare($delete_watchlist);
 		$stmt_delete ->bind_param("i", $row['id']);
 		$stmt_delete ->execute();
 		$stmt_delete ->close();
 		
-		if (isset($_POST['boton-main'])) {
+		if (isset($_POST['boton-main'])) { //aqui recogemos todos los botones(boton-main) que aparecen en cada pelicula. Lo que hace es que cuando pulsamos el boton-main, se redirige en la misma pagina.
 			header("Location: $return");
 			die();
-		}else{
+		}else{// 
 			header("Location:movies.php?id=".$row['movie_id']);
-			$_SESSION['error_delete_watchlist']  = "Película borrada de la watchlist.";
+			// $_SESSION['error_delete_watchlist']  = "Película borrada de la watchlist.";
 			die();
 		}
 
 	}
 	if (!empty($_SESSION['user_id'])) {
-		$insert = "INSERT INTO `twatchlist`(movie_id, usuario_id) VALUES(?,?)";
+		$insert = "INSERT INTO twatchlist (movie_id, usuario_id) VALUES(?,?)";
 		$stmt_del_insert = $mysqli->prepare($insert);
 		$stmt_del_insert ->bind_param("ii", $movie_id, $user_id);
 		$stmt_del_insert ->execute();
@@ -59,7 +59,7 @@ if(isset($_GET['id']) & !empty($_GET['id'])){
 			die();
 		}else{
 			header("Location:movies.php?id=".$row2['id']);
-			$_SESSION['añadida_watchlist']  = "Película añadida a la watchlist.";
+			// $_SESSION['añadida_watchlist']  = "Película añadida a la watchlist.";
 			die();
 		}
 		
@@ -69,16 +69,14 @@ if(isset($_GET['id']) & !empty($_GET['id'])){
 			die();
 		}else{
 			header("Location: movies.php?id=".$movie_id);
-			$_SESSION['no_logueado_Watchlist']  = "Inicia sesión para poder agregar las pelis.";
+			$_SESSION['no_logueado_Watchlist']  = "Inicia sesión para poder agregar la película a tu watchlist.";
 			die();
 		}
-       
-       
-       
+
     }
 	
 }else{
-	header('location: main.php');
+	header('location: index.php');
 }
 
 ?>
