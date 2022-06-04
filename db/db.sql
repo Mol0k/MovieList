@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS moviedb;
 
 USE moviedb;
 
-CREATE TABLE tUser (
+CREATE TABLE tuser (
   id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(50) NOT NULL UNIQUE,
   email VARCHAR(50) NOT NULL UNIQUE,
@@ -12,7 +12,7 @@ CREATE TABLE tUser (
   profile_image VARCHAR(200) 
   );
 
-CREATE TABLE tMovie (
+CREATE TABLE tmovie (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   title VARCHAR(255) NOT NULL,
   sinopsis longtext NOT NULL,
@@ -22,29 +22,29 @@ CREATE TABLE tMovie (
   duration VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE tComentarios (
+CREATE TABLE tcomentarios (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   comentario VARCHAR(2000),
   movie_id INTEGER NOT NULL,
   fecha_comentario DATETIME,
   usuario_id INTEGER NOT NULL,
-  FOREIGN KEY (movie_id) REFERENCES tMovie(id),
-  FOREIGN KEY (usuario_id) REFERENCES tUser(id)
+  FOREIGN KEY (movie_id) REFERENCES tmovie(id),
+  FOREIGN KEY (usuario_id) REFERENCES tuser(id)
 );
 
-CREATE TABLE tWatchlist (
+CREATE TABLE twatchlist (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   usuario_id INTEGER NOT NULL,
   movie_id INTEGER NOT NULL,
-  FOREIGN KEY (movie_id) REFERENCES tMovie(id),
-  FOREIGN KEY (usuario_id) REFERENCES tUser(id)
+  FOREIGN KEY (movie_id) REFERENCES tmovie(id),
+  FOREIGN KEY (usuario_id) REFERENCES tuser(id)
 );
-CREATE TABLE tFavorites (
+CREATE TABLE tfavorites (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   usuario_id INTEGER NOT NULL,
   movie_id INTEGER NOT NULL,
-  FOREIGN KEY (movie_id) REFERENCES tMovie(id),
-  FOREIGN KEY (usuario_id) REFERENCES tUser(id)
+  FOREIGN KEY (movie_id) REFERENCES tmovie(id),
+  FOREIGN KEY (usuario_id) REFERENCES tuser(id)
 );
 
 INSERT INTO `tmovie` VALUES 
