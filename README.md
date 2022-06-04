@@ -25,7 +25,7 @@ Cuando el usuario visita la página solo podrá ver la información de las pelí
 
 
 ## Despliegue
-Instala xampp para desplegar la aplicación.
+Instala xampp para desplegar la aplicación en local.
 Clona el repositorio en xampp/htdocs
 
 ```bash
