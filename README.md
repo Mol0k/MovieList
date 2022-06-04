@@ -6,6 +6,7 @@
 * [Información General](#información-general)
 * [Tecnologías utilizadas](#tecnologías-utilizadas)
 * [Despliegue](#despliegue)
+* [Demostración de funcionamiento](#demostración-de-funcionamiento)
 * [Contacto](#contacto)
 
 
@@ -49,6 +50,8 @@ Ahora abre una nueva pestaña y pon la URL
 ```bash
  http://localhost/main.php
 ```
+## Demostración de funcionamiento
+http://the-movies-lists.herokuapp.com/
 
 
 ## Contacto
