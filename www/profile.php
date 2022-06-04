@@ -87,7 +87,7 @@
                 </div> 
             <div class=" d-flex mt-2"> 
                 <button class="btn1 btn-dark">
-                    <a href="edit_profile.php" style="text-decoration: none; color:white">Editar perfil</a>
+                    <a href="profile.php" style="text-decoration: none; color:white">Editar perfil</a>
                 </button> 
                 
             </div> 

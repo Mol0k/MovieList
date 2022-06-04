@@ -90,7 +90,7 @@ require __DIR__ . '/../php_util/db_connection.php';
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="assets/images/imagencarousel.jpg" class="bd-placeholder-img" width="100%" height="100%"
+                <img src="assets/images/imagen11.jpg" class="bd-placeholder-img" width="100%" height="100%"
                     aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false" alt="popcorn">
 
                 <div class="container">
@@ -125,7 +125,7 @@ require __DIR__ . '/../php_util/db_connection.php';
     </div>
 
     <div class="cards-container card-resp">
-        <h2 class="text-center text-light ">PELICULAS POPULARES</h2>
+        <h2 class="text-center text-light ">PELÍCULAS POPULARES</h2>
         <!-- Quitar el fluid  -->
         <div class="container-fluid">
             <!-- Quitar el row default-row -->

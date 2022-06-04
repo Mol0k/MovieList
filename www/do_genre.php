@@ -164,7 +164,7 @@
     <?php
         if (isset($_POST['btComedia'])) {
             $comedias = $mysqli->query("SELECT * FROM tmovie WHERE GENDER LIKE '%Comedia%'")->fetch_all(MYSQLI_ASSOC);?>
-            <h1 class="text-center text-light mb-2" >PELÍCULAS DE CRIMEN</h1>
+            <h1 class="text-center text-light mb-2" >PELÍCULAS DE COMEDIA</h1>
             <div class="row justify-content-center wrapperino" id="foco">
                 <?php foreach($comedias as $comedia): ?>        
                 <div class="movie_card">

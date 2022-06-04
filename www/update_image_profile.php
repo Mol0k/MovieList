@@ -9,7 +9,7 @@
 	$return = $_POST['return_image'];
 	$imagen_usuario=$_FILES['imagenUsuario']['name'];
 	$guardado=$_FILES['imagenUsuario']['tmp_name'];
-	$maxSize = 2097152;
+	$maxSize = 400000;  //Tamaño maximo de la imagen 0,4 MB // antes estaba en 2MB como máximo 2097152
 	$fileType=$_FILES['imagenUsuario']['type'];
 	$fileError = $_FILES['imagenUsuario']['error'];
 	$fileExt = explode('.', $imagen_usuario);
@@ -58,7 +58,7 @@
 			
 		}else{
 			header("Location: $return#popup2");
-			$_SESSION['error_profile_image'] = "No se pueden subir imágenes de más de 2MB.";
+			$_SESSION['error_profile_image'] = "El peso de la imagen es demasiado grande.";
 			die();
 			
 		}
